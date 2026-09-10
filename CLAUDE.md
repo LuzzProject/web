@@ -144,8 +144,19 @@ de scroll según la posición real del elemento:
   pasar a tablet — pedido explícito del cliente)
 - Celular: ≤ 640px
 
-La barra de nav usa `clamp()` en paddings y gaps (no reduce el tamaño de letra) para
-no colapsar/superponerse en anchos intermedios cercanos al breakpoint de tablet.
+**Punto Quiebre Hamburguesa: 1138px** (`@media (max-width: 1138px)`). Es un
+breakpoint aparte, solo para el menú de la nav (texto → ☰), independiente del
+breakpoint general de tablet (819px, que sigue rigiendo grilla/hero/márgenes).
+Existe porque el menú del header mide un 50% más que el original y con la
+fuente real (SF Pro en Mac/iPhone, más ancha que cualquier fuente de respaldo
+usada para probar en otros entornos) el texto del menú llegaba a tocar el
+logo antes de los 819px. Valor fijo definido a medida por el cliente
+revisando el sitio real — no recalcular "a ojo"; si hace falta ajustarlo,
+pedir el nuevo valor exacto en px.
+
+La barra de nav usa `clamp()` en paddings, gaps y en el tamaño de letra del
+menú (que se achica de forma fluida a medida que se acerca a 1138px) para no
+colapsar/superponerse en anchos intermedios.
 
 ## Logo
 

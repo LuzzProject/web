@@ -98,15 +98,6 @@
   }
   nav.menu a:hover, nav.menu a:focus-visible{ color: var(--fg); }
 
-  /* Seguro dinámico: si el menú de texto no entra en el ancho real
-     disponible (medido en JS, ver más abajo), fuerza hamburguesa sin
-     importar el breakpoint en px. Esto evita depender de calcular a
-     ciegas cuánto ocupa el texto en la fuente real de cada sistema
-     (SF Pro en Mac/iPhone ocupa más que la fuente de respaldo usada
-     para pruebas). */
-  .nav--tight nav.menu{ display:none !important; }
-  .nav--tight .burger{ display:block !important; }
-
   .burger{
     display:none;
     width:26px; height:18px;
@@ -446,12 +437,10 @@
      RESPONSIVE
      ============================================ */
 
-  /* Menú a hamburguesa: dispara ANTES que el resto del modo tablet.
-     Con el menú +50% (texto real SF Pro, más ancho que la fuente de
-     respaldo), a 819px el texto del menú ya toca el logo. Se corta a
-     texto/hamburguesa en un punto más generoso, independiente del
-     breakpoint general de tablet (ver bloque siguiente). */
-  @media (max-width: 950px){
+  /* Punto Quiebre Hamburguesa: 1138px. Dispara ANTES que el resto del
+     modo tablet (819px, ver bloque siguiente) — valor fijo definido a
+     medida sobre el sitio real (con SF Pro), no calculado a ciegas. */
+  @media (max-width: 1138px){
     nav.menu{ display:none; }
     .burger{ display:block; }
   }
@@ -662,32 +651,6 @@
       mobileMenu.classList.remove('open');
     });
   });
-
-  /* ---------- Nav: pasar a hamburguesa si el texto no entra en el ancho
-     real disponible (medido en el navegador de cada visitante). No depende
-     de calcular a ciegas cuánto ocupa el texto en la fuente real de cada
-     sistema (SF Pro en Mac/iPhone ocupa más que la fuente de respaldo que
-     se usa para probar en otros entornos) — se autocorrige solo. ---------- */
-  const navHeader = document.querySelector('header.nav');
-  const navBrand = document.querySelector('.brand');
-  const navMenu = document.querySelector('nav.menu');
-  function checkNavFit(){
-    if (getComputedStyle(navMenu).display === 'none') {
-      // Ya está en modo mobile por el breakpoint de ancho; no hace falta medir.
-      navHeader.classList.remove('nav--tight');
-      return;
-    }
-    const style = getComputedStyle(navHeader);
-    const available = navHeader.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
-    const needed = navBrand.scrollWidth + navMenu.scrollWidth + 24; // 24px de aire mínimo entre logo y menú
-    navHeader.classList.toggle('nav--tight', needed > available);
-  }
-  window.addEventListener('resize', checkNavFit);
-  window.addEventListener('load', checkNavFit);
-  checkNavFit();
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(checkNavFit);
-  }
 
   /* ---------- Hero slideshow (loop infinito + arrastre con el dedo) ---------- */
   const heroEl = document.getElementById('hero');
