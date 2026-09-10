@@ -118,9 +118,14 @@ de scroll según la posición real del elemento:
 
 - Cada tarjeta: foto + título + texto. El botón entero (la tarjeta completa) es
   clickeable, no solo la foto.
-- Fotos: **siempre cuadradas (1:1)**, esquina viva (`border-radius:0`), sin gutter
-  entre columnas (van pegadas). Cualquier resolución de origen sirve, se recortan
-  centradas.
+- Fotos: **siempre cuadradas (1:1)**, esquina viva (`border-radius:0`). Cualquier
+  resolución de origen sirve, se recortan centradas.
+- **Separación entre fotos que se tocan:** entre dos fotos que se tocan entre sí va
+  un pequeño espacio negro (token `--photo-gap`, hoy 6px). NO va contra el borde de
+  pantalla ni cuando hay texto/título en medio. En las grillas del Home eso se logra
+  con `column-gap: var(--photo-gap)` + `row-gap: 0` (las columnas se separan, las
+  filas quedan separadas por el título/texto de cada tarjeta; los bordes exteriores
+  al ras de la pantalla). El mockup ya está hecho con esta separación.
 - Hover: la foto está al 75% de opacidad en reposo, sube a 100% en 0.3s al pasar
   el mouse. En touch (sin mouse), un tap dispara el mismo efecto por 350ms
   (clase `.tap-active`).
