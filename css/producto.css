@@ -87,18 +87,26 @@
   margin: 0 0 20px;
 }
 .section-caption p:last-child{ margin-bottom: 0; }
+/* Desktop: mismo tamaño que el texto del hero (.product-hero__caption,
+   ver más arriba), mismo breakpoint (1139px, Punto Quiebre Hamburguesa). */
+@media (min-width: 1139px){
+  .section-caption p{ font-size: 26px; }
+}
 
 /* ---------- Galería de 3 fotos (Escultura / Arte Digital) ----------
-   De borde a borde en los 3 formatos (desktop, tablet, celular):
-   ocupan todo el ancho de la pantalla, pegadas entre sí con el
-   --photo-gap estándar. Las columnas están en proporción exacta al
-   ancho real de cada foto a una altura compartida (angosta - ancha -
-   angosta), y el contenedor fija su aspect-ratio a esa misma suma —
-   así ninguna foto se recorta, solo se escala el conjunto entero
-   según el ancho de pantalla disponible.
+   Desktop y tablet: de borde a borde, ocupan todo el ancho de la
+   pantalla, pegadas entre sí con el --photo-gap estándar. Las
+   columnas están en proporción exacta al ancho real de cada foto a
+   una altura compartida (angosta - ancha - angosta), y el contenedor
+   fija su aspect-ratio a esa misma suma — así ninguna foto se
+   recorta, solo se escala el conjunto entero según el ancho de
+   pantalla disponible.
    Ratios reales: izquierda 788x1388 (0.568), centro 1690x1330 (1.271),
    derecha 786x1388 (0.566) — mismas proporciones en Escultura y Arte
-   Digital (comparten dimensiones). */
+   Digital (comparten dimensiones).
+   Celular: carrusel con scroll horizontal — una foto grande a la vez,
+   se desliza para ver las siguientes (angosta -> ancha -> angosta),
+   con scroll-snap para que cada una quede centrada y completa. */
 .trio-gallery{
   display: grid;
   grid-template-columns: 0.568fr 1.271fr 0.566fr;
@@ -111,6 +119,23 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+@media (max-width: 640px){
+  .trio-gallery{
+    display: flex;
+    width: auto;
+    aspect-ratio: auto;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .trio-gallery img{
+    flex: 0 0 auto;
+    width: auto;
+    height: 78vw; /* foto grande a propósito: no entran las 3 juntas, hay que deslizar */
+    scroll-snap-align: center;
+  }
 }
 
 /* ---------- Galería de 2 fotos cuadradas (Proyección) ----------
