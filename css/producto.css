@@ -42,10 +42,13 @@
   font-weight: 300;
 }
 /* Desktop: texto +30% y más ancho, para que entre en 2 líneas en vez
-   de 3 (solo acá — en tablet/celular queda como está arriba). */
-@media (min-width: 820px){
+   de 3 (solo acá — en tablet/celular queda como está arriba).
+   El corte es el mismo Punto Quiebre Hamburguesa (1138px) que usa el
+   resto del sitio: antes de eso, con menos ancho real disponible,
+   900px de max-width no entraba y el texto tocaba los bordes. */
+@media (min-width: 1139px){
   .product-hero__caption{
-    max-width: 900px;
+    max-width: min(900px, 90%); /* nunca más ancho que el 90% del espacio real */
     font-size: 26px; /* 20px + 30% */
   }
 }
