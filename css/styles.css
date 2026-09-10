@@ -199,7 +199,7 @@ nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color:
   color:var(--fg);
 }
 .mobile-menu-caret{
-  font-size:16px;
+  font-size:32px; /* 16px + 100% (el doble) */
   color: var(--fg-dim);
   transition: transform 0.25s ease;
 }

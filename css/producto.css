@@ -41,6 +41,14 @@
   color: var(--fg);
   font-weight: 300;
 }
+/* Desktop: texto +30% y más ancho, para que entre en 2 líneas en vez
+   de 3 (solo acá — en tablet/celular queda como está arriba). */
+@media (min-width: 820px){
+  .product-hero__caption{
+    max-width: 900px;
+    font-size: 26px; /* 20px + 30% */
+  }
+}
 
 /* ---------- Título de sección sin grid-section (ej: "Hard & Soft" /
    "Experiencia interactiva", que son h3 chicos dentro de columnas,
