@@ -25,7 +25,7 @@
     --font-display:  -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
     --font-body:     -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
 
-    --nav-h:         84px;
+    --nav-h:         58.8px; /* 84px - 30% */
     --margin-x:      64px;
     --margin-x-tab:  40px;
     --margin-x-mob:  24px;
@@ -456,7 +456,7 @@
 
   /* Celular */
   @media (max-width: 640px){
-    :root{ --margin-x: var(--margin-x-mob); --nav-h: 64px; } /* la barra achica a 64px acá: la variable tiene que achicarse junto con ella */
+    :root{ --margin-x: var(--margin-x-mob); --nav-h: 44.8px; } /* 64px - 30%; la barra achica acá: la variable tiene que achicarse junto con ella */
     header.nav{ height: var(--nav-h); }
     .logo-section{ padding: 110px var(--margin-x-mob) 90px; }
     :root{ --star-w: 151.2px; } /* 126px x 1.2 */
