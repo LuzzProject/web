@@ -1,0 +1,464 @@
+/* ============================================
+   TOKENS — todo el control fino vive acá arriba
+   ============================================ */
+:root{
+  --bg:            #000000;
+  --fg:            #ffffff;
+  --fg-dim:        rgba(255,255,255,0.62);
+  --fg-faint:      rgba(255,255,255,0.38);
+  --line:          rgba(255,255,255,0.14);
+  --line-strong:   rgba(255,255,255,0.28);
+
+  --font-display:  -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  --font-body:     -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+
+  --nav-h:         58.8px; /* 84px - 30% */
+  --margin-x:      64px;
+  --margin-x-tab:  40px;
+  --margin-x-mob:  24px;
+
+  --hover-op-rest: 0.75;
+  --hover-op-hot:  1;
+  --hover-speed:   0.3s;
+
+  --radius:        0px; /* esquina viva, a propósito */
+
+  /* Espacio negro entre fotos que se tocan entre sí (solo foto-con-foto).
+     No aplica contra el borde de pantalla ni cuando hay texto/título en medio. */
+  --photo-gap:     6px;
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; background: #000000; }
+body{
+  margin:0;
+  padding-top: var(--nav-h); /* reserva el lugar de la barra fija, DENTRO del negro del body (no como margin afuera) */
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; }
+
+/* respeta preferencia de "menos movimiento" */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ============================================
+   NAV
+   ============================================ */
+header.nav{
+  position: fixed;
+  top:0; left:0; right:0;
+  height: var(--nav-h);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding: 0 clamp(24px, 4vw, var(--margin-x)); /* se achica solo antes de colapsar, sin tocar la tipografía */
+  z-index: 100;
+  background: var(--bg);
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap: clamp(6px, 1vw, 10px);
+}
+.brand img.brand-star{ height:32.4px; width:auto; display:block; } /* 21.6px + 50% */
+.brand img.brand-word{ height:25.2px; width:auto; display:block; } /* 16.8px + 50% */
+
+nav.menu{
+  display:flex;
+  gap: clamp(12px, 2.5vw, 34px);
+}
+nav.menu a{
+  font-size: clamp(9px, calc(1.6vw - 3px), 17.25px); /* se achica antes de llegar al modo tablet para no pisar el logo */
+  letter-spacing: 0.12em;
+  font-weight:500;
+  color: var(--fg); /* blanco */
+  transition: color 0.2s ease;
+  white-space:nowrap;
+}
+nav.menu a:hover, nav.menu a:focus-visible{ color: var(--fg); }
+
+.burger{
+  display:none;
+  width:26px; height:18px;
+  position:relative;
+  background:none;
+  border:none;
+  cursor:pointer;
+  z-index: 110;
+}
+.burger span{
+  position:absolute; left:0; right:0;
+  height:1px;
+  background: var(--fg);
+  transition: transform 0.25s ease, opacity 0.25s ease, top 0.25s ease;
+}
+.burger span:nth-child(1){ top:0; }
+.burger span:nth-child(2){ top:8px; }
+.burger span:nth-child(3){ top:16px; }
+.burger.open span:nth-child(1){ top:8px; transform:rotate(45deg); }
+.burger.open span:nth-child(2){ opacity:0; }
+.burger.open span:nth-child(3){ top:8px; transform:rotate(-45deg); }
+
+.mobile-menu{
+  position:fixed; inset:0;
+  background: var(--bg);
+  z-index:99;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  gap:22px;
+  padding: 0 var(--margin-x-mob);
+  transform: translateY(-8px);
+  opacity:0;
+  pointer-events:none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.mobile-menu.open{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+.mobile-menu a{
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight:400;
+  letter-spacing:0.02em;
+  color:var(--fg);
+}
+
+/* ============================================
+   HERO SLIDESHOW
+   ============================================ */
+.hero{
+  position:relative;
+  width:100%;
+  aspect-ratio: 16 / 9; /* desktop: la sección entera respeta 16:9 a lo ancho de pantalla */
+  overflow:hidden;
+  background:#000;
+  /* el espacio para la barra ya lo reserva el padding-top del body */
+}
+.hero-track{
+  display:flex;
+  width:100%;
+  height:100%;
+  /* la transición (2.1s, ease tipo AE) la aplica el JS en cada movimiento,
+     así se puede desactivar para el salto invisible del loop infinito */
+}
+.hero-slide{
+  flex: 0 0 100%;
+  height:100%;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.hero-slide img{
+  width:100%;
+  height:100%;
+  object-fit: cover; /* al ser el contenedor ya 16:9, la foto 16:9 entra completa sin recorte */
+  display:block;
+}
+.hero-slide .ph-label{
+  position:absolute;
+  bottom: 28px;
+  left: 28px;
+  font-size:11px;
+  letter-spacing:0.08em;
+  color: rgba(255,255,255,0.45);
+  font-family: var(--font-body);
+  pointer-events:none;
+}
+.hero-zones{
+  position:absolute; inset:0;
+  display:flex;
+  z-index:5;
+}
+.hero-zone{
+  flex:1;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+}
+
+.hero-dots{
+  position:absolute;
+  bottom: 26px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+  z-index:6;
+  pointer-events:none; /* referenciales, no clickeables */
+}
+.hero-dots span{
+  width:5px; height:5px;
+  border-radius:50%;
+  background: rgba(255,255,255,0.35);
+  transition: background 0.4s ease;
+}
+.hero-dots span.active{ background: rgba(255,255,255,0.95); }
+
+/* placeholders de imagen — reemplazar por fotos reales */
+.ph-1{ background: radial-gradient(circle at 50% 50%, #1c5fff 0%, #0b2a8f 28%, #030712 62%, #000 100%); }
+.ph-2{ background: linear-gradient(135deg, #101010 0%, #2a2a2a 45%, #050505 100%); }
+.ph-3{ background: radial-gradient(circle at 30% 70%, #331a00 0%, #0a0a0a 55%, #000 100%); }
+.ph-4{ background: linear-gradient(160deg, #0a0a0a 0%, #1a1a1a 50%, #000 100%); }
+
+/* ============================================
+   LOGO SECTION
+   ============================================ */
+.logo-section{
+  padding: 160px var(--margin-x) 140px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  background: #000000;
+}
+/* La estrella, el wordmark y la bajada vienen del mismo SVG y comparten
+   una única escala: el wordmark y la bajada miden, en el archivo
+   original, 1.64x el ancho de la estrella. Todo cuelga de --star-w. */
+:root{ --star-w: 180px; } /* 150px x 1.2 (20% más) */
+.logo-section .star{
+  display:block;
+  width: var(--star-w);
+  height: auto;
+  margin: 0 auto 34px;
+  opacity: 0;
+  transform: translateY(14px);
+}
+.logo-section .wordmark{
+  display:block;
+  width: calc(var(--star-w) * 1.64);
+  height: auto;
+  margin: 0 auto 8px;
+}
+.logo-section .tagline-img{
+  display:block;
+  width: calc(var(--star-w) * 1.64);
+  height: auto;
+  margin: 0 auto 46px;
+}
+.logo-section .fade-text{
+  /* opacity y transform ahora los controla el JS, atados al scroll */
+}
+.logo-section p.desc{
+  max-width: 860px;
+  font-size: 20px;
+  line-height: 1.75;
+  color: var(--fg);
+  font-weight:300;
+  margin: 0 0 46px; /* igual al margen de la bajada (tagline-img), 40px -> 46px */
+}
+.logo-section .eyebrow{
+  font-size: 20px;
+  letter-spacing: 0.18em;
+  color: var(--fg);
+  font-weight:400;
+}
+
+/* ============================================
+   GRID SECTIONS (Productos / Desarrollos / Trabajos)
+   ============================================ */
+section.grid-section{
+  background: #000000;
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(to right, #000000 0%, rgba(255,255,255,0.7) 50%, #000000 100%) 1;
+  padding: 90px 0 0;
+}
+/* El fade solo afecta al contenido, nunca al fondo negro del bloque.
+   opacity/transform ahora los controla el JS, atados al scroll. */
+/* estado inicial antes de que el JS calcule el progreso real (h2 y cada tarjeta individual, no la grilla como bloque) */
+section.grid-section > h2,
+section.grid-section .item{
+  opacity:0;
+}
+section.grid-section h2{
+  text-align:center;
+  font-family: 'Archivo', var(--font-display);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight:400;
+  font-size: 36px;
+  letter-spacing:0.012em;
+  margin: 0 0 64px;
+}
+
+.item-grid{
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  /* Solo separación horizontal entre columnas (foto toca foto).
+     Sin row-gap: entre filas el texto/título ya hace de separación,
+     y los bordes exteriores quedan al ras de la pantalla. */
+  column-gap: var(--photo-gap);
+  row-gap: 0;
+}
+
+.item{
+  display:block;
+  position:relative;
+  border: none;
+  background:none;
+  padding:0;
+  text-align:left;
+  cursor:pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.item .thumb{
+  width:100%;
+  aspect-ratio: 1 / 1; /* la foto es exactamente cuadrada */
+  overflow:hidden;
+  position:relative;
+}
+.item .thumb img,
+.item .thumb .ph{
+  width:100%; height:100%;
+  object-fit:cover;
+  opacity: var(--hover-op-rest);
+  transition: opacity var(--hover-speed) ease;
+}
+.item:hover .thumb img,
+.item:hover .thumb .ph,
+.item.tap-active .thumb img,
+.item.tap-active .thumb .ph{
+  opacity: var(--hover-op-hot);
+}
+.item .thumb .ph-label{
+  position:absolute;
+  bottom:10px; left:10px;
+  font-size:10px;
+  letter-spacing:0.06em;
+  color: rgba(255,255,255,0.4);
+  pointer-events:none;
+}
+.item .cap{
+  padding: 11px 22px 100px; /* 22px -> 11px (mitad) entre foto y título; 44px -> 100px de espacio hasta la línea divisoria */
+}
+.item .cap h3{
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 20px;
+  margin: 0 0 5px; /* 10px -> 5px (mitad) entre título y texto */
+}
+#productos .item .cap h3{
+  font-size: 30px; /* item 8 */
+}
+#desarrollos .item .cap h3,
+#trabajos .item .cap h3{
+  font-size: 24px; /* 20px + 20% */
+}
+.item .cap p{
+  font-size: 20px;
+  line-height:1.2; /* 1.6 -> 1.2, moderado para no romper la lectura */
+  color: var(--fg-dim);
+  font-weight:300;
+  margin:0;
+}
+
+/* placeholders de producto — reemplazar por fotos reales */
+.g-1{ background: linear-gradient(135deg,#3a3a3a,#0a0a0a); }
+.g-2{ background: radial-gradient(circle at 40% 40%, #ff5a1f, #7a1e00 70%, #1a0800); }
+.g-3{ background: repeating-radial-gradient(circle at 50% 50%, #0d0d0d 0 8px, #2c2c2c 8px 16px); }
+.g-4{ background: linear-gradient(160deg,#1a1a1a,#050505); }
+.g-5{ background: linear-gradient(135deg,#5c2e6e,#170a1c); }
+.g-6{ background: linear-gradient(135deg,#0d3b3b,#020808); }
+.g-7{ background: linear-gradient(135deg,#123a6e,#02060f); }
+.g-8{ background: linear-gradient(160deg,#3a2f1a,#0a0805); }
+.g-9{ background: linear-gradient(135deg,#8a1030,#1a0308); }
+.g-10{ background: linear-gradient(135deg,#2a2a2a,#050505); }
+.g-11{ background: linear-gradient(135deg,#404040,#0a0a0a); }
+.g-12{ background: linear-gradient(160deg,#1b1b1b,#00ff90 250%); }
+
+/* ============================================
+   FOOTER
+   ============================================ */
+footer.contact{
+  background: #000000;
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(to right, #000000 0%, rgba(255,255,255,0.7) 50%, #000000 100%) 1;
+  padding: 220px var(--margin-x) 320px; /* 90px propio + 130px que antes era margin-top; abajo, más espacio todavía para acercar el bloque al centro */
+  display:flex;
+  flex-direction:column;
+  align-items:center; /* centra el bloque como conjunto */
+}
+.contact-block{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:flex-start; /* cada línea queda alineada a la izquierda DENTRO del bloque */
+  gap: 26px;
+}
+/* El fade solo afecta a los links, nunca al fondo negro del footer */
+/* opacity/transform ahora los controla el JS, atados al scroll */
+footer.contact .contact-block > a{
+  opacity:0;
+}
+footer.contact a{
+  display:inline-flex;
+  align-items:center;
+  gap: 14px;
+  font-size: 20px; /* igual al texto pequeño de Productos, antes 15px */
+  font-weight:300;
+  color: var(--fg); /* blanco, antes fg-dim */
+  width:fit-content;
+  transition: color 0.2s ease;
+}
+footer.contact a:hover{ color: var(--fg); }
+footer.contact svg{
+  width:17px; height:17px;
+  stroke: var(--fg);
+  stroke-width:1.3;
+  fill:none;
+  flex-shrink:0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+/* Punto Quiebre Hamburguesa: 1138px. Dispara ANTES que el resto del
+   modo tablet (819px, ver bloque siguiente) — valor fijo definido a
+   medida sobre el sitio real (con SF Pro), no calculado a ciegas. */
+@media (max-width: 1138px){
+  nav.menu{ display:none; }
+  .burger{ display:block; }
+}
+
+/* Tablet / intermedio — breakpoint corrido un 20% hacia abajo
+   (819px en vez de 1024px) para que el layout de desktop
+   se sostenga un poco más antes de pasar a tablet */
+@media (max-width: 819px){
+  :root{ --margin-x: var(--margin-x-tab); }
+  .item-grid{ grid-template-columns: repeat(2, 1fr); }
+  .hero{ aspect-ratio: 1 / 1; } /* tablet: hero cuadrado */
+}
+
+/* Celular */
+@media (max-width: 640px){
+  :root{ --margin-x: var(--margin-x-mob); --nav-h: 44.8px; } /* 64px - 30%; la barra achica acá: la variable tiene que achicarse junto con ella */
+  header.nav{ height: var(--nav-h); }
+  .logo-section{ padding: 110px var(--margin-x-mob) 90px; }
+  :root{ --star-w: 151.2px; } /* 126px x 1.2 */
+  .logo-section h1{ font-size:26px; }
+  .logo-section p.desc{ line-height: 1.225; } /* 1.75 - 30%, solo celular */
+  section.grid-section h2{
+    font-size:29px;
+    margin-bottom:44px;
+    position: sticky;
+    top: var(--nav-h); /* debajo de la nav mobile */
+    z-index: 10;
+    background: #000000;
+    padding: 14px 0;
+  }
+  .item-grid{ grid-template-columns: 1fr; }
+  footer.contact{ padding: 340px var(--margin-x-mob) 240px; } /* arriba: más espacio para que el título sticky de la sección anterior alcance a despegarse y subir antes de que aparezca el contenido */
+  .hero{ aspect-ratio: 9 / 16; } /* celular: hero vertical 9:16 */
+}
