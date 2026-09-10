@@ -219,6 +219,10 @@
   .duo-columns__col p{
     padding-inline: var(--margin-x-mob);
   }
+  .duo-columns__col p{
+    max-width: none; /* antes 320px: quedaba angosto y centrado */
+    font-size: 20px; /* igual al resto de los textos de la página en mobile (antes 16px) */
+  }
 }
 
 /* ---------- Galería final de cierre (2x2, sin texto) ----------
