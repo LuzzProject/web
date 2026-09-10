@@ -21,6 +21,18 @@ if (burger && mobileMenu) {
   });
 }
 
+/* ---------- Acordeón de PRODUCTOS dentro del menú mobile ----------
+   Tocar "Productos" despliega/cierra la lista de productos, sin
+   navegar (a diferencia del resto de los links del menú mobile). */
+document.querySelectorAll('.mobile-menu-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.mobile-menu-item');
+    if (!item) return;
+    const isOpen = item.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(isOpen));
+  });
+});
+
 /* ---------- Hero slideshow (loop infinito + arrastre con el dedo) ----------
    Solo corre si la página actual tiene un hero-slideshow (hoy, solo el Home). */
 const heroEl = document.getElementById('hero');

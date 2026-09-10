@@ -21,7 +21,15 @@
     <img class="brand-word" src="img/logo/logo-word.png" alt="Luzz Project">
   </div>
   <nav class="menu">
-    <a href="#productos">PRODUCTOS</a>
+    <div class="menu-item">
+      <a href="#productos">PRODUCTOS</a>
+      <div class="dropdown">
+        <a href="productos/trinity.html">Trinity</a>
+        <a href="productos/omni.html">Omni</a>
+        <a href="productos/infinity.html">Infinity</a>
+        <a href="productos/light-mirage.html">Light Mirage</a>
+      </div>
+    </div>
     <a href="#desarrollos">DESARROLLOS A MEDIDA</a>
     <a href="#trabajos">TRABAJOS</a>
     <a href="#exhibiciones">EXHIBICIONES</a>
@@ -34,7 +42,17 @@
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#productos">Productos</a>
+  <div class="mobile-menu-item">
+    <button class="mobile-menu-toggle" aria-expanded="false">
+      Productos <span class="mobile-menu-caret">▾</span>
+    </button>
+    <div class="mobile-submenu">
+      <a href="productos/trinity.html">Trinity</a>
+      <a href="productos/omni.html">Omni</a>
+      <a href="productos/infinity.html">Infinity</a>
+      <a href="productos/light-mirage.html">Light Mirage</a>
+    </div>
+  </div>
   <a href="#desarrollos">Desarrollos a medida</a>
   <a href="#trabajos">Trabajos</a>
   <a href="#exhibiciones">Exhibiciones</a>
