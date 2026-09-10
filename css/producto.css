@@ -1,0 +1,195 @@
+/* ============================================
+   CSS compartido — páginas de PRODUCTO
+   (Trinity, Omni, Infinity, Light Mirage)
+   Se suma a css/styles.css (tokens, nav, footer, etc.), que se
+   carga primero. Acá solo van los componentes propios de estas
+   páginas, para no inflar el styles.css del Home con cosas que
+   el Home no usa.
+   ============================================ */
+
+/* ---------- Hero de producto (título + imagen contenida) ----------
+   A diferencia del hero del Home (slideshow edge-to-edge), acá la
+   imagen va contenida con margen alrededor, sobre fondo negro. */
+.product-hero{
+  padding: 60px var(--margin-x) 100px;
+  text-align: center;
+  background: #000000;
+}
+.product-hero h1{
+  font-family: 'Archivo', var(--font-display);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 400;
+  font-size: clamp(32px, 6vw, 64px);
+  letter-spacing: 0.012em;
+  margin: 0 0 40px;
+}
+.product-hero__media{
+  display: block;
+  width: 100%;
+  max-width: 960px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin: 0 auto;
+}
+.product-hero__desc{
+  max-width: 640px;
+  margin: 40px auto 0;
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--fg-dim);
+  font-weight: 300;
+}
+
+/* ---------- Título de sección sin grid-section (ej: "Hard & Soft" /
+   "Experiencia interactiva", que son h3 chicos dentro de columnas,
+   no un h2 de sección) ---------- */
+.section-subtitle{
+  font-family: 'Archivo', var(--font-display);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 400;
+  font-size: 28px;
+  letter-spacing: 0.012em;
+  margin: 0 0 30px;
+}
+
+/* ---------- Texto de cierre debajo de una galería (centrado) ---------- */
+.section-caption{
+  max-width: 640px;
+  margin: 46px auto 0;
+  padding: 0 var(--margin-x) 100px; /* mismo espacio hasta la línea divisoria que usa .item .cap en el Home */
+  text-align: center;
+}
+.section-caption p{
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--fg-dim);
+  font-weight: 300;
+  margin: 0 0 20px;
+}
+.section-caption p:last-child{ margin-bottom: 0; }
+
+/* ---------- Galería de 3 fotos (Escultura / Arte Digital) ----------
+   Desktop: las 3 completas en fila, cada una con su relación de
+   aspecto real (angosta - ancha - angosta), sin recorte.
+   Mobile: carrusel con scroll horizontal — las fotos son más grandes
+   (para lucirlas), así que no entran las 3 juntas; se desliza en
+   orden angosta -> ancha -> angosta, con scroll-snap para que cada
+   una quede centrada y completa al soltar. */
+.trio-gallery{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: var(--photo-gap);
+  padding: 0 var(--margin-x);
+}
+.trio-gallery img{
+  display: block;
+  flex: 0 0 auto;
+  height: clamp(220px, 30vw, 520px);
+  width: auto;
+}
+
+@media (max-width: 819px){
+  .trio-gallery{
+    justify-content: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 var(--margin-x-tab);
+  }
+  .trio-gallery img{
+    height: 78vw; /* bastante más grande que en desktop: a propósito, para que no entren las 3 y haga falta deslizar */
+    scroll-snap-align: center;
+  }
+}
+@media (max-width: 640px){
+  .trio-gallery{ padding: 0 var(--margin-x-mob); }
+}
+
+/* ---------- Galería de 2 fotos cuadradas (Proyección) ----------
+   Se mantienen 2 columnas en todos los tamaños (así está en el
+   mockup, incluso en mobile). */
+.duo-gallery{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--photo-gap);
+}
+.duo-gallery .thumb{
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+.duo-gallery img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------- Dos columnas con título propio (Hard & Soft /
+   Experiencia interactiva). También 2 columnas en todos los
+   tamaños. ---------- */
+.duo-columns{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--photo-gap);
+  padding: 0 var(--margin-x);
+}
+.duo-columns__col{
+  text-align: center;
+  padding-bottom: 100px; /* mismo espacio hasta la línea divisoria que el resto del sitio */
+}
+.duo-columns__col .thumb{
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+.duo-columns__col img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.duo-columns__col p{
+  max-width: 320px;
+  margin: 0 auto 16px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg-dim);
+  font-weight: 300;
+}
+.duo-columns__col p:last-child{ margin-bottom: 0; }
+
+@media (max-width: 640px){
+  .duo-columns{ padding: 0 var(--margin-x-mob); }
+  .duo-columns__col{ padding-bottom: 60px; }
+}
+
+/* ---------- Galería final de cierre (2x2, sin texto) ----------
+   Mismo criterio de separación que las grillas del Home: un pequeño
+   espacio negro entre fotos que se tocan (--photo-gap), acá tanto
+   entre columnas como entre filas porque no hay texto que separe. */
+.final-gallery-section{
+  background: #000000;
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(to right, #000000 0%, rgba(255,255,255,0.7) 50%, #000000 100%) 1;
+}
+.final-gallery{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--photo-gap);
+}
+.final-gallery .thumb{
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+.final-gallery img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: var(--hover-op-rest);
+  transition: opacity var(--hover-speed) ease;
+}
+.final-gallery .thumb:hover img{ opacity: var(--hover-op-hot); }

@@ -163,7 +163,7 @@ if (heroEl && track && dotsWrap) {
    progreso 1 = el centro del elemento llegó al centro de la pantalla
    (se aplica a cualquier página: si no hay elementos que matcheen, no hace nada) */
 const revealItems = document.querySelectorAll(
-  '.logo-section .star, .logo-section .fade-text, section.grid-section > h2, section.grid-section .item, footer.contact .contact-block > a'
+  '.logo-section .star, .logo-section .fade-text, section.grid-section > h2, section.grid-section .item, footer.contact .contact-block > a, [data-reveal]'
 );
 
 function updateReveal(){

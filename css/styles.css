@@ -282,6 +282,12 @@ section.grid-section > h2,
 section.grid-section .item{
   opacity:0;
 }
+/* Gancho genérico de fade-in: cualquier elemento con data-reveal, en
+   cualquier página (páginas de producto incluidas), arranca invisible
+   hasta que el JS calcule su progreso real de scroll. */
+[data-reveal]{
+  opacity:0;
+}
 section.grid-section h2{
   text-align:center;
   font-family: 'Archivo', var(--font-display);
