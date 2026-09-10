@@ -124,7 +124,7 @@ nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color:
   font-size: 18.2px; /* 14px + 30% */
   font-weight: 400;
   letter-spacing: 0.02em;
-  color: var(--fg-dim);
+  color: var(--fg); /* blanco, antes fg-dim */
   white-space: nowrap;
   transition: color 0.2s ease;
 }
@@ -200,7 +200,7 @@ nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color:
 }
 .mobile-menu-caret{
   font-size:32px; /* 16px + 100% (el doble) */
-  color: var(--fg-dim);
+  color: var(--fg); /* blanco, antes fg-dim */
   transition: transform 0.25s ease;
 }
 .mobile-menu-item.open .mobile-menu-caret{ transform:rotate(180deg); }
@@ -222,7 +222,7 @@ nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color:
   font-size:18px;
   font-weight:300;
   letter-spacing:0;
-  color: var(--fg-dim);
+  color: var(--fg); /* blanco, antes fg-dim */
 }
 .mobile-submenu a:hover{ color:var(--fg); }
 
@@ -389,6 +389,13 @@ section.grid-section h2{
   letter-spacing:0.012em;
   margin: 0 0 64px;
 }
+/* Títulos de sección +30% solo en desktop (Home, Trinity y el resto
+   de las páginas de producto que sigan, todas comparten esta regla). */
+@media (min-width: 820px){
+  section.grid-section h2{
+    font-size: 46.8px; /* 36px + 30% */
+  }
+}
 
 .item-grid{
   display:grid;
@@ -456,7 +463,7 @@ section.grid-section h2{
 .item .cap p{
   font-size: 20px;
   line-height:1.2; /* 1.6 -> 1.2, moderado para no romper la lectura */
-  color: var(--fg-dim);
+  color: var(--fg); /* blanco, antes fg-dim */
   font-weight:300;
   margin:0;
 }
