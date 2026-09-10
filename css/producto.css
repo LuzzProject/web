@@ -139,8 +139,9 @@
 }
 
 /* ---------- Galería de 2 fotos cuadradas (Proyección) ----------
-   Se mantienen 2 columnas en todos los tamaños (así está en el
-   mockup, incluso en mobile). */
+   Desktop y tablet: 2 columnas, ambas fotos completas.
+   Celular: una foto a pantalla completa (de lado a lado) a la vez;
+   se desliza para ver la otra, con scroll-snap. */
 .duo-gallery{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -157,9 +158,25 @@
   display: block;
 }
 
+@media (max-width: 640px){
+  .duo-gallery{
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .duo-gallery .thumb{
+    flex: 0 0 100%;
+    width: 100%;
+    scroll-snap-align: center;
+  }
+}
+
 /* ---------- Dos columnas con título propio (Hard & Soft /
-   Experiencia interactiva). También 2 columnas en todos los
-   tamaños. ---------- */
+   Experiencia interactiva).
+   Desktop y tablet: 2 columnas lado a lado.
+   Celular: apiladas (una debajo de la otra, se ve al scrollear); la
+   foto de cada una va de borde a borde, el texto conserva su margen. */
 .duo-columns{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -192,8 +209,16 @@
 .duo-columns__col p:last-child{ margin-bottom: 0; }
 
 @media (max-width: 640px){
-  .duo-columns{ padding: 0 var(--margin-x-mob); }
+  .duo-columns{
+    grid-template-columns: 1fr; /* apiladas */
+    gap: 0;
+    padding: 0; /* la foto va de borde a borde; el texto se acolchona aparte, ver abajo */
+  }
   .duo-columns__col{ padding-bottom: 60px; }
+  .duo-columns__col .section-subtitle,
+  .duo-columns__col p{
+    padding-inline: var(--margin-x-mob);
+  }
 }
 
 /* ---------- Galería final de cierre (2x2, sin texto) ----------
