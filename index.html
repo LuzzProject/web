@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luzz Project — Arte, tecnología y experiencias</title>
+  <meta name="description" content="Luzz Project: arte digital, esculturas de luz, experiencias interactivas y desarrollos a medida.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Principal">
+      <a href="index.html" class="nav__brand">LUZZ PROJECT</a>
+      <button class="nav__toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+      <ul class="nav__menu">
+        <li><a class="nav__link" href="index.html">Home</a></li>
+        <li><a class="nav__link" href="bio.html">Bio</a></li>
+        <li><a class="nav__link" href="exhibiciones.html">Exhibiciones</a></li>
+        <li><a class="nav__link" href="trabajos.html">Trabajos</a></li>
+        <li><a class="nav__link" href="desarrollos-a-medida.html">Desarrollos a medida</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <h1 class="hero__title">Luzz Project</h1>
+        <p class="hero__subtitle">Arte, luz y tecnología. Creamos experiencias visuales que conectan.</p>
+        <a href="trabajos.html" class="btn">Ver trabajos</a>
+      </div>
+    </section>
+
+    <!-- Productos -->
+    <section class="section">
+      <div class="container">
+        <h2>Productos</h2>
+        <p class="text-muted">Nuestra línea de piezas de luz.</p>
+        <div class="grid" style="margin-top: 2rem;">
+          <a class="card" href="productos/infinity.html">
+            <div class="card__media"><img src="assets/img/productos/infinity/cover.jpg" alt="Infinity" loading="lazy"></div>
+            <div class="card__body"><h3 class="card__title">Infinity</h3><p class="card__text">Reflejos infinitos de luz.</p></div>
+          </a>
+          <a class="card" href="productos/omni.html">
+            <div class="card__media"><img src="assets/img/productos/omni/cover.jpg" alt="Omni" loading="lazy"></div>
+            <div class="card__body"><h3 class="card__title">Omni</h3><p class="card__text">Presencia envolvente.</p></div>
+          </a>
+          <a class="card" href="productos/trinity.html">
+            <div class="card__media"><img src="assets/img/productos/trinity/cover.jpg" alt="Trinity" loading="lazy"></div>
+            <div class="card__body"><h3 class="card__title">Trinity</h3><p class="card__text">Tres dimensiones de luz.</p></div>
+          </a>
+          <a class="card" href="productos/light-mirage.html">
+            <div class="card__media"><img src="assets/img/productos/light-mirage/cover.jpg" alt="Light Mirage" loading="lazy"></div>
+            <div class="card__body"><h3 class="card__title">Light Mirage</h3><p class="card__text">Ilusión luminosa.</p></div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Accesos -->
+    <section class="section" style="background: var(--color-bg-alt);">
+      <div class="container">
+        <div class="grid">
+          <a class="card" href="exhibiciones.html">
+            <div class="card__media"><img src="assets/img/exhibiciones/cover.jpg" alt="Exhibiciones" loading="lazy"></div>
+            <div class="card__body"><h3 class="card__title">Exhibiciones</h3><p class="card__text">Muestras e instalaciones.</p></div>
+          </a>
+          <a class="card" href="desarrollos-a-medida.html">
+            <div class="card__media"><img src="assets/img/desarrollos/cover.jpg" alt="Desarrollos a medida" loading="lazy"></div>
+            <div class="card__body"><h3 class="card__title">Desarrollos a medida</h3><p class="card__text">Proyectos únicos para cada cliente.</p></div>
+          </a>
+          <a class="card" href="bio.html">
+            <div class="card__media"><img src="assets/img/bio/cover.jpg" alt="Bio" loading="lazy"></div>
+            <div class="card__body"><h3 class="card__title">Bio</h3><p class="card__text">Quiénes somos.</p></div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <span>© <span data-year>2026</span> Luzz Project. Todos los derechos reservados.</span>
+      <span>Hecho con luz ✦</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
