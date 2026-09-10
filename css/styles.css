@@ -99,14 +99,16 @@ nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color:
 .dropdown{
   position: absolute;
   top: 100%;
-  left: 50%;
+  left: 0; /* alineado con el borde izquierdo de "PRODUCTOS", no centrado */
   min-width: 180px;
   padding: 14px 0;
   background: var(--bg);
   border: 1px solid var(--line);
+  border-radius: 12px; /* puntas redondeadas */
+  overflow: hidden; /* para que el hover de los links no se salga de las puntas redondeadas */
   opacity: 0;
   pointer-events: none;
-  transform: translate(-50%, 6px);
+  transform: translateY(6px);
   transition: opacity 0.2s ease, transform 0.2s ease;
   z-index: 120;
 }
@@ -114,12 +116,12 @@ nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color:
 .menu-item:focus-within .dropdown{
   opacity: 1;
   pointer-events: auto;
-  transform: translate(-50%, 0);
+  transform: translateY(0);
 }
 .dropdown a{
   display: block;
   padding: 9px 22px;
-  font-size: 14px;
+  font-size: 18.2px; /* 14px + 30% */
   font-weight: 400;
   letter-spacing: 0.02em;
   color: var(--fg-dim);
