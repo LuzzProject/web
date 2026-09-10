@@ -7,37 +7,38 @@
    el Home no usa.
    ============================================ */
 
-/* ---------- Hero de producto (título + imagen contenida) ----------
-   A diferencia del hero del Home (slideshow edge-to-edge), acá la
-   imagen va contenida con margen alrededor, sobre fondo negro. */
+/* ---------- Hero de producto ----------
+   La foto ya trae el nombre del producto escrito (ej: "Trinity"), así
+   que no hay h1 aparte. Va de borde a borde igual que el hero del
+   Home (misma clase .hero, mismos breakpoints de aspect-ratio:
+   16:9 desktop, 1:1 tablet, 9:16 celular), pero como imagen fija, sin
+   slideshow. El texto de descripción va superpuesto sobre la foto,
+   abajo, con un degradé oscuro detrás para que se lea. */
 .product-hero{
-  padding: 60px var(--margin-x) 100px;
-  text-align: center;
   background: #000000;
 }
-.product-hero h1{
-  font-family: 'Archivo', var(--font-display);
-  font-stretch: 125%;
-  font-variation-settings: "wdth" 125;
-  font-weight: 400;
-  font-size: clamp(32px, 6vw, 64px);
-  letter-spacing: 0.012em;
-  margin: 0 0 40px;
-}
-.product-hero__media{
-  display: block;
+.product-hero .hero > img{
   width: 100%;
-  max-width: 960px;
-  aspect-ratio: 16 / 9;
+  height: 100%;
   object-fit: cover;
-  margin: 0 auto;
+  display: block;
 }
-.product-hero__desc{
+/* El degradé (el "fondo" de esta zona) vive en su propio elemento fijo,
+   nunca en el mismo que anima opacity — si no, el degradé se
+   desvanecería junto con el texto en vez de quedar siempre visible. */
+.product-hero__scrim{
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 60px var(--margin-x) 40px;
+  background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 100%);
+  text-align: center;
+}
+.product-hero__caption{
   max-width: 640px;
-  margin: 40px auto 0;
+  margin: 0 auto;
   font-size: 20px;
   line-height: 1.6;
-  color: var(--fg-dim);
+  color: var(--fg);
   font-weight: 300;
 }
 
