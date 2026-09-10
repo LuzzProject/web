@@ -35,6 +35,10 @@
     --hover-speed:   0.3s;
 
     --radius:        0px; /* esquina viva, a propósito */
+
+    /* Espacio negro entre fotos que se tocan entre sí (solo foto-con-foto).
+       No aplica contra el borde de pantalla ni cuando hay texto/título en medio. */
+    --photo-gap:     6px;
   }
 
   *{ box-sizing: border-box; }
@@ -305,7 +309,11 @@
   .item-grid{
     display:grid;
     grid-template-columns: repeat(4, 1fr);
-    gap:0; /* van pegadas, a propósito */
+    /* Solo separación horizontal entre columnas (foto toca foto).
+       Sin row-gap: entre filas el texto/título ya hace de separación,
+       y los bordes exteriores quedan al ras de la pantalla. */
+    column-gap: var(--photo-gap);
+    row-gap: 0;
   }
 
   .item{
