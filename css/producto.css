@@ -243,7 +243,7 @@
     gap: 0;
     padding: 0; /* la foto va de borde a borde; el texto se acolchona aparte, ver abajo */
   }
-  .duo-columns__col{ padding-bottom: 60px; }
+  .duo-columns__col{ padding-bottom: 100px; } /* antes 60px: quedaba más chico que el resto del sitio antes de la línea */
   /* Línea divisoria entre "Hard & Soft" y "Experiencia interactiva"
      al quedar apiladas: mismo estilo y espaciado (90px) que separa
      cualquier otra sección del sitio. */
@@ -251,6 +251,16 @@
     border-top: 1px solid transparent;
     border-image: linear-gradient(to right, #000000 0%, rgba(255,255,255,0.7) 50%, #000000 100%) 1;
     padding-top: 90px;
+  }
+  /* Título persistente: igual que el resto de los títulos del sitio
+     (section.grid-section h2), queda pegado debajo de la nav mientras
+     se scrollea su sección. */
+  .duo-columns__col .section-subtitle{
+    position: sticky;
+    top: var(--nav-h);
+    z-index: 10;
+    background: #000000;
+    padding: 14px 0;
   }
   .duo-columns__col .section-subtitle,
   .duo-columns__col p{
