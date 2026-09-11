@@ -312,6 +312,101 @@
   }
 }
 
+/* ---------- Grilla de fotos con leyenda propia, sin título (ej: los
+   4 bloques de Omni después del hero, o "App integrada..."). Misma
+   geometría que .duo-columns (2 columnas de lado a lado en
+   desktop/tablet, apiladas en celular, fotos de borde a borde) pero
+   sin h3 y sin línea divisoria al apilarse: cada foto+texto es un
+   bloque más, seguido del próximo. ---------- */
+.photo-caption-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--photo-gap);
+}
+.photo-caption-grid__item{
+  text-align: center;
+  padding-bottom: 100px; /* mismo espacio hasta la línea divisoria que el resto del sitio */
+}
+.photo-caption-grid__item .thumb{
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+.photo-caption-grid__item img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.photo-caption-grid__item p{
+  max-width: 320px;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg);
+  font-weight: 300;
+  padding-inline: var(--margin-x);
+}
+@media (min-width: 1139px){
+  .photo-caption-grid__item p{
+    max-width: 700px;
+    font-size: 26px;
+    padding-inline: 16px;
+  }
+}
+@media (max-width: 640px){
+  .photo-caption-grid{
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .photo-caption-grid__item p{
+    max-width: none;
+    font-size: 20px;
+    padding-inline: var(--margin-x-mob);
+  }
+}
+/* Si esta grilla queda dentro de una section.grid-section (título
+   persistente/sticky, ver styles.css), el último ítem necesita más
+   espacio de sobra antes de que empiece lo que sigue — si no, el
+   título todavía no terminó de despegarse cuando ya aparece contenido
+   nuevo debajo (mismo caso ya resuelto en Hard & Soft de Trinity). */
+@media (max-width: 640px){
+  section.grid-section .photo-caption-grid__item:last-child{
+    padding-bottom: 130px; /* 100px + 30%, igual que en Trinity */
+  }
+}
+
+/* ---------- Cierre de página de producto (aro + nombre) ----------
+   Mismo componente para Trinity/Omni/Infinity/Light Mirage, antes del
+   footer: el aro es un placeholder en CSS hasta tener el logo real de
+   cada producto (se reemplaza por una <img> cuando estén). */
+.product-outro{
+  background: #000000;
+  text-align: center;
+  padding: 120px var(--margin-x);
+}
+.product-outro__mark{
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 24px;
+  border: 2px solid var(--fg);
+  border-radius: 50%;
+}
+.product-outro__name{
+  font-family: 'Archivo', var(--font-display);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 400;
+  font-size: 28px;
+  letter-spacing: 0.012em;
+  color: var(--fg);
+  margin: 0;
+}
+
+/* Aplicaciones (Omni y futuras páginas de producto): mismas tarjetas
+   que las grillas del Home, pero acá no son link a ningún lado. */
+#aplicaciones .item{ cursor: default; }
+
 /* ---------- Galería final de cierre (2x2, sin texto) ----------
    Mismo criterio de separación que las grillas del Home: un pequeño
    espacio negro entre fotos que se tocan (--photo-gap), acá tanto
