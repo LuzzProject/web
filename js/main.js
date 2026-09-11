@@ -216,6 +216,81 @@ document.querySelectorAll('.item').forEach(item => {
   }, { passive: true });
 });
 
+/* ---------- Loop infinito para carruseles con swipe ----------
+   Mismo criterio que el hero del Home: se clona la primera y la
+   última foto (a los costados de las reales) para que el swipe nunca
+   choque contra un borde; al llegar a un clon, apenas se asienta el
+   scroll, salta sin animación a la foto real equivalente, ya fuera de
+   pantalla. Solo aplica donde la galería realmente funciona como
+   carrusel horizontal (display:flex): trio-gallery/duo-gallery lo son
+   nada más que en celular (en desktop/tablet son grid, se ven todas
+   las fotos juntas, no hay nada que loopear); el lightbox es carrusel
+   en los 3 formatos. */
+function setupLoopingCarousel(gallery){
+  if (getComputedStyle(gallery).display !== 'flex') return null;
+  const realItems = [...gallery.children];
+  const total = realItems.length;
+  if (total < 2) return null;
+
+  const firstClone = realItems[0].cloneNode(true);
+  const lastClone = realItems[total - 1].cloneNode(true);
+  firstClone.setAttribute('aria-hidden', 'true');
+  lastClone.setAttribute('aria-hidden', 'true');
+  gallery.appendChild(firstClone);
+  gallery.insertBefore(lastClone, realItems[0]);
+  const allItems = [...gallery.children]; // [clon-último, real-0..N-1, clon-primero]
+
+  // Si las fotos no ocupan todo el ancho del carrusel (ej: trio-gallery,
+  // angosta-ancha-angosta), centrar la primera/última foto pide un
+  // scroll que no entra dentro del ancho real de contenido — el
+  // navegador lo recorta y nunca llega a centrar el clon, así que el
+  // swipe jamás lo alcanza. Se agrega el padding que falte a cada
+  // lado para que ese centrado sea alcanzable. Donde las fotos ya
+  // ocupan el 100% (duo-gallery, lightbox) da 0 y no cambia nada.
+  const cw = gallery.clientWidth;
+  const padStart = Math.max(0, (cw - lastClone.offsetWidth) / 2);
+  const padEnd = Math.max(0, (cw - firstClone.offsetWidth) / 2);
+  gallery.style.paddingLeft = padStart + 'px';
+  gallery.style.paddingRight = padEnd + 'px';
+
+  function closestIndex(){
+    const center = gallery.scrollLeft + gallery.clientWidth / 2;
+    let closest = 0, dist = Infinity;
+    allItems.forEach((item, i) => {
+      const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+      const distance = Math.abs(itemCenter - center);
+      if (distance < dist) { dist = distance; closest = i; }
+    });
+    return closest;
+  }
+  function jump(index, behavior){
+    // apunta al centro real del ítem (no a su borde izquierdo): con
+    // fotos de ancho disparejo (angosta-ancha-angosta), apuntar al
+    // borde hace que el navegador enganche (snap) con la foto vecina
+    // en vez de la buscada.
+    const item = allItems[index];
+    const left = item.offsetLeft + item.offsetWidth / 2 - gallery.clientWidth / 2;
+    gallery.scrollTo({ left, behavior: behavior || 'auto' });
+  }
+  jump(1, 'auto'); // arranca en la foto real 0 (índice 1, después del clon del último)
+
+  let scrollEndTimer = null;
+  gallery.addEventListener('scroll', () => {
+    clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(() => {
+      const idx = closestIndex();
+      if (idx === 0) jump(total, 'auto');          // llegó al clon del último -> salta a la real
+      else if (idx === total + 1) jump(1, 'auto'); // llegó al clon del primero -> salta a la real
+    }, 120); // espera a que el scroll/snap se asiente antes de decidir si hay que saltar
+  }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    jump(closestIndex(), 'auto'); // reacomoda sin animar, sin perder la foto actual
+  });
+
+  return { allItems, total, jump, closestIndex };
+}
+
 /* ---------- Puntitos de las galerías con swipe (páginas de producto) ----------
    Cualquier .trio-gallery/.duo-gallery/.lightbox__track seguida de un
    <div class="gallery-dots"> recibe un punto por foto, y el punto
@@ -223,8 +298,12 @@ document.querySelectorAll('.item').forEach(item => {
    scroll (sirve tanto en celular, donde de verdad scrollea, como si
    algún día no scrollea — ahí simplemente queda fijo en el primero).
    Los puntos mismos solo se muestran en celular, salvo dentro del
-   lightbox, donde siempre se ven (ver CSS). */
+   lightbox, donde siempre se ven (ver CSS). Cuentan las fotos reales
+   nada más: los clones del loop no suman puntito propio. */
 document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track').forEach(gallery => {
+  const loop = setupLoopingCarousel(gallery);
+  gallery.__loop = loop; // el lightbox lo reusa para sus zonas de clic
+
   // el lightbox envuelve su track (junto a las zonas de clic) en
   // .lightbox__stage, así que ahí los puntitos son hermanos del stage,
   // no del track mismo — en trio/duo-gallery, que no tienen ese
@@ -233,7 +312,7 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track').forEa
   const dotsEl = anchor.nextElementSibling;
   if (!dotsEl || !dotsEl.classList.contains('gallery-dots')) return;
 
-  const items = [...gallery.children];
+  const items = loop ? loop.allItems.slice(1, -1) : [...gallery.children];
   if (items.length < 2) return;
 
   items.forEach((_, i) => {
@@ -244,18 +323,22 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track').forEa
   const dots = dotsEl.children;
 
   function updateActiveDot(){
-    const center = gallery.scrollLeft + gallery.clientWidth / 2;
-    let closestIndex = 0;
-    let closestDistance = Infinity;
-    items.forEach((item, i) => {
-      const itemCenter = item.offsetLeft + item.offsetWidth / 2;
-      const distance = Math.abs(itemCenter - center);
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestIndex = i;
-      }
-    });
-    [...dots].forEach((d, i) => d.classList.toggle('active', i === closestIndex));
+    let realIndex;
+    if (loop) {
+      // los clones (índice 0 y total+1) mapean a la última y la
+      // primera foto real, respectivamente
+      realIndex = ((loop.closestIndex() - 1) + loop.total) % loop.total;
+    } else {
+      const center = gallery.scrollLeft + gallery.clientWidth / 2;
+      let closest = 0, dist = Infinity;
+      items.forEach((item, i) => {
+        const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+        const distance = Math.abs(itemCenter - center);
+        if (distance < dist) { dist = distance; closest = i; }
+      });
+      realIndex = closest;
+    }
+    [...dots].forEach((d, i) => d.classList.toggle('active', i === realIndex));
   }
 
   let dotsTickScheduled = false;
@@ -269,6 +352,17 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track').forEa
   }, { passive: true });
 });
 
+/* La posición inicial del loop (jump(1) dentro de setupLoopingCarousel)
+   se calcula con el ancho de las fotos en ese momento, que todavía
+   puede no ser el real si las imágenes no terminaron de cargar.
+   Al terminar de cargar todo, se reacomoda cada carrusel en su
+   primera foto real, ya con las medidas definitivas. */
+window.addEventListener('load', () => {
+  document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track').forEach(gallery => {
+    if (gallery.__loop) gallery.__loop.jump(1, 'auto');
+  });
+});
+
 /* ---------- Lightbox de la galería final ----------
    Tocar/cliquear cualquier foto de .final-gallery la abre en grande,
    ya centrada en esa foto, y se puede deslizar para ver las demás
@@ -279,14 +373,16 @@ const lightboxClose = document.getElementById('lightboxClose');
 const finalThumbs = document.querySelectorAll('.final-gallery .thumb');
 
 if (lightbox && lightboxTrack && lightboxClose && finalThumbs.length) {
-  const lightboxItems = [...lightboxTrack.children];
+  // el track es carrusel (flex) en los 3 formatos, así que siempre
+  // tiene loop armado (ver setupLoopingCarousel más arriba); los
+  // índices reales (0..3) se corren +1 en allItems por el clon inicial
+  const loop = lightboxTrack.__loop;
 
   function openLightbox(index){
     lightbox.classList.add('open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden'; // no scrollear la página de atrás mientras está abierto
-    const target = lightboxItems[index];
-    if (target) lightboxTrack.scrollLeft = target.offsetLeft;
+    if (loop) loop.jump(index + 1, 'auto');
     lightboxTrack.dispatchEvent(new Event('scroll')); // recalcula el puntito activo de una
   }
   function closeLightbox(){
@@ -324,29 +420,17 @@ if (lightbox && lightboxTrack && lightboxClose && finalThumbs.length) {
   const lightboxZoneLeft = document.getElementById('lightboxZoneLeft');
   const lightboxZoneRight = document.getElementById('lightboxZoneRight');
 
-  function currentLightboxIndex(){
-    const center = lightboxTrack.scrollLeft + lightboxTrack.clientWidth / 2;
-    let closestIndex = 0;
-    let closestDistance = Infinity;
-    lightboxItems.forEach((item, i) => {
-      const itemCenter = item.offsetLeft + item.offsetWidth / 2;
-      const distance = Math.abs(itemCenter - center);
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestIndex = i;
-      }
-    });
-    return closestIndex;
-  }
-  function goToLightbox(index){
-    const clamped = Math.max(0, Math.min(lightboxItems.length - 1, index));
-    const target = lightboxItems[clamped];
-    if (target) lightboxTrack.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
-  }
-  if (lightboxZoneLeft) {
-    lightboxZoneLeft.addEventListener('click', () => goToLightbox(currentLightboxIndex() - 1));
-  }
-  if (lightboxZoneRight) {
-    lightboxZoneRight.addEventListener('click', () => goToLightbox(currentLightboxIndex() + 1));
+  // clic en la zona derecha estando en la última foto (o en la
+  // izquierda estando en la primera) desliza suave hacia el clon
+  // correspondiente; setupLoopingCarousel lo detecta al asentarse el
+  // scroll y salta sin animación a la foto real — así el clic también
+  // da la vuelta en loop, igual que el swipe.
+  if (loop) {
+    if (lightboxZoneLeft) {
+      lightboxZoneLeft.addEventListener('click', () => loop.jump(loop.closestIndex() - 1, 'smooth'));
+    }
+    if (lightboxZoneRight) {
+      lightboxZoneRight.addEventListener('click', () => loop.jump(loop.closestIndex() + 1, 'smooth'));
+    }
   }
 }
