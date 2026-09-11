@@ -172,6 +172,35 @@
   }
 }
 
+/* ---------- Puntitos indicadores de swipe (mobile) ----------
+   Se agregan debajo de cualquier galería con scroll horizontal
+   (trio-gallery, duo-gallery) para avisar que hay más fotos
+   deslizando. Solo visibles en celular, que es donde esas galerías
+   scrollean; en desktop/tablet se ven todas las fotos juntas, sin
+   swipe, así que los puntos no hacen falta y quedan ocultos. El JS
+   (gallery-dots en main.js) crea los puntos y marca cuál está
+   activo según la posición del scroll. */
+.gallery-dots{
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+.gallery-dots span{
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  transition: background 0.3s ease;
+  flex: 0 0 auto;
+}
+.gallery-dots span.active{ background: rgba(255,255,255,0.95); }
+
+@media (max-width: 640px){
+  .gallery-dots{ display: flex; }
+}
+
 /* ---------- Dos columnas con título propio (Hard & Soft /
    Experiencia interactiva).
    Desktop y tablet: 2 columnas lado a lado.
@@ -215,6 +244,14 @@
     padding: 0; /* la foto va de borde a borde; el texto se acolchona aparte, ver abajo */
   }
   .duo-columns__col{ padding-bottom: 60px; }
+  /* Línea divisoria entre "Hard & Soft" y "Experiencia interactiva"
+     al quedar apiladas: mismo estilo y espaciado (90px) que separa
+     cualquier otra sección del sitio. */
+  .duo-columns__col:nth-child(2){
+    border-top: 1px solid transparent;
+    border-image: linear-gradient(to right, #000000 0%, rgba(255,255,255,0.7) 50%, #000000 100%) 1;
+    padding-top: 90px;
+  }
   .duo-columns__col .section-subtitle,
   .duo-columns__col p{
     padding-inline: var(--margin-x-mob);

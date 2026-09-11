@@ -215,3 +215,50 @@ document.querySelectorAll('.item').forEach(item => {
     setTimeout(() => item.classList.remove('tap-active'), 350);
   }, { passive: true });
 });
+
+/* ---------- Puntitos de las galerías con swipe (páginas de producto) ----------
+   Cualquier .trio-gallery/.duo-gallery seguida de un
+   <div class="gallery-dots"> recibe un punto por foto, y el punto
+   activo se recalcula según qué foto está más cerca del centro del
+   scroll (sirve tanto en celular, donde de verdad scrollea, como si
+   algún día no scrollea — ahí simplemente queda fijo en el primero).
+   Los puntos mismos solo se muestran en celular (ver CSS). */
+document.querySelectorAll('.trio-gallery, .duo-gallery').forEach(gallery => {
+  const dotsEl = gallery.nextElementSibling;
+  if (!dotsEl || !dotsEl.classList.contains('gallery-dots')) return;
+
+  const items = [...gallery.children];
+  if (items.length < 2) return;
+
+  items.forEach((_, i) => {
+    const d = document.createElement('span');
+    if (i === 0) d.classList.add('active');
+    dotsEl.appendChild(d);
+  });
+  const dots = dotsEl.children;
+
+  function updateActiveDot(){
+    const center = gallery.scrollLeft + gallery.clientWidth / 2;
+    let closestIndex = 0;
+    let closestDistance = Infinity;
+    items.forEach((item, i) => {
+      const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+      const distance = Math.abs(itemCenter - center);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = i;
+      }
+    });
+    [...dots].forEach((d, i) => d.classList.toggle('active', i === closestIndex));
+  }
+
+  let dotsTickScheduled = false;
+  gallery.addEventListener('scroll', () => {
+    if (dotsTickScheduled) return;
+    dotsTickScheduled = true;
+    requestAnimationFrame(() => {
+      updateActiveDot();
+      dotsTickScheduled = false;
+    });
+  }, { passive: true });
+});
