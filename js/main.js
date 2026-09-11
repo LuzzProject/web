@@ -222,11 +222,15 @@ document.querySelectorAll('.item').forEach(item => {
    choque contra un borde; al llegar a un clon, apenas se asienta el
    scroll, salta sin animación a la foto real equivalente, ya fuera de
    pantalla. Solo aplica donde la galería realmente funciona como
-   carrusel horizontal (display:flex): trio-gallery/duo-gallery lo son
-   nada más que en celular (en desktop/tablet son grid, se ven todas
-   las fotos juntas, no hay nada que loopear); el lightbox es carrusel
-   en los 3 formatos. */
+   carrusel horizontal (display:flex): duo-gallery lo es nada más que
+   en celular (en desktop/tablet es grid, se ven todas las fotos
+   juntas, no hay nada que loopear); el lightbox es carrusel en los 3
+   formatos. Excepción: trio-gallery (Escultura, Arte Digital) queda
+   afuera — sus fotos de ancho disparejo (angosta-ancha-angosta) no
+   admiten el padding de centrado sin dejar un hueco negro/cortar la
+   foto central, así que ahí el swipe sigue sin loop. */
 function setupLoopingCarousel(gallery){
+  if (gallery.classList.contains('trio-gallery')) return null;
   if (getComputedStyle(gallery).display !== 'flex') return null;
   const realItems = [...gallery.children];
   const total = realItems.length;
