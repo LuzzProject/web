@@ -225,7 +225,12 @@ document.querySelectorAll('.item').forEach(item => {
    Los puntos mismos solo se muestran en celular, salvo dentro del
    lightbox, donde siempre se ven (ver CSS). */
 document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track').forEach(gallery => {
-  const dotsEl = gallery.nextElementSibling;
+  // el lightbox envuelve su track (junto a las zonas de clic) en
+  // .lightbox__stage, así que ahí los puntitos son hermanos del stage,
+  // no del track mismo — en trio/duo-gallery, que no tienen ese
+  // envoltorio, .closest() no encuentra nada y usa el propio gallery.
+  const anchor = gallery.closest('.lightbox__stage') || gallery;
+  const dotsEl = anchor.nextElementSibling;
   if (!dotsEl || !dotsEl.classList.contains('gallery-dots')) return;
 
   const items = [...gallery.children];
@@ -312,4 +317,36 @@ if (lightbox && lightboxTrack && lightboxClose && finalThumbs.length) {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
   });
+
+  /* Navegación por clic (desktop/tablet, sin touch para hacer swipe):
+     dos zonas invisibles a los costados de la foto, mismo criterio que
+     los zoneLeft/zoneRight del hero del Home. */
+  const lightboxZoneLeft = document.getElementById('lightboxZoneLeft');
+  const lightboxZoneRight = document.getElementById('lightboxZoneRight');
+
+  function currentLightboxIndex(){
+    const center = lightboxTrack.scrollLeft + lightboxTrack.clientWidth / 2;
+    let closestIndex = 0;
+    let closestDistance = Infinity;
+    lightboxItems.forEach((item, i) => {
+      const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+      const distance = Math.abs(itemCenter - center);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = i;
+      }
+    });
+    return closestIndex;
+  }
+  function goToLightbox(index){
+    const clamped = Math.max(0, Math.min(lightboxItems.length - 1, index));
+    const target = lightboxItems[clamped];
+    if (target) lightboxTrack.scrollTo({ left: target.offsetLeft, behavior: 'smooth' });
+  }
+  if (lightboxZoneLeft) {
+    lightboxZoneLeft.addEventListener('click', () => goToLightbox(currentLightboxIndex() - 1));
+  }
+  if (lightboxZoneRight) {
+    lightboxZoneRight.addEventListener('click', () => goToLightbox(currentLightboxIndex() + 1));
+  }
 }

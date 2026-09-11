@@ -65,10 +65,16 @@
   letter-spacing: 0.012em;
   margin: 0 0 30px;
 }
-/* +30% solo en desktop, mismo criterio que section.grid-section h2 */
+/* Mismo tamaño que section.grid-section h2 en cada formato: 28px queda
+   solo para celular; en tablet y desktop iguala al h2 (36px / 46.8px). */
+@media (min-width: 641px) and (max-width: 819px){
+  .section-subtitle{
+    font-size: 36px; /* igual a section.grid-section h2 en tablet */
+  }
+}
 @media (min-width: 820px){
   .section-subtitle{
-    font-size: 36.4px; /* 28px + 30% */
+    font-size: 46.8px; /* igual a section.grid-section h2 en desktop */
   }
 }
 
@@ -90,6 +96,7 @@
 /* Desktop: mismo tamaño que el texto del hero (.product-hero__caption,
    ver más arriba), mismo breakpoint (1139px, Punto Quiebre Hamburguesa). */
 @media (min-width: 1139px){
+  .section-caption{ max-width: 900px; } /* más ancho: menos renglones, texto menos comprimido */
   .section-caption p{ font-size: 26px; }
 }
 
@@ -226,7 +233,8 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--photo-gap);
-  padding: 0 var(--margin-x);
+  /* sin padding lateral: las fotos van de borde a borde, igual que el
+     resto de las galerías de la página */
 }
 .duo-columns__col{
   text-align: center;
@@ -252,6 +260,18 @@
   font-weight: 300;
 }
 .duo-columns__col p:last-child{ margin-bottom: 0; }
+/* El contenedor ya no tiene padding lateral (las fotos van de borde a
+   borde), así que el título y el texto se lo ponen ellos mismos para
+   no tocar los bordes de la pantalla. */
+.duo-columns__col .section-subtitle,
+.duo-columns__col p{
+  padding-inline: var(--margin-x);
+}
+@media (min-width: 1139px){
+  .duo-columns__col p{
+    max-width: 600px; /* más ancho: menos renglones, texto menos comprimido */
+  }
+}
 
 @media (max-width: 640px){
   .duo-columns{
@@ -368,6 +388,9 @@
   cursor: pointer;
   z-index: 2;
 }
+.lightbox__stage{
+  position: relative;
+}
 .lightbox__track{
   display: flex;
   align-items: center;
@@ -376,6 +399,22 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+}
+/* Navegación por clic (desktop/tablet, sin touch): dos zonas invisibles,
+   mitad izquierda/derecha, mismo criterio que .hero-zones del Home. En
+   celular no estorban: el swipe sigue andando igual, un tap ahí solo
+   avanza/retrocede una foto además. */
+.lightbox__zones{
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 2;
+}
+.lightbox__zone{
+  flex: 1;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 .lightbox__item{
   flex: 0 0 100%;
