@@ -269,7 +269,10 @@
 }
 @media (min-width: 1139px){
   .duo-columns__col p{
-    max-width: 600px; /* más ancho: menos renglones, texto menos comprimido */
+    max-width: 700px; /* más ancho: menos renglones, texto menos comprimido */
+    font-size: 26px; /* igual al resto de los textos de la página en desktop */
+    padding-inline: 16px; /* menos que var(--margin-x): con el texto más
+      grande, hace falta recuperar ancho para no ganar renglones de más */
   }
 }
 
