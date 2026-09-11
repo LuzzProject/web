@@ -217,13 +217,14 @@ document.querySelectorAll('.item').forEach(item => {
 });
 
 /* ---------- Puntitos de las galerías con swipe (páginas de producto) ----------
-   Cualquier .trio-gallery/.duo-gallery seguida de un
+   Cualquier .trio-gallery/.duo-gallery/.lightbox__track seguida de un
    <div class="gallery-dots"> recibe un punto por foto, y el punto
    activo se recalcula según qué foto está más cerca del centro del
    scroll (sirve tanto en celular, donde de verdad scrollea, como si
    algún día no scrollea — ahí simplemente queda fijo en el primero).
-   Los puntos mismos solo se muestran en celular (ver CSS). */
-document.querySelectorAll('.trio-gallery, .duo-gallery').forEach(gallery => {
+   Los puntos mismos solo se muestran en celular, salvo dentro del
+   lightbox, donde siempre se ven (ver CSS). */
+document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track').forEach(gallery => {
   const dotsEl = gallery.nextElementSibling;
   if (!dotsEl || !dotsEl.classList.contains('gallery-dots')) return;
 
@@ -262,3 +263,48 @@ document.querySelectorAll('.trio-gallery, .duo-gallery').forEach(gallery => {
     });
   }, { passive: true });
 });
+
+/* ---------- Lightbox de la galería final ----------
+   Tocar/cliquear cualquier foto de .final-gallery la abre en grande,
+   ya centrada en esa foto, y se puede deslizar para ver las demás
+   (mismo carrusel + puntitos que el resto del sitio, ver arriba). */
+const lightbox = document.getElementById('lightbox');
+const lightboxTrack = document.getElementById('lightboxTrack');
+const lightboxClose = document.getElementById('lightboxClose');
+const finalThumbs = document.querySelectorAll('.final-gallery .thumb');
+
+if (lightbox && lightboxTrack && lightboxClose && finalThumbs.length) {
+  const lightboxItems = [...lightboxTrack.children];
+
+  function openLightbox(index){
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden'; // no scrollear la página de atrás mientras está abierto
+    const target = lightboxItems[index];
+    if (target) lightboxTrack.scrollLeft = target.offsetLeft;
+    lightboxTrack.dispatchEvent(new Event('scroll')); // recalcula el puntito activo de una
+  }
+  function closeLightbox(){
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  finalThumbs.forEach((thumb, i) => {
+    thumb.setAttribute('tabindex', '0');
+    thumb.setAttribute('role', 'button');
+    thumb.setAttribute('aria-label', 'Ver foto en grande');
+    thumb.addEventListener('click', () => openLightbox(i));
+    thumb.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); }
+    });
+  });
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox(); // tocar el fondo, fuera de la foto, también cierra
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
+  });
+}

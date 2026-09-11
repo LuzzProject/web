@@ -251,6 +251,7 @@
     border-top: 1px solid transparent;
     border-image: linear-gradient(to right, #000000 0%, rgba(255,255,255,0.7) 50%, #000000 100%) 1;
     padding-top: 90px;
+    padding-bottom: 130px; /* 100px + 30%, extra espacio antes de la galería final */
   }
   /* Título persistente: igual que el resto de los títulos del sitio
      (section.grid-section h2), queda pegado debajo de la nav mientras
@@ -299,3 +300,73 @@
   transition: opacity var(--hover-speed) ease;
 }
 .final-gallery .thumb:hover img{ opacity: var(--hover-op-hot); }
+.final-gallery .thumb{ cursor: pointer; } /* se abren en grande al tocarlas */
+
+/* ---------- Lightbox: foto de la galería final en grande ----------
+   Se abre al tocar/cliquear cualquier foto de .final-gallery. Adentro,
+   la foto tocada queda centrada y se puede deslizar (swipe) para ver
+   las demás, con los mismos puntitos que el resto del sitio (ver
+   .gallery-dots) — acá siempre visibles, sea cual sea el tamaño de
+   pantalla, a diferencia de las otras galerías que solo los muestran
+   en celular. */
+.lightbox{
+  position: fixed;
+  inset: 0;
+  background: #000000;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.lightbox.open{
+  opacity: 1;
+  pointer-events: auto;
+}
+.lightbox__close{
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  color: var(--fg);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+}
+.lightbox__track{
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 80vh;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.lightbox__item{
+  flex: 0 0 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: center;
+  padding: 0 var(--margin-x);
+}
+.lightbox__item img{
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* la foto entera, sin recortar */
+}
+.lightbox .gallery-dots{
+  display: flex; /* siempre visibles acá (a diferencia del resto, que solo se ven en celular) */
+  margin: 20px 0 0;
+}
+@media (max-width: 640px){
+  .lightbox__item{ padding: 0 var(--margin-x-mob); }
+}
