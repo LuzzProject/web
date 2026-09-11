@@ -107,6 +107,22 @@
    Celular: carrusel con scroll horizontal — una foto grande a la vez,
    se desliza para ver las siguientes (angosta -> ancha -> angosta),
    con scroll-snap para que cada una quede centrada y completa. */
+
+/* Barra de scroll nativa oculta en cualquier galería con swipe: la
+   señal de "esto se desliza" la dan los puntitos (.gallery-dots),
+   no una scrollbar del navegador. */
+.trio-gallery,
+.duo-gallery,
+.lightbox__track{
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* versiones viejas de Edge */
+}
+.trio-gallery::-webkit-scrollbar,
+.duo-gallery::-webkit-scrollbar,
+.lightbox__track::-webkit-scrollbar{
+  display: none;              /* Chrome, Safari */
+}
+
 .trio-gallery{
   display: grid;
   grid-template-columns: 0.568fr 1.271fr 0.566fr;
@@ -279,8 +295,14 @@
    entre columnas como entre filas porque no hay texto que separe. */
 .final-gallery-section{
   background: #000000;
-  border-top: 1px solid transparent;
-  border-image: linear-gradient(to right, #000000 0%, rgba(255,255,255,0.7) 50%, #000000 100%) 1;
+  /* sin línea divisoria arriba ni abajo, a propósito */
+}
+/* Tampoco la línea que trae el footer por defecto (sí la conserva en
+   el resto de las páginas). Usa ~ (no +) porque el lightbox queda
+   como hermano en el medio, entre la galería y el footer. */
+.final-gallery-section ~ footer.contact{
+  border-top: none;
+  border-image: none;
 }
 .final-gallery{
   display: grid;
@@ -297,10 +319,17 @@
   object-fit: cover;
   display: block;
   opacity: var(--hover-op-rest);
-  transition: opacity var(--hover-speed) ease;
+  transition: opacity var(--hover-speed) ease, filter var(--hover-speed) ease;
 }
 .final-gallery .thumb:hover img{ opacity: var(--hover-op-hot); }
 .final-gallery .thumb{ cursor: pointer; } /* se abren en grande al tocarlas */
+/* Feedback al tocar en touch (sin hover): un toque de brillo extra,
+   además de subir a opacidad completa, para que se note que "agarró"
+   el toque mientras se abre el lightbox. Clase puesta por JS. */
+.final-gallery .thumb.tap-active img{
+  opacity: var(--hover-op-hot);
+  filter: brightness(1.25);
+}
 
 /* ---------- Lightbox: foto de la galería final en grande ----------
    Se abre al tocar/cliquear cualquier foto de .final-gallery. Adentro,
