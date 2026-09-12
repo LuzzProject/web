@@ -241,7 +241,7 @@
 }
 .duo-columns__col{
   text-align: center;
-  padding-bottom: 100px; /* mismo espacio hasta la línea divisoria que el resto del sitio */
+  padding-bottom: 150px; /* 100px + 50%: separación hasta las fotos finales, en tablet/desktop */
 }
 /* En desktop/tablet los dos títulos van lado a lado en columnas
    angostas: si uno entra en 1 renglón ("Hard & Soft") y el otro pide 2
@@ -326,7 +326,7 @@
     border-top: 1px solid transparent;
     border-image: linear-gradient(to right, #000000 0%, rgba(255,255,255,0.7) 50%, #000000 100%) 1;
     padding-top: 90px;
-    padding-bottom: 130px; /* 100px + 30%, extra espacio antes de la galería final */
+    padding-bottom: 195px; /* 130px + 50%, extra espacio antes de la galería final */
   }
   /* Título persistente: igual que el resto de los títulos del sitio
      (section.grid-section h2), queda pegado debajo de la nav mientras
@@ -372,6 +372,16 @@
 .photo-caption-grid__item{
   text-align: center;
   padding-bottom: 100px; /* mismo espacio hasta la línea divisoria que el resto del sitio */
+}
+/* "App integrada..." es la que queda justo antes de las fotos finales
+   (a diferencia de los 4 bloques de después del hero, que siguen con
+   Aplicaciones): un 50% más de separación ahí, en tablet/desktop —
+   en celular es un carrusel (.swipe-grid) y esa separación la dan los
+   puntitos, ver más abajo. */
+@media (min-width: 641px){
+  #app-integrada .photo-caption-grid__item{
+    padding-bottom: 150px; /* 100px + 50% */
+  }
 }
 .photo-caption-grid__item .thumb{
   aspect-ratio: 1 / 1;
@@ -508,6 +518,11 @@
   .swipe-grid + .gallery-dots{
     margin-bottom: 84px; /* + 16px de margin-top = 100px, mismo criterio que el resto del sitio */
   }
+  /* "App integrada..." queda justo antes de las fotos finales: un 50%
+     más de separación ahí (100px -> 150px), igual que en tablet/desktop. */
+  #app-integrada .swipe-grid + .gallery-dots{
+    margin-bottom: 134px; /* + 16px de margin-top = 150px */
+  }
 }
 
 /* ---------- Galería final de cierre (2x2, sin texto) ----------
@@ -539,18 +554,11 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  opacity: var(--hover-op-rest);
-  transition: opacity var(--hover-speed) ease, filter var(--hover-speed) ease;
+  /* siempre a su brillo/opacidad original: no es un link a otra
+     página (abre el lightbox en la misma), así que no lleva el efecto
+     de subir opacidad/brillo al tocar — ver .item para dónde sí va. */
 }
-.final-gallery .thumb:hover img{ opacity: var(--hover-op-hot); }
 .final-gallery .thumb{ cursor: pointer; } /* se abren en grande al tocarlas */
-/* Feedback al tocar en touch (sin hover): un toque de brillo extra,
-   además de subir a opacidad completa, para que se note que "agarró"
-   el toque mientras se abre el lightbox. Clase puesta por JS. */
-.final-gallery .thumb.tap-active img{
-  opacity: var(--hover-op-hot);
-  filter: brightness(1.25);
-}
 
 /* ---------- Lightbox: foto de la galería final en grande ----------
    Se abre al tocar/cliquear cualquier foto de .final-gallery. Adentro,

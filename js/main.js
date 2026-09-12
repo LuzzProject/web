@@ -445,11 +445,6 @@ if (lightbox && lightboxTrack && lightboxClose && finalThumbs.length) {
     thumb.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); }
     });
-    // brillo extra al tocar (touch), confirma que el toque "agarró"
-    thumb.addEventListener('touchstart', () => {
-      thumb.classList.add('tap-active');
-      setTimeout(() => thumb.classList.remove('tap-active'), 350);
-    }, { passive: true });
   });
 
   lightboxClose.addEventListener('click', closeLightbox);

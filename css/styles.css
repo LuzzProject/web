@@ -431,13 +431,21 @@ section.grid-section h2{
 .item .thumb .ph{
   width:100%; height:100%;
   object-fit:cover;
+}
+/* El efecto de opacidad (75% en reposo, 100% al pasar el mouse o
+   tocar) es una señal de "esto es un link" — así que va nada más en
+   las tarjetas que de verdad llevan a otra página (<a>, ej: Productos,
+   Desarrollos, Trabajos del Home). Las que no son link (ej: Aplicaciones
+   de Omni, que son <div>) quedan siempre a su opacidad/brillo original. */
+a.item .thumb img,
+a.item .thumb .ph{
   opacity: var(--hover-op-rest);
   transition: opacity var(--hover-speed) ease;
 }
-.item:hover .thumb img,
-.item:hover .thumb .ph,
-.item.tap-active .thumb img,
-.item.tap-active .thumb .ph{
+a.item:hover .thumb img,
+a.item:hover .thumb .ph,
+a.item.tap-active .thumb img,
+a.item.tap-active .thumb .ph{
   opacity: var(--hover-op-hot);
 }
 .item .thumb .ph-label{
