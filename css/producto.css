@@ -84,7 +84,7 @@
 /* ---------- Texto de cierre debajo de una galería (centrado) ---------- */
 .section-caption{
   max-width: 640px;
-  margin: 46px auto 0;
+  margin: 23px auto 0; /* 46px - 50%: más cerca de la galería de arriba */
   padding: 0 var(--margin-x) 100px; /* mismo espacio hasta la línea divisoria que usa .item .cap en el Home */
   text-align: center;
 }
@@ -262,7 +262,7 @@
 .duo-columns__col .thumb{
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  margin-bottom: 30px;
+  margin-bottom: 15px; /* 30px - 50%: el texto más cerca de la foto */
 }
 .duo-columns__col img{
   width: 100%;
@@ -376,7 +376,7 @@
 .photo-caption-grid__item .thumb{
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  margin-bottom: 30px;
+  margin-bottom: 15px; /* 30px - 50%: el texto más cerca de la foto */
 }
 .photo-caption-grid__item img{
   width: 100%;
