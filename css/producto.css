@@ -469,10 +469,13 @@
 #aplicaciones .item{ cursor: default; }
 #aplicaciones .item .cap h3{ font-weight: 400; }
 
-/* .swipe-grid: en celular, en vez de apilarse como el resto de las
-   grillas del sitio, se convierte en un carrusel con swipe — una
-   tarjeta (foto + leyenda) ocupa toda la pantalla, se desliza para
-   ver la siguiente (con loop infinito, ver main.js). */
+/* .swipe-grid: en celular (nada más — en tablet/desktop se ven todas
+   las tarjetas juntas, sin swipe), en vez de apilarse como el resto
+   de las grillas del sitio, se convierte en un carrusel con swipe —
+   una tarjeta (foto + leyenda) ocupa toda la pantalla, se desliza
+   para ver la siguiente (con loop infinito, ver main.js). Sirve tanto
+   para .item (Aplicaciones) como para .photo-caption-grid__item
+   ("App integrada..."): cualquier hijo directo del carrusel. */
 @media (max-width: 640px){
   .swipe-grid{
     display: flex;
@@ -483,20 +486,23 @@
     -ms-overflow-style: none;
   }
   .swipe-grid::-webkit-scrollbar{ display: none; }
-  .swipe-grid .item{
+  .swipe-grid > *{
     flex: 0 0 100%;
     width: 100%;
     scroll-snap-align: center;
   }
-  /* Los 100px de .item .cap son el espacio hasta la línea divisoria
-     cuando las tarjetas están todas apiladas a la vista (desktop/
-     tablet); acá, en carrusel, solo se ve una tarjeta a la vez y ese
-     espacio quedaría antes de los puntitos, no antes de lo que sigue
-     de verdad. El espacio hasta los puntitos pasa a ser el mismo
-     que en cualquier otro carrusel (los 16px de margin-top de
-     .gallery-dots); el espacio hasta la próxima sección se agrega
-     después de los puntitos, ver más abajo. */
-  .swipe-grid .item .cap{
+  /* Los 100px de espacio antes de la línea divisoria (.item .cap o
+     .photo-caption-grid__item) tienen sentido cuando las tarjetas
+     están todas apiladas a la vista (desktop/tablet); acá, en
+     carrusel, solo se ve una tarjeta a la vez y ese espacio quedaría
+     antes de los puntitos, no antes de lo que sigue de verdad. El
+     espacio hasta los puntitos pasa a ser el mismo que en cualquier
+     otro carrusel (los 16px de margin-top de .gallery-dots); el
+     espacio hasta la próxima sección se agrega después de los
+     puntitos, ver más abajo. */
+  .swipe-grid .item .cap,
+  .swipe-grid.photo-caption-grid .photo-caption-grid__item,
+  .swipe-grid.photo-caption-grid .photo-caption-grid__item:last-child{
     padding-bottom: 0;
   }
   .swipe-grid + .gallery-dots{
