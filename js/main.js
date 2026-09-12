@@ -295,6 +295,41 @@ function setupLoopingCarousel(gallery){
   return { allItems, total, jump, closestIndex };
 }
 
+/* ---------- Tocar la pantalla también cambia de foto ----------
+   Igual que las historias de Instagram: además de deslizar (swipe),
+   un toque en la mitad derecha de la foto avanza y en la mitad
+   izquierda retrocede. Un swipe real no dispara "click" (el
+   navegador lo distingue solo), así que conviven sin pisarse. Usa el
+   loop si la galería lo tiene (da la vuelta al llegar al final/
+   principio); si no lo tiene (trio-gallery, ver más arriba), navega
+   entre las fotos reales nada más, sin dar la vuelta. */
+function setupTapToAdvance(gallery){
+  if (getComputedStyle(gallery).display !== 'flex') return;
+  gallery.addEventListener('click', (e) => {
+    const rect = gallery.getBoundingClientRect();
+    const goNext = (e.clientX - rect.left) > rect.width / 2;
+    const loop = gallery.__loop;
+    if (loop) {
+      loop.jump(loop.closestIndex() + (goNext ? 1 : -1), 'smooth');
+      return;
+    }
+    const items = [...gallery.children];
+    const center = gallery.scrollLeft + gallery.clientWidth / 2;
+    let closest = 0, dist = Infinity;
+    items.forEach((item, i) => {
+      const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+      const d = Math.abs(itemCenter - center);
+      if (d < dist) { dist = d; closest = i; }
+    });
+    const targetIndex = Math.max(0, Math.min(items.length - 1, closest + (goNext ? 1 : -1)));
+    const target = items[targetIndex];
+    gallery.scrollTo({
+      left: target.offsetLeft + target.offsetWidth / 2 - gallery.clientWidth / 2,
+      behavior: 'smooth',
+    });
+  });
+}
+
 /* ---------- Puntitos de las galerías con swipe (páginas de producto) ----------
    Cualquier .trio-gallery/.duo-gallery/.lightbox__track seguida de un
    <div class="gallery-dots"> recibe un punto por foto, y el punto
@@ -307,6 +342,13 @@ function setupLoopingCarousel(gallery){
 document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe-grid').forEach(gallery => {
   const loop = setupLoopingCarousel(gallery);
   gallery.__loop = loop; // el lightbox lo reusa para sus zonas de clic
+
+  // el lightbox ya tiene su propia zona de clic (.lightbox__zones, ver
+  // CSS/HTML), que además queda por encima del track: no hace falta
+  // (ni funcionaría) sumarle este mismo mecanismo genérico.
+  if (!gallery.classList.contains('lightbox__track')) {
+    setupTapToAdvance(gallery);
+  }
 
   // el lightbox envuelve su track (junto a las zonas de clic) en
   // .lightbox__stage, así que ahí los puntitos son hermanos del stage,

@@ -488,6 +488,20 @@
     width: 100%;
     scroll-snap-align: center;
   }
+  /* Los 100px de .item .cap son el espacio hasta la línea divisoria
+     cuando las tarjetas están todas apiladas a la vista (desktop/
+     tablet); acá, en carrusel, solo se ve una tarjeta a la vez y ese
+     espacio quedaría antes de los puntitos, no antes de lo que sigue
+     de verdad. El espacio hasta los puntitos pasa a ser el mismo
+     que en cualquier otro carrusel (los 16px de margin-top de
+     .gallery-dots); el espacio hasta la próxima sección se agrega
+     después de los puntitos, ver más abajo. */
+  .swipe-grid .item .cap{
+    padding-bottom: 0;
+  }
+  .swipe-grid + .gallery-dots{
+    margin-bottom: 84px; /* + 16px de margin-top = 100px, mismo criterio que el resto del sitio */
+  }
 }
 
 /* ---------- Galería final de cierre (2x2, sin texto) ----------
