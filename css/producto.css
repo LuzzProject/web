@@ -478,6 +478,14 @@
    grillas de tarjetas). */
 #aplicaciones .item{ cursor: default; }
 #aplicaciones .item .cap h3{ font-weight: 400; }
+/* En tablet/desktop quedaba en 20px (tamaño base, sin el +20% que ya
+   tienen Desarrollos/Trabajos del Home con esta misma tarjeta) — se
+   iguala a esas, mismo tipo de grilla. En celular no cambia. */
+@media (min-width: 641px){
+  #aplicaciones .item .cap h3{
+    font-size: 24px; /* igual a #desarrollos/#trabajos .item .cap h3 */
+  }
+}
 
 /* .swipe-grid: en celular (nada más — en tablet/desktop se ven todas
    las tarjetas juntas, sin swipe), en vez de apilarse como el resto

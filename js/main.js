@@ -208,6 +208,22 @@ window.addEventListener('scroll', onScrollOrResize, { passive: true });
 window.addEventListener('resize', onScrollOrResize);
 updateReveal(); // estado inicial al cargar
 
+/* ---------- Interlineado del eyebrow al pasar a 2 renglones ----------
+   "EXPANDIENDO LOS LÍMITES DEL ARTE DIGITAL" usa el interlineado
+   normal mientras entra en un renglón; en cuanto el ancho de pantalla
+   lo obliga a partirse en 2 (o más), se le duplica el interlineado. */
+const eyebrow = document.querySelector('.logo-section .eyebrow');
+if (eyebrow) {
+  function updateEyebrowSpacing(){
+    const range = document.createRange();
+    range.selectNodeContents(eyebrow);
+    const lines = range.getClientRects().length;
+    eyebrow.style.lineHeight = lines > 1 ? '2.2' : '';
+  }
+  updateEyebrowSpacing();
+  window.addEventListener('resize', updateEyebrowSpacing);
+}
+
 /* ---------- Feedback al tap en touch (sin hover) ---------- */
 document.querySelectorAll('.item').forEach(item => {
   item.addEventListener('touchstart', () => {
