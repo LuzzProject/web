@@ -361,7 +361,18 @@
   font-weight: 300;
   padding-inline: var(--margin-x);
 }
-@media (min-width: 1139px){
+/* Mismos quiebres que .duo-columns__col p: tablet real (641-819) y
+   desktop desde 820px (igual que section.grid-section h2), no desde
+   el Punto Quiebre Hamburguesa de 1139 — así el texto no se queda
+   chico mientras el título de al lado ya creció. */
+@media (min-width: 641px) and (max-width: 819px){
+  .photo-caption-grid__item p{
+    max-width: 500px;
+    font-size: 20px;
+    padding-inline: 24px;
+  }
+}
+@media (min-width: 820px){
   .photo-caption-grid__item p{
     max-width: 700px;
     font-size: 26px;
