@@ -463,6 +463,7 @@ section.grid-section h2{
 #desarrollos .item .cap h3,
 #trabajos .item .cap h3{
   font-size: 24px; /* 20px + 20% */
+  font-weight: 400; /* no en negrita, a diferencia del resto de las grillas */
 }
 .item .cap p{
   font-size: 20px;

@@ -304,7 +304,7 @@ function setupLoopingCarousel(gallery){
    Los puntos mismos solo se muestran en celular, salvo dentro del
    lightbox, donde siempre se ven (ver CSS). Cuentan las fotos reales
    nada más: los clones del loop no suman puntito propio. */
-document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track').forEach(gallery => {
+document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe-grid').forEach(gallery => {
   const loop = setupLoopingCarousel(gallery);
   gallery.__loop = loop; // el lightbox lo reusa para sus zonas de clic
 
@@ -362,7 +362,7 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track').forEa
    Al terminar de cargar todo, se reacomoda cada carrusel en su
    primera foto real, ya con las medidas definitivas. */
 window.addEventListener('load', () => {
-  document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track').forEach(gallery => {
+  document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe-grid').forEach(gallery => {
     if (gallery.__loop) gallery.__loop.jump(1, 'auto');
   });
 });

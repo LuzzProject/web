@@ -463,8 +463,32 @@
 }
 
 /* Aplicaciones (Omni y futuras páginas de producto): mismas tarjetas
-   que las grillas del Home, pero acá no son link a ningún lado. */
+   que las grillas del Home, pero acá no son link a ningún lado, y en
+   celular su título no va en negrita (a diferencia del resto de las
+   grillas de tarjetas). */
 #aplicaciones .item{ cursor: default; }
+#aplicaciones .item .cap h3{ font-weight: 400; }
+
+/* .swipe-grid: en celular, en vez de apilarse como el resto de las
+   grillas del sitio, se convierte en un carrusel con swipe — una
+   tarjeta (foto + leyenda) ocupa toda la pantalla, se desliza para
+   ver la siguiente (con loop infinito, ver main.js). */
+@media (max-width: 640px){
+  .swipe-grid{
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .swipe-grid::-webkit-scrollbar{ display: none; }
+  .swipe-grid .item{
+    flex: 0 0 100%;
+    width: 100%;
+    scroll-snap-align: center;
+  }
+}
 
 /* ---------- Galería final de cierre (2x2, sin texto) ----------
    Mismo criterio de separación que las grillas del Home: un pequeño
