@@ -361,6 +361,12 @@ nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color:
   color: var(--fg);
   font-weight:400;
 }
+/* Misma proporción que tenía con p.desc (ambos a 20px): ahora que
+   p.desc crece a 26px en desktop, este también, para no quedar chico
+   en relación al texto de arriba. */
+@media (min-width: 1139px){
+  .logo-section .eyebrow{ font-size: 26px; }
+}
 
 /* ============================================
    GRID SECTIONS (Productos / Desarrollos / Trabajos)
