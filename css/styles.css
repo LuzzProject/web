@@ -507,6 +507,12 @@ footer.contact{
   flex-direction:column;
   align-items:center; /* centra el bloque como conjunto */
 }
+/* Sin línea divisoria antes del footer del Home, a pedido del
+   cliente (Trabajos es la última sección antes del footer). */
+#trabajos ~ footer.contact{
+  border-top: none;
+  border-image: none;
+}
 .contact-block{
   display:inline-flex;
   flex-direction:column;
@@ -565,7 +571,7 @@ footer.contact svg{
   .logo-section{ padding: 110px var(--margin-x-mob) 90px; }
   :root{ --star-w: 151.2px; } /* 126px x 1.2 */
   .logo-section h1{ font-size:26px; }
-  .logo-section p.desc{ line-height: 1.225; } /* 1.75 - 30%, solo celular */
+  .logo-section p.desc{ line-height: 1.8375; } /* 1.225 + 50%, solo celular: los renglones estaban muy juntos */
   section.grid-section h2{
     font-size:29px;
     margin-bottom:44px;

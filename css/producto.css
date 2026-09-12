@@ -540,6 +540,12 @@
   border-top: none;
   border-image: none;
 }
+/* Tampoco la línea divisoria antes del footer cuando la página cierra
+   con el aro + nombre del producto (.product-outro, ver más abajo). */
+.product-outro ~ footer.contact{
+  border-top: none;
+  border-image: none;
+}
 .final-gallery{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
