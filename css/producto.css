@@ -445,31 +445,20 @@
   }
 }
 
-/* ---------- Cierre de página de producto (aro + nombre) ----------
+/* ---------- Cierre de página de producto (logo) ----------
    Mismo componente para Trinity/Omni/Infinity/Light Mirage, antes del
-   footer: el aro es un placeholder en CSS hasta tener el logo real de
-   cada producto (se reemplaza por una <img> cuando estén). */
+   footer: el logo de cada producto (ícono + nombre en un solo archivo,
+   PNG con fondo transparente). */
 .product-outro{
   background: #000000;
   text-align: center;
   padding: 120px var(--margin-x);
 }
 .product-outro__mark{
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 24px;
-  border: 2px solid var(--fg);
-  border-radius: 50%;
-}
-.product-outro__name{
-  font-family: 'Archivo', var(--font-display);
-  font-stretch: 125%;
-  font-variation-settings: "wdth" 125;
-  font-weight: 400;
-  font-size: 28px;
-  letter-spacing: 0.012em;
-  color: var(--fg);
-  margin: 0;
+  width: 110px;
+  height: auto;
+  margin: 0 auto;
+  display: block;
 }
 
 /* Aplicaciones (Omni y futuras páginas de producto): mismas tarjetas
