@@ -123,13 +123,15 @@
    no una scrollbar del navegador. */
 .trio-gallery,
 .duo-gallery,
-.lightbox__track{
+.lightbox__track,
+.natural-gallery{
   scrollbar-width: none;      /* Firefox */
   -ms-overflow-style: none;   /* versiones viejas de Edge */
 }
 .trio-gallery::-webkit-scrollbar,
 .duo-gallery::-webkit-scrollbar,
-.lightbox__track::-webkit-scrollbar{
+.lightbox__track::-webkit-scrollbar,
+.natural-gallery::-webkit-scrollbar{
   display: none;              /* Chrome, Safari */
 }
 
@@ -194,6 +196,50 @@
   .duo-gallery .thumb{
     flex: 0 0 100%;
     width: 100%;
+    scroll-snap-align: center;
+  }
+}
+
+/* ---------- Galería con la proporción real de la foto, sin recortar
+   a cuadrado (excepción: "Formato Display" de Infinity — fotos
+   verticales de una pantalla, recortarlas a 1:1 se veía mal).
+   Desktop: cada foto tiene un ancho tope (420px) para no estirarse
+   de más en pantallas anchas, dejando espacio negro a los lados y
+   entre ellas, como en el mockup. Tablet: al haber menos ancho
+   disponible que ese tope, quedan solas pegadas entre sí con el
+   mismo --photo-gap mínimo que el resto de las galerías, sin hacer
+   falta ningún cambio explícito. Celular: carrusel con swipe, cada
+   foto entera sin recortar (mismo loop/puntitos que el resto). ---------- */
+.natural-gallery{
+  display: grid; /* grid en desktop/tablet, flex solo en celular — así
+    el loop de carrusel (que se fija si display es flex) no se activa
+    fuera de celular, que es el único formato donde esto es swipe */
+  grid-template-columns: repeat(2, minmax(0, 420px));
+  justify-content: center;
+  gap: var(--margin-x);
+}
+.natural-gallery__item{
+  min-width: 0;
+}
+.natural-gallery__item img{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+@media (max-width: 819px){
+  .natural-gallery{ gap: var(--photo-gap); }
+}
+@media (max-width: 640px){
+  .natural-gallery{
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 0;
+    justify-content: flex-start;
+  }
+  .natural-gallery__item{
+    flex: 0 0 100%;
     scroll-snap-align: center;
   }
 }
