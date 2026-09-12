@@ -348,6 +348,16 @@
   }
 }
 
+/* ---------- Sección sin título (ej: las 4 fotos con leyenda de Omni
+   justo después del hero) ----------
+   Mismo espacio que separa el final de cualquier sección de su línea
+   divisoria (100px), acá arriba, para que no quede pegada a lo que
+   viene justo antes (el hero). */
+.untitled-section{
+  background: #000000;
+  padding-top: 100px;
+}
+
 /* ---------- Grilla de fotos con leyenda propia, sin título (ej: los
    4 bloques de Omni después del hero, o "App integrada..."). Misma
    geometría que .duo-columns (2 columnas de lado a lado en
