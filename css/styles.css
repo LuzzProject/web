@@ -389,11 +389,15 @@ section.grid-section h2{
   letter-spacing:0.012em;
   margin: 0 0 64px;
 }
-/* Títulos de sección +30% solo en desktop (Home, Trinity y el resto
-   de las páginas de producto que sigan, todas comparten esta regla). */
+/* Títulos de sección +30% en desktop (Home, Trinity y el resto de las
+   páginas de producto que sigan, todas comparten esta regla). Crece
+   de forma gradual con el ancho real de pantalla (no de un salto a
+   los 820px) para no quedar gigante en un desktop angosto que todavía
+   no llegó a los ~1440px de referencia — mismo criterio que el
+   clamp() que ya usa la nav para no colapsar en anchos intermedios. */
 @media (min-width: 820px){
   section.grid-section h2{
-    font-size: 46.8px; /* 36px + 30% */
+    font-size: clamp(36px, 1.7391vw + 21.7565px, 46.8px); /* 36px a los 819px, 46.8px (36px + 30%) a los 1440px */
   }
 }
 

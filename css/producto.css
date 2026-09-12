@@ -62,6 +62,7 @@
   font-variation-settings: "wdth" 125;
   font-weight: 400;
   font-size: 28px;
+  line-height: 1.15;
   letter-spacing: 0.012em;
   margin: 0 0 30px;
 }
@@ -74,7 +75,9 @@
 }
 @media (min-width: 820px){
   .section-subtitle{
-    font-size: 46.8px; /* igual a section.grid-section h2 en desktop */
+    /* mismo clamp() que section.grid-section h2: crece gradualmente
+       hasta los 1440px en vez de saltar a 46.8px de golpe a los 820px */
+    font-size: clamp(36px, 1.7391vw + 21.7565px, 46.8px);
   }
 }
 
@@ -240,6 +243,22 @@
   text-align: center;
   padding-bottom: 100px; /* mismo espacio hasta la línea divisoria que el resto del sitio */
 }
+/* En desktop/tablet los dos títulos van lado a lado en columnas
+   angostas: si uno entra en 1 renglón ("Hard & Soft") y el otro pide 2
+   ("Experiencia interactiva"), la foto de la segunda columna arranca
+   más abajo que la primera. Reservando siempre el alto de 2 renglones
+   —en em, así escala solo con el tamaño real del título en cada
+   ancho— las dos fotos quedan a la misma altura tenga 1 o 2 renglones
+   el título de al lado. En celular no hace falta: quedan apiladas, no
+   una al lado de la otra. */
+@media (min-width: 641px){
+  .duo-columns__col .section-subtitle{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-height: 2.3em;
+  }
+}
 .duo-columns__col .thumb{
   aspect-ratio: 1 / 1;
   overflow: hidden;
@@ -283,8 +302,11 @@
    título en vez de quedarse chico hasta último momento. */
 @media (min-width: 820px){
   .duo-columns__col p{
-    max-width: 700px; /* más ancho: menos renglones, texto menos comprimido */
-    font-size: 26px; /* igual al resto de los textos de la página en desktop */
+    /* crecen gradualmente hasta los 1440px (igual que el título), no
+       de golpe a los 820px — si no, quedan gigantes en un desktop
+       angosto que todavía no llegó al ancho de referencia */
+    max-width: clamp(500px, 32.2061vw + 236.2319px, 700px);
+    font-size: clamp(20px, 0.9662vw + 12.087px, 26px);
     padding-inline: 16px; /* menos que var(--margin-x): con el texto más
       grande, hace falta recuperar ancho para no ganar renglones de más */
   }
@@ -374,8 +396,10 @@
 }
 @media (min-width: 820px){
   .photo-caption-grid__item p{
-    max-width: 700px;
-    font-size: 26px;
+    /* mismo clamp() que .duo-columns__col p: crece gradualmente hasta
+       los 1440px en vez de saltar de golpe a los 820px */
+    max-width: clamp(500px, 32.2061vw + 236.2319px, 700px);
+    font-size: clamp(20px, 0.9662vw + 12.087px, 26px);
     padding-inline: 16px;
   }
 }
