@@ -267,7 +267,21 @@
 .duo-columns__col p{
   padding-inline: var(--margin-x);
 }
-@media (min-width: 1139px){
+/* Tablet: quedaba con el tamaño de celular (16px) pero el título de al
+   lado (.section-subtitle) ya salta a 36px acá — mismo criterio que
+   el resto: sube a 20px y gana ancho (menos padding lateral) para no
+   quedar tan apretado al centro. */
+@media (min-width: 641px) and (max-width: 819px){
+  .duo-columns__col p{
+    max-width: 500px;
+    font-size: 20px;
+    padding-inline: 24px;
+  }
+}
+/* Desktop: mismo quiebre que .section-subtitle (820px, no el Punto
+   Quiebre Hamburguesa de 1139) — así el texto crece junto con el
+   título en vez de quedarse chico hasta último momento. */
+@media (min-width: 820px){
   .duo-columns__col p{
     max-width: 700px; /* más ancho: menos renglones, texto menos comprimido */
     font-size: 26px; /* igual al resto de los textos de la página en desktop */
