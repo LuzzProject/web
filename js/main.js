@@ -218,7 +218,7 @@ if (eyebrow) {
     const range = document.createRange();
     range.selectNodeContents(eyebrow);
     const lines = range.getClientRects().length;
-    eyebrow.style.lineHeight = lines > 1 ? '2.2' : '';
+    eyebrow.style.lineHeight = lines > 1 ? '1.54' : ''; /* 2.2 - 30% */
   }
   updateEyebrowSpacing();
   window.addEventListener('resize', updateEyebrowSpacing);
