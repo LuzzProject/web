@@ -350,10 +350,15 @@ nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color:
   font-weight:300;
   margin: 0 0 46px; /* igual al margen de la bajada (tagline-img), 40px -> 46px */
 }
-/* Mismo tamaño que .section-caption p (el texto debajo de las fotos
-   en Trinity/Omni), mismo quiebre (1139px, Punto Quiebre Hamburguesa). */
-@media (min-width: 1139px){
-  .logo-section p.desc{ font-size: 26px; }
+/* Seguía chico en tablet (20px, igual que en celular, hasta recién
+   crecer a los 1139px). Ahora: 23px ya en tablet real (641-819px,
+   20px + 15%), y de los 820px a los 1440px crece gradual hasta 26px
+   (mismo criterio que .duo-columns__col p en las páginas de producto). */
+@media (min-width: 641px) and (max-width: 819px){
+  .logo-section p.desc{ font-size: 23px; }
+}
+@media (min-width: 820px){
+  .logo-section p.desc{ font-size: clamp(23px, 0.4839vw + 19.032px, 26px); }
 }
 .logo-section .eyebrow{
   font-size: 20px;
@@ -361,11 +366,13 @@ nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color:
   color: var(--fg);
   font-weight:400;
 }
-/* Misma proporción que tenía con p.desc (ambos a 20px): ahora que
-   p.desc crece a 26px en desktop, este también, para no quedar chico
-   en relación al texto de arriba. */
-@media (min-width: 1139px){
-  .logo-section .eyebrow{ font-size: 26px; }
+/* Misma proporción que tenía con p.desc (ver arriba): mismos valores
+   y quiebres. */
+@media (min-width: 641px) and (max-width: 819px){
+  .logo-section .eyebrow{ font-size: 23px; }
+}
+@media (min-width: 820px){
+  .logo-section .eyebrow{ font-size: clamp(23px, 0.4839vw + 19.032px, 26px); }
 }
 
 /* ============================================
