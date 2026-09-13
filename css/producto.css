@@ -103,6 +103,7 @@
    que cada ítem arranque parejo. */
 #proyeccion-mapeada .section-caption p,
 #formato-display .section-caption p{
+  display: inline-block;
   text-align: left;
 }
 /* Desktop: mismo tamaño que el texto del hero (.product-hero__caption,
