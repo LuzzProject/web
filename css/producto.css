@@ -214,7 +214,13 @@
   display: grid; /* grid en desktop/tablet, flex solo en celular — así
     el loop de carrusel (que se fija si display es flex) no se activa
     fuera de celular, que es el único formato donde esto es swipe */
-  grid-template-columns: repeat(2, minmax(0, 420px));
+  /* ancho tope en vw (no en px fijo): ocupan mucho más pantalla en
+     desktop ancho y se van achicando solas a medida que se angosta,
+     hasta llegar a tablet, donde ya no entran así de grandes y quedan
+     pegadas con el --photo-gap mínimo (ver abajo). min(...,700px)
+     nada más para no quedar absurdamente grandes en un monitor
+     ultra ancho. */
+  grid-template-columns: repeat(2, minmax(0, min(42vw, 700px)));
   justify-content: center;
   gap: var(--margin-x);
 }
