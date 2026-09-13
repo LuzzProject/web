@@ -760,40 +760,34 @@
 /* ---------- Línea de tags cortos debajo del h2 (ej: "LED · Mapping ·
    Display · Ingeniería óptica · Montaje") ---------- */
 .section-tags{
-  max-width: 700px;
-  margin: -34px auto 40px; /* se acerca al h2 de arriba, que ya trae 64px de margin-bottom propio */
+  max-width: 1200px; /* bien ancho: en un renglón siempre que el formato lo permita */
+  margin: -4px auto 20px; /* separación al h2 x2 (64px - 4px = 60px, antes 30px); separación a la foto -50% (antes 40px) */
   padding: 0 var(--margin-x);
   text-align: center;
-  font-size: 15px;
-  letter-spacing: 0.04em;
-  color: rgba(255,255,255,0.55);
+  font-size: 20px; /* mismo tamaño que .section-caption p (resto de las ventanas) */
+  line-height: 1.6;
+  color: var(--fg);
   font-weight: 300;
 }
-@media (min-width: 641px){
-  .section-tags{ font-size: 17px; }
+@media (min-width: 1139px){
+  .section-tags{ font-size: 26px; } /* mismo quiebre y tamaño que .section-caption p */
 }
 
 /* ---------- Frase corta debajo del h2, antes de la grilla de fotos
    (ej: "Desarrollo de visuales creadas específicamente para cada
    instalación.") ---------- */
 .section-intro{
-  max-width: 640px;
-  margin: -34px auto 40px;
+  max-width: 1200px; /* bien ancho: en un renglón siempre que el formato lo permita */
+  margin: -4px auto 20px; /* mismo criterio que .section-tags, ver arriba */
   padding: 0 var(--margin-x);
   text-align: center;
-  font-size: 16px;
+  font-size: 20px; /* mismo tamaño que .section-caption p (resto de las ventanas) */
   line-height: 1.6;
   color: var(--fg);
   font-weight: 300;
 }
-@media (min-width: 641px) and (max-width: 819px){
-  .section-intro{ font-size: 20px; }
-}
-@media (min-width: 820px){
-  .section-intro{
-    font-size: clamp(20px, 0.9662vw + 12.087px, 26px); /* mismo clamp que .duo-columns__col p */
-    max-width: 700px;
-  }
+@media (min-width: 1139px){
+  .section-intro{ font-size: 26px; } /* mismo quiebre y tamaño que .section-caption p */
 }
 
 /* ---------- Dos columnas de solo texto (Administración Remota /
@@ -805,7 +799,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: var(--photo-gap);
   max-width: 1100px;
-  margin: -34px auto 60px;
+  margin: -4px auto 30px; /* separación al h2 x2 (antes 30px -> 60px); separación a la foto -50% (antes 60px) */
   padding: 0 var(--margin-x);
 }
 .text-columns__col{
