@@ -745,15 +745,15 @@
   font-stretch: 125%;
   font-variation-settings: "wdth" 125;
   font-weight: 400;
-  font-size: 29px;
+  font-size: 58px; /* 29px x2 */
   letter-spacing: 0.012em;
 }
 @media (min-width: 641px) and (max-width: 819px){
-  .dev-hero__title{ font-size: 36px; }
+  .dev-hero__title{ font-size: 72px; } /* 36px x2 */
 }
 @media (min-width: 820px){
   .dev-hero__title{
-    font-size: clamp(36px, 1.7391vw + 21.7565px, 46.8px); /* mismo clamp que section.grid-section h2 */
+    font-size: clamp(72px, 3.4783vw + 43.513px, 93.6px); /* mismo clamp que section.grid-section h2, x2 */
   }
 }
 
@@ -854,17 +854,22 @@
 .grid-note--ref-only{ justify-content: flex-end; }
 .grid-note p{
   margin: 0;
-  font-size: 13px;
-  line-height: 1.5;
-  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+  color: var(--fg); /* blanco, antes gris tenue */
   font-weight: 300;
 }
 .grid-note__caption{
   text-align: left;
+  font-size: 20px; /* mismo tamaño que el resto de los textos (.section-caption p) */
 }
 .grid-note__ref{
   font-style: italic;
   white-space: nowrap;
+  font-size: 10px; /* mitad del tamaño del resto de los textos */
+}
+@media (min-width: 1139px){
+  .grid-note__caption{ font-size: 26px; }
+  .grid-note__ref{ font-size: 13px; }
 }
 @media (max-width: 640px){
   .grid-note{
