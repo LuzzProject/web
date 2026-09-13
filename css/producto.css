@@ -749,16 +749,24 @@
   letter-spacing: 0.012em;
 }
 @media (min-width: 641px) and (max-width: 819px){
-  .dev-hero__title{ font-size: 36px; } /* tamaño normal (sin duplicar): duplicado quedaba enorme en tablet */
+  /* 50% más grande que el h2 de sección en tablet (36px x1.5 = 54px).
+     A ese tamaño el texto entra en un renglón si se lo deja libre, así
+     que se limita el ancho a propósito para que se parta en 2 — es la
+     forma de lograr el tamaño pedido sin ensanchar de más el bloque. */
+  .dev-hero__title{
+    font-size: 54px;
+    max-width: 460px;
+    margin: 0 auto;
+  }
 }
 @media (min-width: 820px){
   .dev-hero__title{
-    /* Arranca en el tamaño normal (36px) a los 820px, no en el doble:
-       el doble queda reservado para desktop bien ancho. Sube rápido
-       con el ancho real de pantalla hasta llegar al doble (93.6px) a
-       los 1440px — así se achica en seguida apenas se angosta la
-       ventana en vez de quedarse grande hasta último momento. */
-    font-size: clamp(36px, 9.2903vw - 40.1806px, 93.6px);
+    /* Arranca en 54px a los 820px (mismo tamaño que en tablet, para
+       que no haya un salto brusco al cruzar el breakpoint) y sube
+       rápido con el ancho real de pantalla hasta el doble (93.6px) a
+       los 1440px — siempre por encima del h2 de sección en cualquier
+       ancho intermedio. */
+    font-size: clamp(54px, 6.3871vw + 1.626px, 93.6px);
   }
 }
 
