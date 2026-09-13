@@ -220,7 +220,7 @@
      pegadas con el --photo-gap mínimo (ver abajo). min(...,700px)
      nada más para no quedar absurdamente grandes en un monitor
      ultra ancho. */
-  grid-template-columns: repeat(2, minmax(0, min(42vw, 700px)));
+  grid-template-columns: repeat(2, minmax(0, min(46vw, 860px)));
   justify-content: center;
   gap: var(--margin-x);
 }
