@@ -102,8 +102,7 @@
    listado de bullets se alinea a la izquierda dentro del bloque para
    que cada ítem arranque parejo. */
 #proyeccion-mapeada .section-caption p,
-#formato-display .section-caption p,
-#arte-digital .section-caption p:last-child{
+#formato-display .section-caption p{
   display: inline-block;
   text-align: left;
 }
