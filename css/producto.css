@@ -96,6 +96,15 @@
   margin: 0 0 20px;
 }
 .section-caption p:last-child{ margin-bottom: 0; }
+
+/* Proyección mapeada / Formato Display: el bloque de texto queda
+   centrado en la página (heredado de .section-caption), pero el
+   listado de bullets se alinea a la izquierda dentro del bloque para
+   que cada ítem arranque parejo. */
+#proyeccion-mapeada .section-caption p,
+#formato-display .section-caption p{
+  text-align: left;
+}
 /* Desktop: mismo tamaño que el texto del hero (.product-hero__caption,
    ver más arriba), mismo breakpoint (1139px, Punto Quiebre Hamburguesa). */
 @media (min-width: 1139px){
