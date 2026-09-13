@@ -711,3 +711,174 @@
   display: flex; /* siempre visibles acá (a diferencia del resto, que solo se ven en celular) */
   margin: 20px 0 0;
 }
+
+/* ============================================
+   Desarrollos a Medida
+   ============================================ */
+
+/* ---------- Hero (mismo bloque de foto que .product-hero, pero el
+   título va arriba en vez de una bajada abajo — esta página no es un
+   producto con nombre propio en la foto, así que hace falta un h1
+   real). El degradé vive en su propio elemento (nunca junto al fade),
+   arriba en vez de abajo, para que el título blanco se lea sobre
+   cualquier zona clara de la foto. ---------- */
+.dev-hero{
+  background: #000000;
+}
+.dev-hero .hero > img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.dev-hero__scrim{
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  padding: 40px var(--margin-x) 60px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 100%);
+  text-align: center;
+}
+.dev-hero__title{
+  margin: 0;
+  color: var(--fg);
+  font-family: 'Archivo', var(--font-display);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 400;
+  font-size: 29px;
+  letter-spacing: 0.012em;
+}
+@media (min-width: 641px) and (max-width: 819px){
+  .dev-hero__title{ font-size: 36px; }
+}
+@media (min-width: 820px){
+  .dev-hero__title{
+    font-size: clamp(36px, 1.7391vw + 21.7565px, 46.8px); /* mismo clamp que section.grid-section h2 */
+  }
+}
+
+/* ---------- Línea de tags cortos debajo del h2 (ej: "LED · Mapping ·
+   Display · Ingeniería óptica · Montaje") ---------- */
+.section-tags{
+  max-width: 700px;
+  margin: -34px auto 40px; /* se acerca al h2 de arriba, que ya trae 64px de margin-bottom propio */
+  padding: 0 var(--margin-x);
+  text-align: center;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  color: rgba(255,255,255,0.55);
+  font-weight: 300;
+}
+@media (min-width: 641px){
+  .section-tags{ font-size: 17px; }
+}
+
+/* ---------- Frase corta debajo del h2, antes de la grilla de fotos
+   (ej: "Desarrollo de visuales creadas específicamente para cada
+   instalación.") ---------- */
+.section-intro{
+  max-width: 640px;
+  margin: -34px auto 40px;
+  padding: 0 var(--margin-x);
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg);
+  font-weight: 300;
+}
+@media (min-width: 641px) and (max-width: 819px){
+  .section-intro{ font-size: 20px; }
+}
+@media (min-width: 820px){
+  .section-intro{
+    font-size: clamp(20px, 0.9662vw + 12.087px, 26px); /* mismo clamp que .duo-columns__col p */
+    max-width: 700px;
+  }
+}
+
+/* ---------- Dos columnas de solo texto (Administración Remota /
+   Administración Local) — mismo criterio tipográfico que .duo-columns,
+   pero sin foto propia por columna: la foto compartida va en la
+   grilla de después. ---------- */
+.text-columns{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--photo-gap);
+  max-width: 1100px;
+  margin: -34px auto 60px;
+  padding: 0 var(--margin-x);
+}
+.text-columns__col{
+  text-align: center;
+}
+.text-columns__col .section-subtitle{
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+@media (min-width: 641px) and (max-width: 819px){
+  .text-columns__col .section-subtitle{ font-size: 26px; }
+}
+@media (min-width: 820px){
+  .text-columns__col .section-subtitle{
+    font-size: clamp(26px, 0.8px + 1.2530vw, 34px);
+  }
+}
+.text-columns__col p{
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--fg);
+  font-weight: 300;
+}
+@media (min-width: 641px) and (max-width: 819px){
+  .text-columns__col p{ font-size: 20px; }
+}
+@media (min-width: 820px){
+  .text-columns__col p{
+    font-size: clamp(20px, 0.9662vw + 12.087px, 26px);
+  }
+}
+@media (max-width: 640px){
+  .text-columns{
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+}
+
+/* ---------- Leyenda chica debajo de cada grilla de 4 fotos: a la
+   izquierda el pie de foto del proyecto (opcional), a la derecha
+   siempre "- Imágenes de referencia -". Mismo espacio hasta la línea
+   divisoria (100px) que el resto de las leyendas de la página. ---------- */
+.grid-note{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-top: 16px;
+  padding: 0 var(--margin-x) 100px;
+}
+.grid-note--ref-only{ justify-content: flex-end; }
+.grid-note p{
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.5);
+  font-weight: 300;
+}
+.grid-note__caption{
+  text-align: left;
+}
+.grid-note__ref{
+  font-style: italic;
+  white-space: nowrap;
+}
+@media (max-width: 640px){
+  .grid-note{
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    padding: 0 var(--margin-x-mob) 100px;
+  }
+  .grid-note__caption{ text-align: center; }
+}
