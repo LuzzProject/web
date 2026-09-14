@@ -1015,7 +1015,7 @@
   background: linear-gradient(to right, rgba(255,255,255,0.7) 0%, #000000 100%);
 }
 .work-header__eyebrow span{
-  font-size: 14px;
+  font-size: 30px;
   letter-spacing: 0.3em;
   color: var(--fg); /* blanco */
   font-weight: 300;
