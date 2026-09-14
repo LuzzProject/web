@@ -883,6 +883,9 @@
   color: var(--fg); /* blanco, antes gris tenue */
   font-weight: 300;
 }
+.grid-note p.grid-note__ref{
+  color: rgba(255,255,255,0.7); /* gris 70%, en todos los formatos */
+}
 .grid-note__caption{
   grid-column: 1;
   text-align: left;
