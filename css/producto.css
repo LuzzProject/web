@@ -787,7 +787,7 @@
    Display · Ingeniería óptica · Montaje") ---------- */
 .section-tags{
   max-width: 1200px; /* bien ancho: en un renglón siempre que el formato lo permita */
-  margin: -21.6px auto 20px; /* separación al h2 -30% extra sobre el -20% anterior (32px -> 22.4px en mobile); separación a la foto -50% (antes 40px) */
+  margin: -26.08px auto 20px; /* separación al h2 -20% extra en mobile (22.4px -> 17.9px); separación a la foto -50% (antes 40px) */
   padding: 0 var(--margin-x);
   text-align: center;
   font-size: 20px; /* mismo tamaño que .section-caption p (resto de las ventanas) */
@@ -807,7 +807,7 @@
    instalación.") ---------- */
 .section-intro{
   max-width: 1200px; /* bien ancho: en un renglón siempre que el formato lo permita */
-  margin: -21.6px auto 20px; /* mismo criterio que .section-tags, ver arriba */
+  margin: -26.08px auto 20px; /* mismo criterio que .section-tags, ver arriba */
   padding: 0 var(--margin-x);
   text-align: center;
   font-size: 20px; /* mismo tamaño que .section-caption p (resto de las ventanas) */
@@ -1074,6 +1074,11 @@
 @media (max-width: 819px){
   .work-header + .work-item{
     padding-top: 45px; /* mobile y tablet: -50% sobre el padding-top de sección (90px -> 45px) */
+  }
+}
+@media (max-width: 640px){
+  .work-header + .work-item{
+    padding-top: 26.7px; /* mobile: -30% extra sobre el 45px de arriba (gap visual 61px -> 42.7px) */
   }
 }
 
