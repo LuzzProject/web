@@ -808,53 +808,32 @@
   .section-intro{ font-size: 26px; } /* mismo quiebre y tamaño que .section-caption p */
 }
 
-/* ---------- Dos columnas de solo texto (Administración Remota /
-   Administración Local) — mismo criterio tipográfico que .duo-columns,
-   pero sin foto propia por columna: la foto compartida va en la
-   grilla de después. ---------- */
-.text-columns{
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--photo-gap);
-  max-width: 1100px;
-  margin: -4px auto 30px; /* separación al h2 x2 (antes 30px -> 60px); separación a la foto -50% (antes 60px) */
-  padding: 0 var(--margin-x);
-}
-.text-columns__col{
+/* ---------- Bloque de texto + fotos (Administración Remota /
+   Administración Local): título, texto y galería, todo centrado, uno
+   debajo del otro (no en columnas lado a lado). ---------- */
+.admin-block{
   text-align: center;
 }
-.text-columns__col .section-subtitle{
-  font-size: 22px;
-  margin-bottom: 16px;
+/* Separación entre el bloque de Remota y el de Local: mismo criterio
+   de espacio "hasta la línea divisoria" que el resto del sitio (acá no
+   hay línea, pero el espacio es el mismo). */
+.admin-block + .admin-block{
+  padding-top: 90px;
 }
-@media (min-width: 641px) and (max-width: 819px){
-  .text-columns__col .section-subtitle{ font-size: 26px; }
+.admin-block .section-subtitle{
+  margin: 0 0 20px;
 }
-@media (min-width: 820px){
-  .text-columns__col .section-subtitle{
-    font-size: clamp(26px, 0.8px + 1.2530vw, 34px);
-  }
-}
-.text-columns__col p{
-  margin: 0;
-  font-size: 16px;
+.admin-block__text{
+  max-width: 1100px;
+  margin: 0 auto 30px;
+  padding: 0 var(--margin-x);
+  font-size: 20px; /* mismo tamaño que el resto de los textos (.section-caption p) */
   line-height: 1.6;
   color: var(--fg);
   font-weight: 300;
 }
-@media (min-width: 641px) and (max-width: 819px){
-  .text-columns__col p{ font-size: 20px; }
-}
-@media (min-width: 820px){
-  .text-columns__col p{
-    font-size: clamp(20px, 0.9662vw + 12.087px, 26px);
-  }
-}
-@media (max-width: 640px){
-  .text-columns{
-    grid-template-columns: 1fr;
-    gap: 60px;
-  }
+@media (min-width: 1139px){
+  .admin-block__text{ font-size: 26px; }
 }
 
 /* ---------- Leyenda chica debajo de cada grilla de 4 fotos: a la
