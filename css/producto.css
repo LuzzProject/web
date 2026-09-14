@@ -984,35 +984,47 @@
    Trabajos
    ============================================ */
 
-/* ---------- Encabezado de la página: "TRABAJOS" chico, centrado,
-   con una línea punteada a cada lado. No hay foto de hero acá. ---------- */
+/* ---------- Encabezado de la página: "TRABAJOS" chico, centrado, con
+   una línea corta a cada lado — mismo degradé que las líneas
+   divisorias del sitio, pero empezando en blanco puro pegada al texto
+   y apagándose a negro hacia afuera (no simétrica como la divisoria
+   de sección). No hay foto de hero acá, ni línea divisoria: es lo
+   primero de la página. ---------- */
 .work-header{
   background: #000000;
   padding: 100px 0 0;
   text-align: center;
 }
 .work-header__eyebrow{
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 16px;
-  max-width: 420px;
-  margin: 0 auto;
   padding: 0 var(--margin-x);
 }
 .work-header__eyebrow::before,
 .work-header__eyebrow::after{
   content: '';
-  flex: 1 1 auto;
+  width: 80px;
   height: 1px;
-  background-image: repeating-linear-gradient(to right, rgba(255,255,255,0.5) 0, rgba(255,255,255,0.5) 4px, transparent 4px, transparent 8px);
+}
+.work-header__eyebrow::before{
+  background: linear-gradient(to left, rgba(255,255,255,0.7) 0%, #000000 100%);
+}
+.work-header__eyebrow::after{
+  background: linear-gradient(to right, rgba(255,255,255,0.7) 0%, #000000 100%);
 }
 .work-header__eyebrow span{
   font-size: 14px;
   letter-spacing: 0.3em;
-  color: rgba(255,255,255,0.85);
+  color: var(--fg); /* blanco */
   font-weight: 300;
   white-space: nowrap;
+}
+/* Sin línea divisoria entre el encabezado y el primer trabajo. */
+.work-header + .work-item{
+  border-top: none;
+  border-image: none;
 }
 
 /* ---------- Cada trabajo: título (mismo h2 que el resto del sitio,
