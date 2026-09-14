@@ -1010,12 +1010,16 @@
 .work-header__eyebrow::before,
 .work-header__eyebrow::after{
   content: '';
-  /* 120px x2 = 240px, pero solo en desktop bien ancho: un ancho fijo
-     de 240px desbordaba en mobile (el texto no entraba en pantalla).
-     Escala con el viewport y llega al tope de 240px recién a partir
-     de los 1333px de ancho real. */
+  /* Mobile/tablet: sin cambios, tope en 240px (ya escala con el
+     viewport para no desbordar). */
   width: min(240px, 18vw);
   height: 1.5px; /* 1px + 50% */
+}
+@media (min-width: 820px){
+  .work-header__eyebrow::before,
+  .work-header__eyebrow::after{
+    width: min(480px, 29vw); /* 240px x2, solo en desktop */
+  }
 }
 .work-header__eyebrow::before{
   background: linear-gradient(to left, rgba(255,255,255,0.7) 0%, #000000 100%);
