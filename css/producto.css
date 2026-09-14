@@ -821,21 +821,14 @@
 .admin-block + .admin-block{
   padding-top: 13.5px; /* separación total (fotos -> siguiente título) -30%: 255px -> 178.5px */
 }
-/* Subtítulos (Administración Remota/Local) un 50% más chicos que el
-   h2 de sección en cada formato — a diferencia del uso normal de
-   .section-subtitle, que iguala el tamaño del h2. */
+/* Subtítulos (Administración Remota/Local): tamaños fijos pedidos por
+   el cliente (24px en mobile/tablet, 30px en desktop). */
 .admin-block .section-subtitle{
   margin: 0 0 20px;
-  font-size: 14.5px; /* 29px (h2 mobile) x 50% */
-}
-@media (min-width: 641px) and (max-width: 819px){
-  .admin-block .section-subtitle{ font-size: 18px; } /* 36px (h2 tablet) x 50% */
+  font-size: 24px;
 }
 @media (min-width: 820px){
-  .admin-block .section-subtitle{
-    /* mismo clamp que section.grid-section h2, a la mitad */
-    font-size: clamp(18px, 0.86955vw + 10.87825px, 23.4px);
-  }
+  .admin-block .section-subtitle{ font-size: 30px; }
 }
 .admin-block__text{
   max-width: 1480px; /* bien ancho: en un renglón siempre que el formato lo permita */
