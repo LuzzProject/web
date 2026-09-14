@@ -787,13 +787,16 @@
    Display · Ingeniería óptica · Montaje") ---------- */
 .section-tags{
   max-width: 1200px; /* bien ancho: en un renglón siempre que el formato lo permita */
-  margin: -4px auto 20px; /* separación al h2 x2 (64px - 4px = 60px, antes 30px); separación a la foto -50% (antes 40px) */
+  margin: -12px auto 20px; /* separación al h2 -20% (40px -> 32px en mobile); separación a la foto -50% (antes 40px) */
   padding: 0 var(--margin-x);
   text-align: center;
   font-size: 20px; /* mismo tamaño que .section-caption p (resto de las ventanas) */
   line-height: 1.6;
   color: var(--fg);
   font-weight: 300;
+}
+@media (min-width: 641px){
+  .section-tags{ margin-top: -16px; } /* separación al h2 -20% (60px -> 48px en tablet/desktop) */
 }
 @media (min-width: 1139px){
   .section-tags{ font-size: 26px; } /* mismo quiebre y tamaño que .section-caption p */
@@ -804,13 +807,16 @@
    instalación.") ---------- */
 .section-intro{
   max-width: 1200px; /* bien ancho: en un renglón siempre que el formato lo permita */
-  margin: -4px auto 20px; /* mismo criterio que .section-tags, ver arriba */
+  margin: -12px auto 20px; /* mismo criterio que .section-tags, ver arriba */
   padding: 0 var(--margin-x);
   text-align: center;
   font-size: 20px; /* mismo tamaño que .section-caption p (resto de las ventanas) */
   line-height: 1.6;
   color: var(--fg);
   font-weight: 300;
+}
+@media (min-width: 641px){
+  .section-intro{ margin-top: -16px; } /* mismo criterio que .section-tags, ver arriba */
 }
 @media (min-width: 1139px){
   .section-intro{ font-size: 26px; } /* mismo quiebre y tamaño que .section-caption p */
@@ -1008,9 +1014,9 @@
     padding-top: 80px; /* desktop: -20% (100px -> 80px) */
   }
 }
-@media (max-width: 640px){
+@media (max-width: 819px){
   .work-header{
-    padding-top: 35px; /* mobile: -30% extra sobre el 50px de arriba (50px -> 35px) */
+    padding-top: 25px; /* mobile y tablet: -50% extra sobre el 50px de arriba (50px -> 25px) */
   }
 }
 .work-header__eyebrow{
@@ -1065,9 +1071,9 @@
   border-top: none;
   border-image: none;
 }
-@media (max-width: 640px){
+@media (max-width: 819px){
   .work-header + .work-item{
-    padding-top: 63px; /* mobile: -30% sobre el padding-top de sección (90px -> 63px) */
+    padding-top: 45px; /* mobile y tablet: -50% sobre el padding-top de sección (90px -> 45px) */
   }
 }
 
