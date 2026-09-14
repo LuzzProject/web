@@ -825,7 +825,7 @@
    el cliente (22px en mobile, 24px en tablet, 30px en desktop). */
 .admin-block .section-subtitle{
   margin: 0 0 20px;
-  font-size: 22px;
+  font-size: 20px;
 }
 @media (min-width: 641px) and (max-width: 819px){
   .admin-block .section-subtitle{ font-size: 24px; }
@@ -850,7 +850,7 @@
 }
 .admin-block__text{
   max-width: 1480px; /* bien ancho: en un renglón siempre que el formato lo permita */
-  margin: 0 auto 30px;
+  margin: 0 auto 20px; /* misma separación hasta la foto que en las demás secciones (.section-intro) */
   padding: 0 var(--margin-x);
   font-size: 20px; /* mismo tamaño que el resto de los textos (.section-caption p) */
   line-height: 1.6;
