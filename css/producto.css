@@ -1011,12 +1011,12 @@
 }
 @media (min-width: 820px){
   .work-header{
-    padding-top: 80px; /* desktop: -20% (100px -> 80px) */
+    padding-top: 40px; /* desktop: -50% extra sobre el 80px de arriba (80px -> 40px) */
   }
 }
 @media (max-width: 819px){
   .work-header{
-    padding-top: 25px; /* mobile y tablet: -50% extra sobre el 50px de arriba (50px -> 25px) */
+    padding-top: 12.5px; /* mobile y tablet: -50% extra sobre el 25px de arriba (25px -> 12.5px) */
   }
 }
 .work-header__eyebrow{
