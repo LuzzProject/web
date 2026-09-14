@@ -384,6 +384,18 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
   });
   const dots = dotsEl.children;
 
+  // "- Imágenes de referencia -" (.grid-note__ref) se oculta en celular
+  // mientras esté en pantalla la foto marcada con data-ref-hide-index
+  // (la única que no es una foto de referencia, sino un proyecto
+  // propio real). Ver CSS: .grid-note__ref.is-own-photo.
+  const refHideIndex = gallery.dataset.refHideIndex !== undefined
+    ? parseInt(gallery.dataset.refHideIndex, 10)
+    : null;
+  const noteEl = dotsEl.nextElementSibling;
+  const refEl = refHideIndex !== null && noteEl
+    ? noteEl.querySelector('.grid-note__ref')
+    : null;
+
   function updateActiveDot(){
     let realIndex;
     if (loop) {
@@ -401,6 +413,7 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
       realIndex = closest;
     }
     [...dots].forEach((d, i) => d.classList.toggle('active', i === realIndex));
+    if (refEl) refEl.classList.toggle('is-own-photo', realIndex === refHideIndex);
   }
 
   let dotsTickScheduled = false;

@@ -606,6 +606,10 @@
   border-top: none;
   border-image: none;
 }
+#administracion-contenido ~ footer.contact{
+  border-top: none;
+  border-image: none;
+}
 .final-gallery{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -911,11 +915,16 @@
   .grid-note__caption{ display: none; }
   .grid-note__ref{
     grid-column: 1;
-    justify-self: start;
-    text-align: left;
-    padding-left: 22px;
-    padding-right: 0;
+    justify-self: end;
+    text-align: right;
+    padding-left: 0;
+    padding-right: 22px;
   }
+  /* Se oculta mientras la foto con proyecto identificado (el hall de
+     Mirabilia) está en pantalla durante el swipe — esa foto no es una
+     "imagen de referencia". JS (main.js) le suma esta clase según el
+     índice activo del carrusel. */
+  .grid-note__ref.is-own-photo{ display: none; }
 }
 
 /* ---------- Foto con pie propio dentro de una .duo-gallery (ej: la
