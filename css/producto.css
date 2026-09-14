@@ -1011,46 +1011,9 @@
 }
 
 /* ---------- Cada trabajo: título (mismo h2 que el resto del sitio,
-   con su línea divisoria de sección) + descripción/fecha + galería.
-   La cantidad de fotos varía según el trabajo (.duo-gallery ya arma
-   2x2 sola si son 4, o 2 columnas si son 2). ---------- */
-.work-item__meta{
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 24px;
-  max-width: 1400px;
-  margin: 0 auto 30px;
-  padding: 0 var(--margin-x);
-}
-.work-item__desc{
-  text-align: left;
-  max-width: 700px;
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--fg);
-  font-weight: 300;
-}
-.work-item__date{
-  white-space: nowrap;
-  margin: 0;
-  font-size: 16px;
-  color: var(--fg);
-  font-weight: 300;
-}
-@media (min-width: 641px) and (max-width: 819px){
-  .work-item__desc,
-  .work-item__date{ font-size: 18px; }
-}
-@media (min-width: 820px){
-  .work-item__desc,
-  .work-item__date{ font-size: 20px; }
-}
-@media (max-width: 640px){
-  .work-item__meta{
-    flex-direction: column;
-    gap: 8px;
-    padding: 0 var(--margin-x-mob);
-  }
-}
+   con su línea divisoria de sección) + descripción + galería + fecha.
+   La descripción reutiliza .section-intro (mismo tamaño/separación
+   que las demás ventanas) y la fecha reutiliza .grid-note (misma
+   posición/estilo que "- Imágenes de referencia -"). La cantidad de
+   fotos varía según el trabajo (.duo-gallery ya arma 2x2 sola si son
+   4, o 2 columnas si son 2). ---------- */
