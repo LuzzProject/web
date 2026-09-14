@@ -371,8 +371,14 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
   // no del track mismo — en trio/duo-gallery, que no tienen ese
   // envoltorio, .closest() no encuentra nada y usa el propio gallery.
   const anchor = gallery.closest('.lightbox__stage') || gallery;
-  const dotsEl = anchor.nextElementSibling;
-  if (!dotsEl || !dotsEl.classList.contains('gallery-dots')) return;
+  // Busca el primer .gallery-dots entre los hermanos siguientes (no
+  // tiene que ser el inmediato): permite que un .grid-note se
+  // intercale entre la galería y sus puntitos sin romper esto.
+  let dotsEl = anchor.nextElementSibling;
+  while (dotsEl && !dotsEl.classList.contains('gallery-dots')) {
+    dotsEl = dotsEl.nextElementSibling;
+  }
+  if (!dotsEl) return;
 
   const items = loop ? loop.allItems.slice(1, -1) : [...gallery.children];
   if (items.length < 2) return;
@@ -391,7 +397,7 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
   const refHideIndex = gallery.dataset.refHideIndex !== undefined
     ? parseInt(gallery.dataset.refHideIndex, 10)
     : null;
-  const noteEl = dotsEl.nextElementSibling;
+  const noteEl = dotsEl.previousElementSibling; // .grid-note ahora va ANTES de los puntitos (más cerca de la foto)
   const refEl = refHideIndex !== null && noteEl
     ? noteEl.querySelector('.grid-note__ref')
     : null;

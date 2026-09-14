@@ -167,6 +167,7 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
   }
   .trio-gallery img{
     flex: 0 0 auto;
@@ -203,6 +204,7 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
   }
   .duo-gallery .thumb{
     flex: 0 0 100%;
@@ -252,6 +254,7 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
     gap: 0;
     justify-content: flex-start;
   }
@@ -552,6 +555,7 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+    touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
@@ -686,6 +690,7 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
 }
 /* Navegación por clic (desktop/tablet, sin touch): dos zonas invisibles,
    mitad izquierda/derecha, mismo criterio que .hero-zones del Home. En
@@ -892,7 +897,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: var(--photo-gap);
   align-items: flex-end;
-  margin-top: 16px;
+  margin-top: 23px; /* misma distancia a la foto que el resto de los textos debajo de imagen (Trinity/Omni, ver .section-caption) */
   padding: 0 0 100px;
 }
 .grid-note p{
@@ -933,7 +938,15 @@
     grid-template-columns: 1fr;
     align-items: flex-start;
     gap: 8px;
-    padding: 0 0 100px;
+    padding: 0; /* en celular ya no es lo último antes de la línea: ahora van los puntitos después (ver .grid-note + .gallery-dots) */
+  }
+  /* El .grid-note ahora va ANTES de los puntitos (más cerca de la
+     foto, mismo criterio que el resto de los textos debajo de imagen
+     en Trinity/Omni) — los puntitos pasan a ser lo último, así que
+     ellos reservan el espacio hasta la línea divisoria (mismo criterio
+     que .swipe-grid + .gallery-dots). */
+  .grid-note + .gallery-dots{
+    margin-bottom: 84px; /* + 16px de margin-top = 100px */
   }
   /* El pie de foto del proyecto ya no va acá en celular — se movió
      adentro de la foto que le corresponde (.thumb__caption), para que
