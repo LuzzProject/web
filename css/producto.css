@@ -814,17 +814,31 @@
 .admin-block{
   text-align: center;
 }
-/* Separación entre el bloque de Remota y el de Local: mismo criterio
-   de espacio "hasta la línea divisoria" que el resto del sitio (acá no
-   hay línea, pero el espacio es el mismo). */
+/* Separación entre el final de las fotos de Remota (con su "Imágenes
+   de referencia") y el título de Local: 190px -> 133px (-30%). El
+   .grid-note de arriba ya trae 100px propios hasta acá, así que el
+   resto lo pone este padding-top (33px = 133 - 100). */
 .admin-block + .admin-block{
-  padding-top: 90px;
+  padding-top: 13.5px; /* separación total (fotos -> siguiente título) -30%: 255px -> 178.5px */
 }
+/* Subtítulos (Administración Remota/Local) un 50% más chicos que el
+   h2 de sección en cada formato — a diferencia del uso normal de
+   .section-subtitle, que iguala el tamaño del h2. */
 .admin-block .section-subtitle{
   margin: 0 0 20px;
+  font-size: 14.5px; /* 29px (h2 mobile) x 50% */
+}
+@media (min-width: 641px) and (max-width: 819px){
+  .admin-block .section-subtitle{ font-size: 18px; } /* 36px (h2 tablet) x 50% */
+}
+@media (min-width: 820px){
+  .admin-block .section-subtitle{
+    /* mismo clamp que section.grid-section h2, a la mitad */
+    font-size: clamp(18px, 0.86955vw + 10.87825px, 23.4px);
+  }
 }
 .admin-block__text{
-  max-width: 1100px;
+  max-width: 1480px; /* bien ancho: en un renglón siempre que el formato lo permita */
   margin: 0 auto 30px;
   padding: 0 var(--margin-x);
   font-size: 20px; /* mismo tamaño que el resto de los textos (.section-caption p) */
