@@ -199,6 +199,7 @@
 @media (max-width: 640px){
   .duo-gallery{
     display: flex;
+    align-items: flex-start; /* cada diapositiva con su propia altura, no estiradas a la más alta (rompía el cuadrado de .thumb--with-caption) */
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -860,13 +861,17 @@
    para que el pie de foto quede confinado al ancho real de la foto
    izquierda en vez de estirarse como texto libre y invadir el espacio
    de la foto derecha. */
+/* Sin padding lateral propio: va de borde a borde igual que la
+   galería de arriba. El inset del texto lo pone cada párrafo (22px,
+   igual que .item .cap en el Home) para alinear a la misma distancia
+   del borde que Productos/Trabajos/Desarrollos del Home. */
 .grid-note{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--photo-gap);
   align-items: flex-end;
   margin-top: 16px;
-  padding: 0 var(--margin-x) 100px;
+  padding: 0 0 100px;
 }
 .grid-note p{
   margin: 0;
@@ -877,12 +882,14 @@
 .grid-note__caption{
   grid-column: 1;
   text-align: left;
+  padding-left: 22px; /* mismo inset que .item .cap */
   font-size: 20px; /* mismo tamaño que el resto de los textos (.section-caption p) */
 }
 .grid-note__ref{
   grid-column: 2;
   justify-self: end;
   text-align: right;
+  padding-right: 22px; /* mismo inset que .item .cap, del lado derecho */
   font-style: italic;
   white-space: nowrap;
   font-size: 15px; /* mitad del tamaño del resto de los textos, +50% (10px -> 15px) */
@@ -896,12 +903,58 @@
     grid-template-columns: 1fr;
     align-items: flex-start;
     gap: 8px;
-    padding: 0 var(--margin-x-mob) 100px;
+    padding: 0 0 100px;
   }
-  .grid-note__caption,
+  /* El pie de foto del proyecto ya no va acá en celular — se movió
+     adentro de la foto que le corresponde (.thumb__caption), para que
+     se vea solo cuando esa foto está en pantalla durante el swipe. */
+  .grid-note__caption{ display: none; }
   .grid-note__ref{
     grid-column: 1;
     justify-self: start;
     text-align: left;
+    padding-left: 22px;
+    padding-right: 0;
+  }
+}
+
+/* ---------- Foto con pie propio dentro de una .duo-gallery (ej: la
+   3ra foto de "Creación de Instalaciones", la única con proyecto
+   identificado). En desktop/tablet se comporta como cualquier .thumb
+   — el pie queda oculto por el propio overflow:hidden del cuadrado,
+   la versión visible ahí es la de .grid-note más abajo. En celular
+   (donde cada foto es una diapositiva del swipe) se libera el
+   aspect-ratio cuadrado del contenedor exterior y se lo pasa a
+   .thumb__photo, para que el pie de foto pueda mostrarse debajo de
+   ESA foto puntual, sin aparecer en las demás. ---------- */
+.thumb--with-caption .thumb__photo{
+  width: 100%;
+  height: 100%;
+}
+.thumb__caption{
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--fg);
+  font-weight: 300;
+}
+@media (min-width: 1139px){
+  .thumb__caption{ font-size: 26px; }
+}
+@media (max-width: 640px){
+  .duo-gallery .thumb--with-caption{
+    aspect-ratio: auto;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+  }
+  .thumb--with-caption .thumb__photo{
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    flex: 0 0 auto;
+  }
+  .thumb__caption{
+    padding: 16px 22px 0; /* mismo inset que .item .cap */
   }
 }
