@@ -1008,6 +1008,11 @@
     padding-top: 80px; /* desktop: -20% (100px -> 80px) */
   }
 }
+@media (max-width: 640px){
+  .work-header{
+    padding-top: 35px; /* mobile: -30% extra sobre el 50px de arriba (50px -> 35px) */
+  }
+}
 .work-header__eyebrow{
   display: inline-flex;
   align-items: baseline; /* las líneas arrancan desde la base del texto, no desde el centro */
@@ -1059,6 +1064,11 @@
 .work-header + .work-item{
   border-top: none;
   border-image: none;
+}
+@media (max-width: 640px){
+  .work-header + .work-item{
+    padding-top: 63px; /* mobile: -30% sobre el padding-top de sección (90px -> 63px) */
+  }
 }
 
 /* ---------- Cada trabajo: título (mismo h2 que el resto del sitio,
