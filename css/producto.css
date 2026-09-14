@@ -890,6 +890,11 @@
 .grid-note p.grid-note__ref{
   color: rgba(255,255,255,0.7); /* gris 70%, en todos los formatos */
 }
+/* Trabajos: la fecha reutiliza .grid-note, pero va en blanco (no gris
+   como "- Imágenes de referencia -"). */
+.work-item .grid-note p.grid-note__ref{
+  color: var(--fg);
+}
 .grid-note__caption{
   grid-column: 1;
   text-align: left;
