@@ -1002,7 +1002,7 @@
 }
 .work-header__eyebrow{
   display: inline-flex;
-  align-items: center;
+  align-items: baseline; /* las líneas arrancan desde la base del texto, no desde el centro */
   justify-content: center;
   gap: 16px;
   padding: 0 var(--margin-x);
@@ -1010,8 +1010,8 @@
 .work-header__eyebrow::before,
 .work-header__eyebrow::after{
   content: '';
-  width: 80px;
-  height: 1px;
+  width: 120px; /* 80px + 50% */
+  height: 1.5px; /* 1px + 50% */
 }
 .work-header__eyebrow::before{
   background: linear-gradient(to left, rgba(255,255,255,0.7) 0%, #000000 100%);
@@ -1020,11 +1020,24 @@
   background: linear-gradient(to right, rgba(255,255,255,0.7) 0%, #000000 100%);
 }
 .work-header__eyebrow span{
-  font-size: 30px;
+  /* Mismas proporciones que section.grid-section h2 (36/46.8 entre
+     tablet y desktop, 29/36 entre mobile y tablet), reescaladas para
+     que el valor de desktop bien ancho (1440px) dé 30px — así se
+     achica al angostar la pantalla igual que el resto de los
+     títulos, en vez de quedar fijo en un solo tamaño. */
+  font-size: 18.6px;
   letter-spacing: 0.3em;
   color: var(--fg); /* blanco */
   font-weight: 300;
   white-space: nowrap;
+}
+@media (min-width: 641px) and (max-width: 819px){
+  .work-header__eyebrow span{ font-size: 23.08px; }
+}
+@media (min-width: 820px){
+  .work-header__eyebrow span{
+    font-size: clamp(23.08px, 1.1161vw + 13.928px, 30px);
+  }
 }
 /* Sin línea divisoria entre el encabezado y el primer trabajo. */
 .work-header + .work-item{
