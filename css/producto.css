@@ -614,6 +614,10 @@
   border-top: none;
   border-image: none;
 }
+#tendencia-arenales ~ footer.contact{
+  border-top: none;
+  border-image: none;
+}
 .final-gallery{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
