@@ -992,8 +992,13 @@
    primero de la página. ---------- */
 .work-header{
   background: #000000;
-  padding: 100px 0 0;
+  padding: 50px 0 0; /* mobile/tablet: -50% (100px -> 50px) */
   text-align: center;
+}
+@media (min-width: 820px){
+  .work-header{
+    padding-top: 80px; /* desktop: -20% (100px -> 80px) */
+  }
 }
 .work-header__eyebrow{
   display: inline-flex;
@@ -1025,12 +1030,6 @@
 .work-header + .work-item{
   border-top: none;
   border-image: none;
-  padding-top: 37px; /* separación header->título -50% en mobile/tablet (106px -> 53px) */
-}
-@media (min-width: 820px){
-  .work-header + .work-item{
-    padding-top: 68.8px; /* separación header->título -20% en desktop (106px -> 84.8px) */
-  }
 }
 
 /* ---------- Cada trabajo: título (mismo h2 que el resto del sitio,
