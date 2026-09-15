@@ -168,6 +168,7 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
+    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining), que se sentía como movimiento vertical residual */
   }
   .trio-gallery img{
     flex: 0 0 auto;
@@ -206,6 +207,7 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
+    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining), que se sentía como movimiento vertical residual */
   }
   .duo-gallery .thumb{
     flex: 0 0 100%;
@@ -257,6 +259,7 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
+    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining), que se sentía como movimiento vertical residual */
     gap: 0;
     justify-content: flex-start;
   }
@@ -559,6 +562,7 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
+    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining), que se sentía como movimiento vertical residual */
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
@@ -695,6 +699,7 @@
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
+  overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining), que se sentía como movimiento vertical residual */
 }
 /* Navegación por clic (desktop/tablet, sin touch): dos zonas invisibles,
    mitad izquierda/derecha, mismo criterio que .hero-zones del Home. En
@@ -902,7 +907,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: var(--photo-gap);
   align-items: flex-end;
-  margin-top: 23px; /* misma distancia a la foto que el resto de los textos debajo de imagen (Trinity/Omni, ver .section-caption) */
+  margin-top: 11.5px; /* 23px - 50%: la fecha/texto de referencia va más cerca de la foto que el resto de los textos debajo de imagen (Trinity/Omni) */
   padding: 0 0 100px;
 }
 .grid-note p{
@@ -913,11 +918,6 @@
 }
 .grid-note p.grid-note__ref{
   color: rgba(255,255,255,0.7); /* gris 70%, en todos los formatos */
-}
-/* Trabajos: la fecha reutiliza .grid-note, pero va en blanco (no gris
-   como "- Imágenes de referencia -"). */
-.work-item .grid-note p.grid-note__ref{
-  color: var(--fg);
 }
 .grid-note__caption{
   grid-column: 1;
@@ -953,10 +953,10 @@
   .grid-note + .gallery-dots{
     margin-bottom: 84px; /* + 16px de margin-top = 100px */
   }
-  /* El pie de foto del proyecto ya no va acá en celular — se movió
-     adentro de la foto que le corresponde (.thumb__caption), para que
-     se vea solo cuando esa foto está en pantalla durante el swipe. */
-  .grid-note__caption{ display: none; }
+  .grid-note__caption{
+    grid-column: 1;
+    font-size: 20px; /* ya es el tamaño mobile por defecto (ver regla base) */
+  }
   .grid-note__ref{
     grid-column: 1;
     justify-self: end;
@@ -996,20 +996,14 @@
   .thumb__caption{ font-size: 26px; }
 }
 @media (max-width: 640px){
-  .duo-gallery .thumb--with-caption{
-    aspect-ratio: auto;
-    overflow: visible;
-    display: flex;
-    flex-direction: column;
-  }
-  .thumb--with-caption .thumb__photo{
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    flex: 0 0 auto;
-  }
-  .thumb__caption{
-    padding: 16px 22px 0; /* mismo inset que .item .cap */
-  }
+  /* El pie de foto por-diapositiva ya no se muestra en celular: al
+     agregar alto solo a esa diapositiva, inflaba el alto de TODO el
+     carrusel (las demás fotos son flex items del mismo renglón, así
+     que comparten el alto de la más alta) y alejaba el texto de
+     referencia de la foto en esta sección, a diferencia de las demás.
+     La descripción se muestra en cambio en .grid-note__caption, junto
+     al resto del texto, igual que en las otras ventanas. */
+  .thumb__caption{ display: none; }
 }
 
 /* ============================================
