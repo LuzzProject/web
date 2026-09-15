@@ -781,7 +781,7 @@
   font-stretch: 125%;
   font-variation-settings: "wdth" 125;
   font-weight: 400;
-  font-size: 58px; /* 29px x2 */
+  font-size: 50px; /* antes 58px (29px x2) */
   letter-spacing: 0.012em;
 }
 @media (min-width: 641px) and (max-width: 819px){
