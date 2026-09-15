@@ -958,15 +958,7 @@
     grid-template-columns: 1fr;
     align-items: flex-start;
     gap: 8px;
-    padding: 0; /* en celular ya no es lo último antes de la línea: ahora van los puntitos después (ver .grid-note + .gallery-dots) */
-  }
-  /* El .grid-note ahora va ANTES de los puntitos (más cerca de la
-     foto, mismo criterio que el resto de los textos debajo de imagen
-     en Trinity/Omni) — los puntitos pasan a ser lo último, así que
-     ellos reservan el espacio hasta la línea divisoria (mismo criterio
-     que .swipe-grid + .gallery-dots). */
-  .grid-note + .gallery-dots{
-    margin-bottom: 84px; /* + 16px de margin-top = 100px */
+    padding: 0 0 100px; /* acá sí es lo último antes de la línea divisoria: los puntitos van arriba, igual que en Trinity/Infinity */
   }
   /* El pie de foto del proyecto no va acá en celular — va adentro de
      la foto que le corresponde (.thumb__caption), para que se vea

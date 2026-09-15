@@ -409,7 +409,12 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
   const refHideIndex = gallery.dataset.refHideIndex !== undefined
     ? parseInt(gallery.dataset.refHideIndex, 10)
     : null;
-  const noteEl = dotsEl.previousElementSibling; // .grid-note ahora va ANTES de los puntitos (más cerca de la foto)
+  // Busca .grid-note entre los hermanos de la galería, sin asumir si
+  // va antes o después de los puntitos — así el orden de esos dos en
+  // el HTML se puede cambiar sin romper esto.
+  const noteEl = anchor.parentElement
+    ? [...anchor.parentElement.children].find(el => el.classList.contains('grid-note'))
+    : null;
   const refEl = refHideIndex !== null && noteEl
     ? noteEl.querySelector('.grid-note__ref')
     : null;
