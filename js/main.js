@@ -260,6 +260,18 @@ function setupLoopingCarousel(gallery){
   gallery.insertBefore(lastClone, realItems[0]);
   const allItems = [...gallery.children]; // [clon-último, real-0..N-1, clon-primero]
 
+  // Los clones son nodos nuevos: aunque compartan el mismo src (mismos
+  // bytes ya en caché), el navegador puede necesitar decodificarlos de
+  // nuevo para SU PROPIO bitmap la primera vez que se pintan — eso se
+  // sentía como una pantalla negra que después "carga" la foto justo
+  // al dar la vuelta del loop. Se decodifican de una, apenas se crean,
+  // para que estén listos mucho antes de que el usuario llegue a
+  // verlos de verdad.
+  [firstClone, lastClone].forEach(clone => {
+    const img = clone.tagName === 'IMG' ? clone : clone.querySelector('img');
+    if (img && img.decode) img.decode().catch(() => {});
+  });
+
   // Si las fotos no ocupan todo el ancho del carrusel (ej: trio-gallery,
   // angosta-ancha-angosta), centrar la primera/última foto pide un
   // scroll que no entra dentro del ancho real de contenido — el
@@ -315,20 +327,17 @@ function setupLoopingCarousel(gallery){
    touch-action:pan-x + overscroll-behavior:contain (CSS) no alcanzaron
    en algunos celulares: el gesto seguía "filtrando" algo de scroll
    vertical de la página durante el arrastre. Se toma control manual
-   del gesto por JS — pero el eje (horizontal o vertical) se decide YA,
-   en el primer touchmove del gesto, sin esperar a que se acumule
-   arrastre: el navegador solo deja cancelar su scroll nativo con
-   preventDefault() en el primer evento de la secuencia, no en uno
-   posterior (si se espera, ya es tarde para bloquear el vertical, y
-   mientras tanto el navegador ya arrancó su propio scroll, que
-   compite con el nuestro y traba el horizontal). Si el primer
-   movimiento es más horizontal que vertical: preventDefault() en cada
-   touchmove restante (cero scroll vertical posible) y se mueve el
-   scroll de la galería a mano, 1:1 con el dedo. Si es más vertical: no
-   se toca nada y la página scrollea normal, como si esto no
-   existiera. Al soltar, se engancha (snap) con la foto más cercana —
-   el navegador no lo hace solo porque el scroll nunca pasó por su
-   gesto nativo (se lo interceptó preventDefault). */
+   del gesto por JS: se espera un mínimo de arrastre (10px) para
+   decidir si el gesto es horizontal o vertical (decidir con el primer
+   pixel es demasiado sensible al temblor del dedo y terminaba
+   bloqueando intentos de scroll vertical que arrancaban rectos). Si el
+   arrastre resulta más horizontal que vertical: preventDefault() en
+   cada touchmove restante (cero scroll vertical posible) y se mueve el
+   scroll de la galería a mano, 1:1 con el dedo. Si es más vertical (o
+   quedó empatado): no se toca nada y la página scrollea normal, como
+   si esto no existiera. Al soltar, se engancha (snap) con la foto más
+   cercana — el navegador no lo hace solo porque el scroll nunca pasó
+   por su gesto nativo (se lo interceptó preventDefault). */
 function lockHorizontalDrag(gallery){
   if (getComputedStyle(gallery).display !== 'flex') return; // solo corre en celular, que es donde estas galerías scrollean
 
@@ -376,10 +385,16 @@ function lockHorizontalDrag(gallery){
     const dx = x - startX;
     const dy = e.touches[0].clientY - startY;
     if (axis === null) {
-      // se decide en este mismo evento (el primer touchmove), aunque
-      // el arrastre acumulado todavía sea chico — ver comentario de
-      // arriba sobre por qué no se puede esperar a un evento después
-      axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
+      // Se espera un mínimo de arrastre (10px) antes de decidir el eje:
+      // decidir con el primerísimo pixel es demasiado sensible al
+      // temblor natural del dedo — un intento de scroll bien vertical
+      // podía arrancar con 1px de más en horizontal por pura casualidad
+      // y quedaba trabado sin poder scrollear la página desde acá. Ante
+      // la duda (eje ambiguo, ej. un gesto en diagonal de 45°) se
+      // prioriza el vertical: es mucho peor bloquear el scroll de la
+      // página por error que perder alguna vez el arranque de un swipe.
+      if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+      axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
       if (axis === 'x') {
         // mientras se arrastra a mano, que el snap-por-CSS no compita
         // con cada asignación de scrollLeft (algunos navegadores
