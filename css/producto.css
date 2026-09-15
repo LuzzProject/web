@@ -922,7 +922,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--photo-gap);
-  align-items: flex-end;
+  align-items: flex-start; /* "- Imágenes de referencia -" pegado arriba, cerca de la foto, no al piso de la fila — importa nada más cuando comparte fila con un pie de foto más alto (grid-note__caption, ver Creación de Instalaciones); en el resto de las secciones (un solo renglón) no cambia nada */
   margin-top: 11.5px; /* 23px - 50%: la fecha/texto de referencia va más cerca de la foto que el resto de los textos debajo de imagen (Trinity/Omni) */
   padding: 0 0 100px;
 }
@@ -963,6 +963,7 @@
   }
   .grid-note__ref{
     grid-column: 1;
+    grid-row: 1; /* misma fila que grid-note__caption cuando existe (ver abajo): se superponen en vez de apilarse, así "- Imágenes de referencia -" queda pegado arriba (cerca de la foto) y no empujado por el pie de foto más alto — en las secciones sin caption no cambia nada, es la única fila igual */
     justify-self: end;
     text-align: right;
     padding-left: 0;
@@ -983,9 +984,13 @@
      alto del bloque no cambie y la línea divisoria de abajo no salte
      de lugar al pasar de una foto a otra. JS (main.js) le suma esta
      clase según el índice activo — mismo mecanismo que
-     .grid-note__ref.is-own-photo, pero invertido. */
+     .grid-note__ref.is-own-photo, pero invertido. Comparte fila con
+     .grid-note__ref (grid-row:1 en ambos) en vez de ir debajo: así
+     "- Imágenes de referencia -" no queda empujado hacia abajo por el
+     alto reservado del pie de foto (3 renglones) mientras está oculto. */
   .grid-note__caption{
     grid-column: 1;
+    grid-row: 1;
     /* padding: heredado de la regla de arriba (0 var(--margin-x)),
        mismo espaciado izquierda/derecha que el resto de los textos. */
     visibility: hidden;
