@@ -165,6 +165,7 @@
     width: auto;
     aspect-ratio: auto;
     overflow-x: auto;
+    overflow-y: hidden; /* explícito, no implícito: -webkit-overflow-scrolling:touch no distingue eje, y con overflow-y en "auto" (el valor por default) iOS trata este cuadro como si también tuviera scroll vertical propio — ahí "rebotaba" el dedo en vez de pasarle el gesto a la página */
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     /* Sin touch-action: el bloqueo a horizontal-solo lo hace el propio
@@ -207,6 +208,7 @@
     display: flex;
     align-items: flex-start; /* cada diapositiva con su propia altura, no estiradas a la más alta (rompía el cuadrado de .thumb--with-caption) */
     overflow-x: auto;
+    overflow-y: hidden; /* explícito, ver comentario igual en .trio-gallery */
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     /* Sin touch-action (ver comentario en .trio-gallery). */
@@ -259,6 +261,7 @@
   .natural-gallery{
     display: flex;
     overflow-x: auto;
+    overflow-y: hidden; /* explícito, ver comentario igual en .trio-gallery */
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     /* Sin touch-action (ver comentario en .trio-gallery). */
@@ -570,6 +573,7 @@
   .swipe-grid{
     display: flex;
     overflow-x: auto;
+    overflow-y: hidden; /* explícito, ver comentario igual en .trio-gallery */
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     /* Sin touch-action (ver comentario en .trio-gallery). */
