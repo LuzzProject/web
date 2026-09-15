@@ -526,6 +526,14 @@
   text-align: center;
   padding: 120px var(--margin-x);
 }
+/* Omni: 50% más de separación entre la foto de arriba y el logo de
+   cierre, pero solo en mobile/tablet (120px -> 180px; desktop no
+   cambia). */
+@media (max-width: 819px){
+  .product-outro--omni{
+    padding-top: 180px;
+  }
+}
 .product-outro__mark{
   width: 110px;
   height: auto;
