@@ -953,10 +953,10 @@
   .grid-note + .gallery-dots{
     margin-bottom: 84px; /* + 16px de margin-top = 100px */
   }
-  .grid-note__caption{
-    grid-column: 1;
-    font-size: 20px; /* ya es el tamaño mobile por defecto (ver regla base) */
-  }
+  /* El pie de foto del proyecto no va acá en celular — va adentro de
+     la foto que le corresponde (.thumb__caption), para que se vea
+     solo cuando esa foto puntual está en pantalla durante el swipe. */
+  .grid-note__caption{ display: none; }
   .grid-note__ref{
     grid-column: 1;
     justify-self: end;
@@ -996,14 +996,28 @@
   .thumb__caption{ font-size: 26px; }
 }
 @media (max-width: 640px){
-  /* El pie de foto por-diapositiva ya no se muestra en celular: al
-     agregar alto solo a esa diapositiva, inflaba el alto de TODO el
-     carrusel (las demás fotos son flex items del mismo renglón, así
-     que comparten el alto de la más alta) y alejaba el texto de
-     referencia de la foto en esta sección, a diferencia de las demás.
-     La descripción se muestra en cambio en .grid-note__caption, junto
-     al resto del texto, igual que en las otras ventanas. */
+  /* El pie de foto solo agranda SU propia diapositiva mientras está
+     activa (.is-caption-active, la suma JS según el índice del
+     swipe) — el resto del tiempo esta foto es un cuadrado más, igual
+     que las demás, así el carrusel no queda inflado permanentemente
+     (eso alejaba el texto de referencia de la foto en esta sección,
+     a diferencia de las demás). */
   .thumb__caption{ display: none; }
+  .duo-gallery .thumb--with-caption.is-caption-active{
+    aspect-ratio: auto;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+  }
+  .thumb--with-caption.is-caption-active .thumb__photo{
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    flex: 0 0 auto;
+  }
+  .thumb--with-caption.is-caption-active .thumb__caption{
+    display: block;
+    padding: 16px 22px 0; /* mismo inset que .item .cap */
+  }
 }
 
 /* ============================================

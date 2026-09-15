@@ -311,6 +311,70 @@ function setupLoopingCarousel(gallery){
   return { allItems, total, jump, closestIndex };
 }
 
+/* ---------- Bloquea el swipe al eje horizontal, a mano ----------
+   touch-action:pan-x + overscroll-behavior:contain (CSS) no alcanzaron
+   en algunos celulares: el gesto seguía "filtrando" algo de scroll
+   vertical de la página durante el arrastre. Se toma control manual
+   del gesto por JS: mientras se define si es horizontal o vertical no
+   se hace nada; apenas se nota que es horizontal, se llama
+   preventDefault() en cada touchmove restante (así la página no
+   scrollea ni un poco en vertical) y se mueve el scroll de la galería
+   a mano, 1:1 con el dedo. Si el gesto arranca vertical, no se toca
+   nada y la página scrollea normal. Al soltar, se engancha (snap) con
+   la foto más cercana — el navegador no lo hace solo porque el scroll
+   nunca pasó por su gesto nativo (se lo interceptó preventDefault). */
+function lockHorizontalDrag(gallery){
+  if (getComputedStyle(gallery).display !== 'flex') return; // solo corre en celular, que es donde estas galerías scrollean
+
+  function closestItem(){
+    const items = [...gallery.children];
+    const center = gallery.scrollLeft + gallery.clientWidth / 2;
+    let closest = items[0], dist = Infinity;
+    items.forEach(item => {
+      const d = Math.abs(item.offsetLeft + item.offsetWidth / 2 - center);
+      if (d < dist) { dist = d; closest = item; }
+    });
+    return closest;
+  }
+  function snapToClosest(){
+    const loop = gallery.__loop;
+    if (loop) { loop.jump(loop.closestIndex(), 'smooth'); return; }
+    const item = closestItem();
+    gallery.scrollTo({ left: item.offsetLeft + item.offsetWidth / 2 - gallery.clientWidth / 2, behavior: 'smooth' });
+  }
+
+  let startX = 0, startY = 0, startScroll = 0, axis = null, dragging = false;
+  gallery.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    startScroll = gallery.scrollLeft;
+    axis = null;
+    dragging = true;
+  }, { passive: true });
+
+  gallery.addEventListener('touchmove', (e) => {
+    if (!dragging || e.touches.length !== 1) return;
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if (axis === null) {
+      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return; // esperar a que el gesto se defina
+      axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+    }
+    if (axis === 'x') {
+      e.preventDefault(); // gesto horizontal: no dejar que la página scrollee en vertical
+      gallery.scrollLeft = startScroll - dx;
+    }
+    // axis === 'y': no se toca nada, la página scrollea vertical normal
+  }, { passive: false });
+
+  gallery.addEventListener('touchend', () => {
+    if (dragging && axis === 'x') snapToClosest();
+    dragging = false;
+    axis = null;
+  }, { passive: true });
+}
+
 /* ---------- Tocar la pantalla también cambia de foto ----------
    Igual que las historias de Instagram: además de deslizar (swipe),
    un toque en la mitad derecha de la foto avanza y en la mitad
@@ -361,9 +425,13 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
 
   // el lightbox ya tiene su propia zona de clic (.lightbox__zones, ver
   // CSS/HTML), que además queda por encima del track: no hace falta
-  // (ni funcionaría) sumarle este mismo mecanismo genérico.
+  // (ni funcionaría) sumarle este mismo mecanismo genérico. Por el
+  // mismo motivo (esas zonas tapan el track) tampoco se le suma el
+  // bloqueo manual de swipe vertical: ahí sigue confiando en
+  // touch-action + overscroll-behavior (CSS).
   if (!gallery.classList.contains('lightbox__track')) {
     setupTapToAdvance(gallery);
+    lockHorizontalDrag(gallery);
   }
 
   // el lightbox envuelve su track (junto a las zonas de clic) en
@@ -401,6 +469,12 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
   const refEl = refHideIndex !== null && noteEl
     ? noteEl.querySelector('.grid-note__ref')
     : null;
+  // La foto con proyecto identificado (data-ref-hide-index) es también
+  // la única con pie de foto propio (.thumb--with-caption, ver CSS):
+  // se le suma .is-caption-active solo mientras es la foto activa del
+  // swipe, para que el pie (y el alto extra que agrega) no aparezca en
+  // las demás ni infle el carrusel todo el tiempo.
+  const captionThumb = refHideIndex !== null ? items[refHideIndex] : null;
 
   function updateActiveDot(){
     let realIndex;
@@ -420,6 +494,7 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
     }
     [...dots].forEach((d, i) => d.classList.toggle('active', i === realIndex));
     if (refEl) refEl.classList.toggle('is-own-photo', realIndex === refHideIndex);
+    if (captionThumb) captionThumb.classList.toggle('is-caption-active', realIndex === refHideIndex);
   }
 
   let dotsTickScheduled = false;
