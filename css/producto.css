@@ -174,6 +174,7 @@
     width: auto;
     height: 78vw; /* foto grande a propósito: no entran las 3 juntas, hay que deslizar */
     scroll-snap-align: center;
+    touch-action: pan-x; /* también en la foto (el toque empieza ahí, no en el contenedor) */
   }
 }
 
@@ -210,6 +211,7 @@
     flex: 0 0 100%;
     width: 100%;
     scroll-snap-align: center;
+    touch-action: pan-x; /* también en la foto (el toque empieza ahí, no en el contenedor) */
   }
 }
 
@@ -261,6 +263,7 @@
   .natural-gallery__item{
     flex: 0 0 100%;
     scroll-snap-align: center;
+    touch-action: pan-x; /* también en la foto (el toque empieza ahí, no en el contenedor) */
   }
 }
 
@@ -564,6 +567,7 @@
     flex: 0 0 100%;
     width: 100%;
     scroll-snap-align: center;
+    touch-action: pan-x; /* también en la tarjeta (el toque empieza ahí, no en el contenedor) */
   }
   /* Los 100px de espacio antes de la línea divisoria (.item .cap o
      .photo-caption-grid__item) tienen sentido cuando las tarjetas
@@ -715,6 +719,7 @@
   align-items: center;
   justify-content: center;
   scroll-snap-align: center;
+  touch-action: pan-x; /* también en la foto (el toque empieza ahí, no en el contenedor) */
   /* sin padding lateral: la foto va de lado a lado de la pantalla */
 }
 .lightbox__item img{
