@@ -418,6 +418,13 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
   const refEl = refHideIndex !== null && noteEl
     ? noteEl.querySelector('.grid-note__ref')
     : null;
+  // El pie de foto del proyecto propio (.grid-note__caption, ej: el
+  // hall de Mirabilia) es al revés de .grid-note__ref: solo debe verse
+  // mientras esa foto puntual está en pantalla, no mientras se ven las
+  // demás (de referencia). Ver CSS: .grid-note__caption.is-own-photo.
+  const captionEl = refHideIndex !== null && noteEl
+    ? noteEl.querySelector('.grid-note__caption')
+    : null;
 
   function updateActiveDot(){
     let realIndex;
@@ -437,6 +444,7 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
     }
     [...dots].forEach((d, i) => d.classList.toggle('active', i === realIndex));
     if (refEl) refEl.classList.toggle('is-own-photo', realIndex === refHideIndex);
+    if (captionEl) captionEl.classList.toggle('is-own-photo', realIndex === refHideIndex);
   }
 
   let dotsTickScheduled = false;

@@ -913,10 +913,11 @@
    para que el pie de foto quede confinado al ancho real de la foto
    izquierda en vez de estirarse como texto libre y invadir el espacio
    de la foto derecha. */
-/* Sin padding lateral propio: va de borde a borde igual que la
-   galería de arriba. El inset del texto lo pone cada párrafo (22px,
-   igual que .item .cap en el Home) para alinear a la misma distancia
-   del borde que Productos/Trabajos/Desarrollos del Home. */
+/* Sin padding lateral propio en el contenedor: va de borde a borde
+   igual que la galería de arriba. El inset lateral lo pone cada
+   párrafo — .grid-note__caption con el mismo var(--margin-x) que el
+   resto de los textos de la sección (.section-intro, .admin-block__text);
+   .grid-note__ref con un inset fijo propio, más chico, ver abajo. */
 .grid-note{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -937,7 +938,7 @@
 .grid-note__caption{
   grid-column: 1;
   text-align: left;
-  padding-left: 22px; /* mismo inset que .item .cap */
+  padding: 0 var(--margin-x); /* mismo espaciado izquierda/derecha que el resto de los textos de la sección (.section-intro, .admin-block__text) */
   font-size: 20px; /* mismo tamaño que el resto de los textos (.section-caption p) */
 }
 .grid-note__ref{
@@ -960,10 +961,6 @@
     gap: 8px;
     padding: 0 0 100px; /* acá sí es lo último antes de la línea divisoria: los puntitos van arriba, igual que en Trinity/Infinity */
   }
-  .grid-note__caption{
-    grid-column: 1;
-    padding-left: 0;
-  }
   .grid-note__ref{
     grid-column: 1;
     justify-self: end;
@@ -978,12 +975,22 @@
     text-align: center;
     padding-right: 0;
   }
-  /* Mientras la foto con proyecto identificado (el hall de Mirabilia)
-     está en pantalla durante el swipe, "- Imágenes de referencia -"
-     no aplica — pero se le reserva el espacio igual (visibility, no
-     display) para que el alto de todo el bloque no cambie y la línea
-     divisoria de abajo no salte de lugar al pasar de una foto a otra.
-     JS (main.js) le suma esta clase según el índice activo. */
+  /* Mientras se desliza entre las 4 fotos, el pie de foto del proyecto
+     propio (Mirabilia) solo tiene sentido cuando esa foto puntual está
+     en pantalla — el resto del tiempo (fotos de referencia) no debe
+     verse, y en su lugar corresponde "- Imágenes de referencia -" de
+     acá abajo. Oculto por defecto (visibility, no display) para que el
+     alto del bloque no cambie y la línea divisoria de abajo no salte
+     de lugar al pasar de una foto a otra. JS (main.js) le suma esta
+     clase según el índice activo — mismo mecanismo que
+     .grid-note__ref.is-own-photo, pero invertido. */
+  .grid-note__caption{
+    grid-column: 1;
+    /* padding: heredado de la regla de arriba (0 var(--margin-x)),
+       mismo espaciado izquierda/derecha que el resto de los textos. */
+    visibility: hidden;
+  }
+  .grid-note__caption.is-own-photo{ visibility: visible; }
   .grid-note__ref.is-own-photo{ visibility: hidden; }
 }
 
@@ -991,8 +998,10 @@
    3ra foto de "Creación de Instalaciones", la única con proyecto
    identificado). El pie queda oculto por el propio overflow:hidden
    del cuadrado en todos los formatos — la versión visible es siempre
-   la de .grid-note__caption más abajo, fija debajo de los puntitos,
-   sin importar qué foto esté activa. ---------- */
+   la de .grid-note__caption más abajo, fija debajo de los puntitos.
+   En celular esa versión solo se muestra mientras esta foto puntual
+   está en pantalla durante el swipe (ver .grid-note__caption.is-own-photo
+   más arriba); en desktop/tablet, sin swipe, queda siempre visible. ---------- */
 .thumb--with-caption .thumb__photo{
   width: 100%;
   height: 100%;
