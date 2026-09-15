@@ -315,14 +315,20 @@ function setupLoopingCarousel(gallery){
    touch-action:pan-x + overscroll-behavior:contain (CSS) no alcanzaron
    en algunos celulares: el gesto seguía "filtrando" algo de scroll
    vertical de la página durante el arrastre. Se toma control manual
-   del gesto por JS: mientras se define si es horizontal o vertical no
-   se hace nada; apenas se nota que es horizontal, se llama
-   preventDefault() en cada touchmove restante (así la página no
-   scrollea ni un poco en vertical) y se mueve el scroll de la galería
-   a mano, 1:1 con el dedo. Si el gesto arranca vertical, no se toca
-   nada y la página scrollea normal. Al soltar, se engancha (snap) con
-   la foto más cercana — el navegador no lo hace solo porque el scroll
-   nunca pasó por su gesto nativo (se lo interceptó preventDefault). */
+   del gesto por JS — pero el eje (horizontal o vertical) se decide YA,
+   en el primer touchmove del gesto, sin esperar a que se acumule
+   arrastre: el navegador solo deja cancelar su scroll nativo con
+   preventDefault() en el primer evento de la secuencia, no en uno
+   posterior (si se espera, ya es tarde para bloquear el vertical, y
+   mientras tanto el navegador ya arrancó su propio scroll, que
+   compite con el nuestro y traba el horizontal). Si el primer
+   movimiento es más horizontal que vertical: preventDefault() en cada
+   touchmove restante (cero scroll vertical posible) y se mueve el
+   scroll de la galería a mano, 1:1 con el dedo. Si es más vertical: no
+   se toca nada y la página scrollea normal, como si esto no
+   existiera. Al soltar, se engancha (snap) con la foto más cercana —
+   el navegador no lo hace solo porque el scroll nunca pasó por su
+   gesto nativo (se lo interceptó preventDefault). */
 function lockHorizontalDrag(gallery){
   if (getComputedStyle(gallery).display !== 'flex') return; // solo corre en celular, que es donde estas galerías scrollean
 
@@ -343,7 +349,7 @@ function lockHorizontalDrag(gallery){
     gallery.scrollTo({ left: item.offsetLeft + item.offsetWidth / 2 - gallery.clientWidth / 2, behavior: 'smooth' });
   }
 
-  let startX = 0, startY = 0, startScroll = 0, axis = null, dragging = false;
+  let startX = 0, startY = 0, startScroll = 0, axis = null, dragging = false, snapRestoreTimer = null;
   gallery.addEventListener('touchstart', (e) => {
     if (e.touches.length !== 1) return;
     startX = e.touches[0].clientX;
@@ -358,8 +364,18 @@ function lockHorizontalDrag(gallery){
     const dx = e.touches[0].clientX - startX;
     const dy = e.touches[0].clientY - startY;
     if (axis === null) {
-      if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return; // esperar a que el gesto se defina
-      axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      // se decide en este mismo evento (el primer touchmove), aunque
+      // el arrastre acumulado todavía sea chico — ver comentario de
+      // arriba sobre por qué no se puede esperar a un evento después
+      axis = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
+      if (axis === 'x') {
+        // mientras se arrastra a mano, que el snap-por-CSS no compita
+        // con cada asignación de scrollLeft (algunos navegadores
+        // re-enganchan al punto de snap más cercano en cada cambio,
+        // lo que se sentía como que la foto no se movía)
+        clearTimeout(snapRestoreTimer);
+        gallery.style.scrollSnapType = 'none';
+      }
     }
     if (axis === 'x') {
       e.preventDefault(); // gesto horizontal: no dejar que la página scrollee en vertical
@@ -369,7 +385,12 @@ function lockHorizontalDrag(gallery){
   }, { passive: false });
 
   gallery.addEventListener('touchend', () => {
-    if (dragging && axis === 'x') snapToClosest();
+    if (dragging && axis === 'x') {
+      snapToClosest();
+      // se reactiva el snap-por-CSS recién cuando termina la animación
+      // del enganche (si se reactiva antes, puede cortarla a mitad)
+      snapRestoreTimer = setTimeout(() => { gallery.style.scrollSnapType = ''; }, 400);
+    }
     dragging = false;
     axis = null;
   }, { passive: true });
