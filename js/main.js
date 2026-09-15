@@ -418,12 +418,6 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
   const refEl = refHideIndex !== null && noteEl
     ? noteEl.querySelector('.grid-note__ref')
     : null;
-  // La foto con proyecto identificado (data-ref-hide-index) es también
-  // la única con pie de foto propio (.thumb--with-caption, ver CSS):
-  // se le suma .is-caption-active solo mientras es la foto activa del
-  // swipe, para que el pie (y el alto extra que agrega) no aparezca en
-  // las demás ni infle el carrusel todo el tiempo.
-  const captionThumb = refHideIndex !== null ? items[refHideIndex] : null;
 
   function updateActiveDot(){
     let realIndex;
@@ -443,7 +437,6 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
     }
     [...dots].forEach((d, i) => d.classList.toggle('active', i === realIndex));
     if (refEl) refEl.classList.toggle('is-own-photo', realIndex === refHideIndex);
-    if (captionThumb) captionThumb.classList.toggle('is-caption-active', realIndex === refHideIndex);
   }
 
   let dotsTickScheduled = false;

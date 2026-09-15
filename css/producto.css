@@ -960,10 +960,10 @@
     gap: 8px;
     padding: 0 0 100px; /* acá sí es lo último antes de la línea divisoria: los puntitos van arriba, igual que en Trinity/Infinity */
   }
-  /* El pie de foto del proyecto no va acá en celular — va adentro de
-     la foto que le corresponde (.thumb__caption), para que se vea
-     solo cuando esa foto puntual está en pantalla durante el swipe. */
-  .grid-note__caption{ display: none; }
+  .grid-note__caption{
+    grid-column: 1;
+    padding-left: 0;
+  }
   .grid-note__ref{
     grid-column: 1;
     justify-self: end;
@@ -971,22 +971,28 @@
     padding-left: 0;
     padding-right: 22px;
   }
-  /* Se oculta mientras la foto con proyecto identificado (el hall de
-     Mirabilia) está en pantalla durante el swipe — esa foto no es una
-     "imagen de referencia". JS (main.js) le suma esta clase según el
-     índice activo del carrusel. */
-  .grid-note__ref.is-own-photo{ display: none; }
+  /* Fecha (Trabajos/Exhibiciones): alineada con el centro de los
+     puntitos del swipe, no contra el borde derecho. */
+  .work-item .grid-note__ref{
+    justify-self: center;
+    text-align: center;
+    padding-right: 0;
+  }
+  /* Mientras la foto con proyecto identificado (el hall de Mirabilia)
+     está en pantalla durante el swipe, "- Imágenes de referencia -"
+     no aplica — pero se le reserva el espacio igual (visibility, no
+     display) para que el alto de todo el bloque no cambie y la línea
+     divisoria de abajo no salte de lugar al pasar de una foto a otra.
+     JS (main.js) le suma esta clase según el índice activo. */
+  .grid-note__ref.is-own-photo{ visibility: hidden; }
 }
 
 /* ---------- Foto con pie propio dentro de una .duo-gallery (ej: la
    3ra foto de "Creación de Instalaciones", la única con proyecto
-   identificado). En desktop/tablet se comporta como cualquier .thumb
-   — el pie queda oculto por el propio overflow:hidden del cuadrado,
-   la versión visible ahí es la de .grid-note más abajo. En celular
-   (donde cada foto es una diapositiva del swipe) se libera el
-   aspect-ratio cuadrado del contenedor exterior y se lo pasa a
-   .thumb__photo, para que el pie de foto pueda mostrarse debajo de
-   ESA foto puntual, sin aparecer en las demás. ---------- */
+   identificado). El pie queda oculto por el propio overflow:hidden
+   del cuadrado en todos los formatos — la versión visible es siempre
+   la de .grid-note__caption más abajo, fija debajo de los puntitos,
+   sin importar qué foto esté activa. ---------- */
 .thumb--with-caption .thumb__photo{
   width: 100%;
   height: 100%;
@@ -1003,28 +1009,12 @@
   .thumb__caption{ font-size: 26px; }
 }
 @media (max-width: 640px){
-  /* El pie de foto solo agranda SU propia diapositiva mientras está
-     activa (.is-caption-active, la suma JS según el índice del
-     swipe) — el resto del tiempo esta foto es un cuadrado más, igual
-     que las demás, así el carrusel no queda inflado permanentemente
-     (eso alejaba el texto de referencia de la foto en esta sección,
-     a diferencia de las demás). */
+  /* El pie de foto ya no va adentro de la foto en celular — vuelve a
+     mostrarse en .grid-note__caption, fijo debajo de los puntitos,
+     igual que el resto de los textos del sitio (así el alto de la
+     sección no cambia según qué foto esté activa, y la línea
+     divisoria de abajo no salta de lugar al hacer swipe). */
   .thumb__caption{ display: none; }
-  .duo-gallery .thumb--with-caption.is-caption-active{
-    aspect-ratio: auto;
-    overflow: visible;
-    display: flex;
-    flex-direction: column;
-  }
-  .thumb--with-caption.is-caption-active .thumb__photo{
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    flex: 0 0 auto;
-  }
-  .thumb--with-caption.is-caption-active .thumb__caption{
-    display: block;
-    padding: 16px 22px 0; /* mismo inset que .item .cap */
-  }
 }
 
 /* ============================================
