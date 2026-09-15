@@ -167,12 +167,12 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    /* El bloqueo a horizontal-solo lo hace JS (lockHorizontalDrag en
-       main.js), no touch-action: si se restringe acá por CSS, el
-       navegador nunca deja scrollear la página en vertical empezando
-       un toque sobre la foto, aunque el gesto sea bien vertical — JS
-       recién decide el eje real del gesto, más tarde. */
-    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining) */
+    /* Sin touch-action: el bloqueo a horizontal-solo lo hace el propio
+       Safari/iOS de forma nativa (si el gesto arranca claramente
+       vertical u horizontal, lo bloquea a ese eje solo) — no hace
+       falta (ni conviene) reimplementarlo a mano por JS. */
+    overscroll-behavior-x: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre horizontal a la página (scroll chaining) */
+    overscroll-behavior-y: auto; /* el vertical sí tiene que pasar normal a la página: "contain" en los dos ejes (shorthand) atrapaba el rebote vertical adentro del recuadro de la foto en vez de dejar scrollear */
   }
   .trio-gallery img{
     flex: 0 0 auto;
@@ -209,9 +209,9 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    /* El bloqueo a horizontal-solo lo hace JS (lockHorizontalDrag en
-       main.js), no touch-action — ver comentario igual en .trio-gallery. */
-    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining) */
+    /* Sin touch-action (ver comentario en .trio-gallery). */
+    overscroll-behavior-x: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre horizontal a la página (scroll chaining) */
+    overscroll-behavior-y: auto; /* el vertical sí tiene que pasar normal a la página, ver comentario igual en .trio-gallery */
   }
   .duo-gallery .thumb{
     flex: 0 0 100%;
@@ -261,9 +261,9 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    /* El bloqueo a horizontal-solo lo hace JS (lockHorizontalDrag en
-       main.js), no touch-action — ver comentario igual en .trio-gallery. */
-    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining) */
+    /* Sin touch-action (ver comentario en .trio-gallery). */
+    overscroll-behavior-x: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre horizontal a la página (scroll chaining) */
+    overscroll-behavior-y: auto; /* el vertical sí tiene que pasar normal a la página, ver comentario igual en .trio-gallery */
     gap: 0;
     justify-content: flex-start;
   }
@@ -572,9 +572,9 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    /* El bloqueo a horizontal-solo lo hace JS (lockHorizontalDrag en
-       main.js), no touch-action — ver comentario igual en .trio-gallery. */
-    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining) */
+    /* Sin touch-action (ver comentario en .trio-gallery). */
+    overscroll-behavior-x: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre horizontal a la página (scroll chaining) */
+    overscroll-behavior-y: auto; /* el vertical sí tiene que pasar normal a la página, ver comentario igual en .trio-gallery */
     scrollbar-width: none;
     -ms-overflow-style: none;
   }

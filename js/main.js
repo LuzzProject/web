@@ -323,120 +323,6 @@ function setupLoopingCarousel(gallery){
   return { allItems, total, jump, closestIndex };
 }
 
-/* ---------- Bloquea el swipe al eje horizontal, a mano ----------
-   touch-action:pan-x + overscroll-behavior:contain (CSS) no alcanzaron
-   en algunos celulares: el gesto seguía "filtrando" algo de scroll
-   vertical de la página durante el arrastre. Se toma control manual
-   del gesto por JS: se espera un mínimo de arrastre (10px) para
-   decidir si el gesto es horizontal o vertical (decidir con el primer
-   pixel es demasiado sensible al temblor del dedo y terminaba
-   bloqueando intentos de scroll vertical que arrancaban rectos). Si el
-   arrastre resulta más horizontal que vertical: preventDefault() en
-   cada touchmove restante (cero scroll vertical posible) y se mueve el
-   scroll de la galería a mano, 1:1 con el dedo. Si es más vertical (o
-   quedó empatado): no se toca nada y la página scrollea normal, como
-   si esto no existiera. Al soltar, se engancha (snap) con la foto más
-   cercana — el navegador no lo hace solo porque el scroll nunca pasó
-   por su gesto nativo (se lo interceptó preventDefault). */
-function lockHorizontalDrag(gallery){
-  if (getComputedStyle(gallery).display !== 'flex') return; // solo corre en celular, que es donde estas galerías scrollean
-
-  const FLICK_VELOCITY = 0.35; // px/ms: un golpe rápido cambia de foto aunque el dedo se haya movido poco
-  const DRAG_FRACTION = 0.25;  // si no fue un golpe rápido, hace falta arrastrar 25% del ancho (mismo criterio que el hero)
-
-  function currentIndex(){
-    const loop = gallery.__loop;
-    if (loop) return loop.closestIndex();
-    const items = [...gallery.children];
-    const center = gallery.scrollLeft + gallery.clientWidth / 2;
-    let closest = 0, dist = Infinity;
-    items.forEach((item, i) => {
-      const d = Math.abs(item.offsetLeft + item.offsetWidth / 2 - center);
-      if (d < dist) { dist = d; closest = i; }
-    });
-    return closest;
-  }
-  function jumpTo(index){
-    const loop = gallery.__loop;
-    if (loop) { loop.jump(index, 'smooth'); return; }
-    const items = [...gallery.children];
-    const item = items[Math.max(0, Math.min(items.length - 1, index))];
-    gallery.scrollTo({ left: item.offsetLeft + item.offsetWidth / 2 - gallery.clientWidth / 2, behavior: 'smooth' });
-  }
-
-  let startX = 0, startY = 0, startScroll = 0, axis = null, dragging = false, snapRestoreTimer = null;
-  let startIndex = 0, lastX = 0, lastT = 0, velocity = 0;
-  gallery.addEventListener('touchstart', (e) => {
-    if (e.touches.length !== 1) return;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    startScroll = gallery.scrollLeft;
-    axis = null;
-    dragging = true;
-    startIndex = currentIndex();
-    lastX = startX;
-    lastT = e.timeStamp;
-    velocity = 0;
-  }, { passive: true });
-
-  gallery.addEventListener('touchmove', (e) => {
-    if (!dragging || e.touches.length !== 1) return;
-    const x = e.touches[0].clientX;
-    const dx = x - startX;
-    const dy = e.touches[0].clientY - startY;
-    if (axis === null) {
-      // Se espera un mínimo de arrastre (10px) antes de decidir el eje:
-      // decidir con el primerísimo pixel es demasiado sensible al
-      // temblor natural del dedo — un intento de scroll bien vertical
-      // podía arrancar con 1px de más en horizontal por pura casualidad
-      // y quedaba trabado sin poder scrollear la página desde acá. Ante
-      // la duda (eje ambiguo, ej. un gesto en diagonal de 45°) se
-      // prioriza el vertical: es mucho peor bloquear el scroll de la
-      // página por error que perder alguna vez el arranque de un swipe.
-      if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
-      axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
-      if (axis === 'x') {
-        // mientras se arrastra a mano, que el snap-por-CSS no compita
-        // con cada asignación de scrollLeft (algunos navegadores
-        // re-enganchan al punto de snap más cercano en cada cambio,
-        // lo que se sentía como que la foto no se movía)
-        clearTimeout(snapRestoreTimer);
-        gallery.style.scrollSnapType = 'none';
-      }
-    }
-    if (axis === 'x') {
-      e.preventDefault(); // gesto horizontal: no dejar que la página scrollee en vertical
-      gallery.scrollLeft = startScroll - dx;
-      // velocidad del último tramo nada más (no el promedio de todo el
-      // gesto): lo que importa para un golpe rápido es cómo se soltó
-      const dt = e.timeStamp - lastT;
-      if (dt > 0) velocity = (x - lastX) / dt;
-      lastX = x;
-      lastT = e.timeStamp;
-    }
-    // axis === 'y': no se toca nada, la página scrollea vertical normal
-  }, { passive: false });
-
-  gallery.addEventListener('touchend', (e) => {
-    if (dragging && axis === 'x') {
-      const touch = e.changedTouches[0];
-      const totalDx = (touch ? touch.clientX : lastX) - startX;
-      let delta = 0;
-      if (Math.abs(velocity) >= FLICK_VELOCITY) {
-        delta = velocity < 0 ? 1 : -1; // dedo yéndose rápido hacia la izquierda = siguiente foto
-      } else if (Math.abs(totalDx) >= gallery.clientWidth * DRAG_FRACTION) {
-        delta = totalDx < 0 ? 1 : -1;
-      }
-      jumpTo(startIndex + delta);
-      // se reactiva el snap-por-CSS recién cuando termina la animación
-      // del enganche (si se reactiva antes, puede cortarla a mitad)
-      snapRestoreTimer = setTimeout(() => { gallery.style.scrollSnapType = ''; }, 400);
-    }
-    dragging = false;
-    axis = null;
-  }, { passive: true });
-}
-
 /* ---------- Tocar la pantalla también cambia de foto ----------
    Igual que las historias de Instagram: además de deslizar (swipe),
    un toque en la mitad derecha de la foto avanza y en la mitad
@@ -487,13 +373,9 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
 
   // el lightbox ya tiene su propia zona de clic (.lightbox__zones, ver
   // CSS/HTML), que además queda por encima del track: no hace falta
-  // (ni funcionaría) sumarle este mismo mecanismo genérico. Por el
-  // mismo motivo (esas zonas tapan el track) tampoco se le suma el
-  // bloqueo manual de swipe vertical: ahí sigue confiando en
-  // touch-action + overscroll-behavior (CSS).
+  // (ni funcionaría) sumarle este mismo mecanismo genérico.
   if (!gallery.classList.contains('lightbox__track')) {
     setupTapToAdvance(gallery);
-    lockHorizontalDrag(gallery);
   }
 
   // el lightbox envuelve su track (junto a las zonas de clic) en
