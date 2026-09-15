@@ -167,15 +167,18 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
-    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining), que se sentía como movimiento vertical residual */
+    /* El bloqueo a horizontal-solo lo hace JS (lockHorizontalDrag en
+       main.js), no touch-action: si se restringe acá por CSS, el
+       navegador nunca deja scrollear la página en vertical empezando
+       un toque sobre la foto, aunque el gesto sea bien vertical — JS
+       recién decide el eje real del gesto, más tarde. */
+    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining) */
   }
   .trio-gallery img{
     flex: 0 0 auto;
     width: auto;
     height: 78vw; /* foto grande a propósito: no entran las 3 juntas, hay que deslizar */
     scroll-snap-align: center;
-    touch-action: pan-x; /* también en la foto (el toque empieza ahí, no en el contenedor) */
   }
 }
 
@@ -206,14 +209,14 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
-    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining), que se sentía como movimiento vertical residual */
+    /* El bloqueo a horizontal-solo lo hace JS (lockHorizontalDrag en
+       main.js), no touch-action — ver comentario igual en .trio-gallery. */
+    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining) */
   }
   .duo-gallery .thumb{
     flex: 0 0 100%;
     width: 100%;
     scroll-snap-align: center;
-    touch-action: pan-x; /* también en la foto (el toque empieza ahí, no en el contenedor) */
   }
 }
 
@@ -258,15 +261,15 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
-    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining), que se sentía como movimiento vertical residual */
+    /* El bloqueo a horizontal-solo lo hace JS (lockHorizontalDrag en
+       main.js), no touch-action — ver comentario igual en .trio-gallery. */
+    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining) */
     gap: 0;
     justify-content: flex-start;
   }
   .natural-gallery__item{
     flex: 0 0 100%;
     scroll-snap-align: center;
-    touch-action: pan-x; /* también en la foto (el toque empieza ahí, no en el contenedor) */
   }
 }
 
@@ -569,8 +572,9 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
-    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining), que se sentía como movimiento vertical residual */
+    /* El bloqueo a horizontal-solo lo hace JS (lockHorizontalDrag en
+       main.js), no touch-action — ver comentario igual en .trio-gallery. */
+    overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining) */
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
@@ -579,7 +583,6 @@
     flex: 0 0 100%;
     width: 100%;
     scroll-snap-align: center;
-    touch-action: pan-x; /* también en la tarjeta (el toque empieza ahí, no en el contenedor) */
   }
   /* Los 100px de espacio antes de la línea divisoria (.item .cap o
      .photo-caption-grid__item) tienen sentido cuando las tarjetas
