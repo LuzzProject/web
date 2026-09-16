@@ -1142,15 +1142,17 @@
 /* ---------- Bloque de dos mitades: una mitad el texto, la otra la
    foto a borde de pantalla (sin recorte de página) — ambas alineadas
    arriba. Por defecto el texto va a la izquierda y la foto a la
-   derecha (Biografía, Obra Trinity, Prensa); .split-section--reverse
-   invierte el orden (Statement). El texto usa el mismo tamaño/quiebre
-   que el resto de las ventanas (.section-intro, .admin-block__text):
-   20px hasta 1138px, 26px desde 1139px — y el mismo margen lateral
-   (var(--margin-x)) del lado de afuera; del lado de la foto no lleva
-   padding propio, el --photo-gap del grid ya separa lo justo.
-   En celular se apilan, una arriba de la otra: por defecto el texto
-   primero (Statement, Prensa); .split-section--mobile-photo-first
-   arranca con la foto (Biografía, Obra Trinity). */
+   derecha (Biografía, Prensa); .split-section--reverse invierte el
+   orden (Statement). El texto usa el mismo tamaño/quiebre que el
+   resto de las ventanas (.section-intro, .admin-block__text): 20px
+   hasta 1138px, 26px desde 1139px, justificado — y el mismo margen
+   lateral (var(--margin-x)) del lado de afuera; del lado de la foto
+   no lleva padding propio, el --photo-gap del grid ya separa lo
+   justo. En celular se apilan, una arriba de la otra: por defecto el
+   texto primero (Statement, Prensa); .split-section--mobile-photo-first
+   arranca con la foto (Biografía). Obra Trinity no usa este
+   componente — ver .trinity-text más abajo, que bordea la foto con
+   texto en flujo (float) en vez de columnas fijas. */
 .split-section{
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1171,18 +1173,19 @@
   padding-right: var(--margin-x);
 }
 .split-section__text p,
-.full-text p{
+.trinity-text p{
   margin: 0 0 20px;
   font-size: 20px;
   line-height: 1.6;
   color: var(--fg);
   font-weight: 300;
+  text-align: justify;
 }
 .split-section__text p:last-child,
-.full-text p:last-child{ margin-bottom: 0; }
+.trinity-text p:last-child{ margin-bottom: 0; }
 @media (min-width: 1139px){
   .split-section__text p,
-  .full-text p{ font-size: 26px; }
+  .trinity-text p{ font-size: 26px; }
 }
 .split-section__photo{
   grid-area: photo;
@@ -1226,18 +1229,72 @@
   font-style: italic;
 }
 
-/* ---------- Obra Trinity: texto de cierre de sección, edge-to-edge
-   con el mismo margen lateral que el resto (no comparte fila con
-   ninguna foto, por eso lleva padding en los dos lados). Sigue
-   directo a la porción de texto de .split-section de arriba, así que
-   no necesita separación propia arriba, solo el espacio hasta la
-   línea divisoria de abajo. ---------- */
-.full-text{
-  padding: 0 var(--margin-x) 100px;
+/* ---------- Obra Trinity: todo el cuerpo de texto es un único flujo
+   (no una porción fija al lado de la foto + el resto abajo): en
+   desktop la foto flota a la derecha (float, a borde de pantalla) y
+   el texto la bordea por la izquierda mientras dura su alto; en
+   cuanto el texto pasa el final de la foto, sigue solo, ya expandido
+   de lado a lado de la pantalla — es el comportamiento nativo de un
+   float, no hace falta partir el texto "a mano" en dos bloques. Cada
+   párrafo lleva su propio margen lateral (mismo var(--margin-x) que
+   el resto de los textos); el contenedor no tiene padding propio para
+   que la foto llegue al borde real. ---------- */
+.trinity-text{
+  padding-bottom: 100px; /* mismo espacio hasta la línea divisoria que el resto del sitio */
 }
-.full-text .signature{
-  margin-top: 40px;
+.trinity-text p{
+  padding: 0 var(--margin-x);
+}
+.trinity-text .signature{
+  margin-top: 20px;
+  padding-top: 20px;
   color: rgba(255,255,255,0.7); /* mismo gris atenuado que .grid-note__ref */
+  text-align: left; /* nombre/rol/fecha en 3 renglones cortos (<br>): justificarlos los estiraría de forma rara */
+}
+/* Desktop/tablet ancho (>819px): foto flotante a la derecha, a borde
+   de pantalla — el texto (todos los párrafos, en su orden real del
+   HTML) la bordea por la izquierda mientras dura su alto, y sigue de
+   lado a lado en cuanto la supera. */
+@media (min-width: 820px){
+  .trinity-text__photo{
+    float: right;
+    width: calc(50% - var(--photo-gap) / 2);
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .trinity-text__photo img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+/* Tablet angosta y celular (≤819px): no hay ancho real para bordear
+   una foto con texto, así que se apila — orden fijo pedido por el
+   cliente: los primeros 2 párrafos, la foto entera de borde a borde,
+   y recién ahí el resto del texto. Se logra con flex + order (en vez
+   de mover el HTML) para no duplicar el mismo comportamiento con
+   dos órdenes de DOM distintos según el ancho. */
+@media (max-width: 819px){
+  .trinity-text{
+    display: flex;
+    flex-direction: column;
+  }
+  .trinity-text p:nth-of-type(1){ order: -2; }
+  .trinity-text p:nth-of-type(2){ order: -1; }
+  .trinity-text__photo{
+    order: 0;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .trinity-text__photo img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 }
 /* Subtítulo tipo "Church y Trinity, un viaje introspectivo": mismo
    componente que Hard&Soft (.section-subtitle) pero alineado a la
