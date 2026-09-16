@@ -1170,7 +1170,9 @@
   padding-left: var(--margin-x);
 }
 .split-section--reverse .split-section__text{
-  padding-left: 0;
+  /* Mismo margen de los dos lados: separación del borde de pantalla
+     (derecha) y separación de la foto (izquierda), ambas var(--margin-x). */
+  padding-left: var(--margin-x);
   padding-right: var(--margin-x);
 }
 .split-section__text p,
@@ -1300,12 +1302,22 @@
 }
 /* Subtítulo tipo "Church y Trinity, un viaje introspectivo": mismo
    componente que Hard&Soft (.section-subtitle) pero alineado a la
-   izquierda y con el margen lateral propio, en vez de centrado dentro
-   de una columna angosta. */
+   izquierda, con el margen lateral propio (en vez de centrado dentro
+   de una columna angosta), y en el tamaño chico de subtítulo
+   (.admin-block .section-subtitle, ej: "Administración Remota" en
+   Desarrollos a Medida) en vez del tamaño grande que comparte
+   proporción con el h2. */
 .section-subtitle--left{
   text-align: left;
   padding: 0 var(--margin-x);
   margin: 0 0 40px;
+  font-size: 20px; /* igual a .admin-block .section-subtitle en mobile */
+}
+@media (min-width: 641px) and (max-width: 819px){
+  .section-subtitle--left{ font-size: 24px; }
+}
+@media (min-width: 820px){
+  .section-subtitle--left{ font-size: 30px; }
 }
 
 /* ---------- Prensa: subtítulo "La Nación" (+6px que
