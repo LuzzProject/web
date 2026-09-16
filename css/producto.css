@@ -1321,9 +1321,11 @@
 }
 
 /* ---------- Prensa: subtítulo "La Nación" (+6px que
-   .admin-block .section-subtitle en cada quiebre), texto en itálica
-   para la cita y el link alineado al piso de la foto (columna
-   estirada a su altura completa, ver .split-section--press). ---------- */
+   .admin-block .section-subtitle en cada quiebre), "por Leila Sobol"
+   en el tamaño de ese mismo subtítulo (sin el +6px), la cita en
+   itálica al tamaño estándar del resto de los textos, y el link
+   alineado al piso de la foto (columna estirada a su altura completa,
+   ver .split-section--press). ---------- */
 .press-title{
   font-family: 'Archivo', var(--font-display);
   font-stretch: 125%;
@@ -1338,6 +1340,15 @@
 @media (min-width: 820px){
   .press-title{ font-size: 36px; } /* 30px + 6px */
 }
+.press-byline{
+  font-size: 20px; /* igual a .admin-block .section-subtitle, sin el +6px del título */
+}
+@media (min-width: 641px) and (max-width: 819px){
+  .press-byline{ font-size: 24px; }
+}
+@media (min-width: 820px){
+  .press-byline{ font-size: 30px; }
+}
 .press-quote{
   font-style: italic;
 }
@@ -1345,9 +1356,13 @@
   display: inline-block;
   margin-top: auto; /* empuja el link al piso de la columna estirada */
   padding-top: 20px;
+  font-size: 20px; /* mismo tamaño que el resto de los textos (.split-section__text p) */
   color: var(--fg);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+@media (min-width: 1139px){
+  .press-link{ font-size: 26px; }
 }
 /* La columna de texto se estira a la altura completa de la fila (foto
    incluida) para que el link pueda ir al piso — el resto de las
@@ -1359,4 +1374,8 @@
 .split-section--press .split-section__text{
   display: flex;
   flex-direction: column;
+  /* Mismo margen de los dos lados: separación del borde de pantalla
+     (izquierda) y separación de la foto (derecha), ambas
+     var(--margin-x) — mismo criterio que Statement. */
+  padding-right: var(--margin-x);
 }

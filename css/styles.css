@@ -531,6 +531,11 @@ footer.contact{
   border-top: none;
   border-image: none;
 }
+/* Mismo criterio en Bio: Prensa es la última sección antes del footer. */
+#prensa ~ footer.contact{
+  border-top: none;
+  border-image: none;
+}
 .contact-block{
   display:inline-flex;
   flex-direction:column;
