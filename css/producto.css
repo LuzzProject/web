@@ -1126,3 +1126,166 @@
    posición/estilo que "- Imágenes de referencia -"). La cantidad de
    fotos varía según el trabajo (.duo-gallery ya arma 2x2 sola si son
    4, o 2 columnas si son 2). ---------- */
+
+/* ============================================
+   Bio
+   ============================================ */
+
+/* ---------- Primera sección de la página (Biografía): no hay hero
+   antes, la nav queda justo arriba — sin línea divisoria, para no
+   pintar un renglón pegado al borde de la barra. ---------- */
+.grid-section--no-divider{
+  border-top: none;
+  border-image: none;
+}
+
+/* ---------- Bloque de dos mitades: una mitad el texto, la otra la
+   foto a borde de pantalla (sin recorte de página) — ambas alineadas
+   arriba. Por defecto el texto va a la izquierda y la foto a la
+   derecha (Biografía, Obra Trinity, Prensa); .split-section--reverse
+   invierte el orden (Statement). El texto usa el mismo tamaño/quiebre
+   que el resto de las ventanas (.section-intro, .admin-block__text):
+   20px hasta 1138px, 26px desde 1139px — y el mismo margen lateral
+   (var(--margin-x)) del lado de afuera; del lado de la foto no lleva
+   padding propio, el --photo-gap del grid ya separa lo justo.
+   En celular se apilan, una arriba de la otra: por defecto el texto
+   primero (Statement, Prensa); .split-section--mobile-photo-first
+   arranca con la foto (Biografía, Obra Trinity). */
+.split-section{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-areas: "text photo";
+  align-items: start;
+  gap: var(--photo-gap);
+  padding-bottom: 100px; /* mismo espacio hasta la línea divisoria que el resto del sitio */
+}
+.split-section--reverse{
+  grid-template-areas: "photo text";
+}
+.split-section__text{
+  grid-area: text;
+  padding-left: var(--margin-x);
+}
+.split-section--reverse .split-section__text{
+  padding-left: 0;
+  padding-right: var(--margin-x);
+}
+.split-section__text p,
+.full-text p{
+  margin: 0 0 20px;
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--fg);
+  font-weight: 300;
+}
+.split-section__text p:last-child,
+.full-text p:last-child{ margin-bottom: 0; }
+@media (min-width: 1139px){
+  .split-section__text p,
+  .full-text p{ font-size: 26px; }
+}
+.split-section__photo{
+  grid-area: photo;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+.split-section__photo img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@media (max-width: 640px){
+  .split-section{
+    grid-template-columns: 1fr;
+    grid-template-areas: "text" "photo";
+    gap: 40px;
+  }
+  .split-section--mobile-photo-first{
+    grid-template-areas: "photo" "text";
+  }
+  /* En celular ya no comparte renglón con la foto: el margen lateral
+     va completo a los dos lados (antes solo del lado de afuera). */
+  .split-section__text,
+  .split-section--reverse .split-section__text{
+    padding-left: var(--margin-x);
+    padding-right: var(--margin-x);
+  }
+}
+
+/* ---------- Biografía: etiqueta corta (el título de cada hito) más
+   pegada al párrafo con la fecha que le sigue, que a la etiqueta
+   anterior — mismo tamaño que el resto del texto, solo con más peso. ---------- */
+.split-section__text p.bio-entry__label{
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+/* ---------- Statement: cita completa en itálica. ---------- */
+.split-section__text--quote p{
+  font-style: italic;
+}
+
+/* ---------- Obra Trinity: texto de cierre de sección, edge-to-edge
+   con el mismo margen lateral que el resto (no comparte fila con
+   ninguna foto, por eso lleva padding en los dos lados). Sigue
+   directo a la porción de texto de .split-section de arriba, así que
+   no necesita separación propia arriba, solo el espacio hasta la
+   línea divisoria de abajo. ---------- */
+.full-text{
+  padding: 0 var(--margin-x) 100px;
+}
+.full-text .signature{
+  margin-top: 40px;
+  color: rgba(255,255,255,0.7); /* mismo gris atenuado que .grid-note__ref */
+}
+/* Subtítulo tipo "Church y Trinity, un viaje introspectivo": mismo
+   componente que Hard&Soft (.section-subtitle) pero alineado a la
+   izquierda y con el margen lateral propio, en vez de centrado dentro
+   de una columna angosta. */
+.section-subtitle--left{
+  text-align: left;
+  padding: 0 var(--margin-x);
+  margin: 0 0 40px;
+}
+
+/* ---------- Prensa: subtítulo "La Nación" (+6px que
+   .admin-block .section-subtitle en cada quiebre), texto en itálica
+   para la cita y el link alineado al piso de la foto (columna
+   estirada a su altura completa, ver .split-section--press). ---------- */
+.press-title{
+  font-family: 'Archivo', var(--font-display);
+  font-stretch: 125%;
+  font-variation-settings: "wdth" 125;
+  font-weight: 400;
+  margin: 0 0 8px;
+  font-size: 26px; /* 20px (.admin-block .section-subtitle en mobile) + 6px */
+}
+@media (min-width: 641px) and (max-width: 819px){
+  .press-title{ font-size: 30px; } /* 24px + 6px */
+}
+@media (min-width: 820px){
+  .press-title{ font-size: 36px; } /* 30px + 6px */
+}
+.press-quote{
+  font-style: italic;
+}
+.press-link{
+  display: inline-block;
+  margin-top: auto; /* empuja el link al piso de la columna estirada */
+  padding-top: 20px;
+  color: var(--fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+/* La columna de texto se estira a la altura completa de la fila (foto
+   incluida) para que el link pueda ir al piso — el resto de las
+   secciones (Biografía, Statement, Obra Trinity) no lo necesitan: ahí
+   texto y foto se alinean arriba nada más, sin nada que anclar abajo. */
+.split-section--press{
+  align-items: stretch;
+}
+.split-section--press .split-section__text{
+  display: flex;
+  flex-direction: column;
+}
