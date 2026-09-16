@@ -1148,8 +1148,9 @@
    hasta 1138px, 26px desde 1139px, justificado — y el mismo margen
    lateral (var(--margin-x)) del lado de afuera; del lado de la foto
    no lleva padding propio, el --photo-gap del grid ya separa lo
-   justo. En celular se apilan, una arriba de la otra: por defecto el
-   texto primero (Statement, Prensa); .split-section--mobile-photo-first
+   justo. Debajo de los 820px (tablet y celular, mismo ancho real para
+   bordear texto y foto) se apilan, una arriba de la otra: por defecto
+   el texto primero (Statement, Prensa); .split-section--mobile-photo-first
    arranca con la foto (Biografía). Obra Trinity no usa este
    componente — ver .trinity-text más abajo, que bordea la foto con
    texto en flujo (float) en vez de columnas fijas. */
@@ -1198,7 +1199,7 @@
   object-fit: cover;
   display: block;
 }
-@media (max-width: 640px){
+@media (max-width: 819px){
   .split-section{
     grid-template-columns: 1fr;
     grid-template-areas: "text" "photo";
@@ -1207,8 +1208,9 @@
   .split-section--mobile-photo-first{
     grid-template-areas: "photo" "text";
   }
-  /* En celular ya no comparte renglón con la foto: el margen lateral
-     va completo a los dos lados (antes solo del lado de afuera). */
+  /* En celular y tablet ya no comparte renglón con la foto: el margen
+     lateral va completo a los dos lados (antes solo del lado de
+     afuera). */
   .split-section__text,
   .split-section--reverse .split-section__text{
     padding-left: var(--margin-x);
