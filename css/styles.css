@@ -579,6 +579,16 @@ footer.contact svg{
   fill:none;
   flex-shrink:0;
 }
+/* Contacto (desktop): texto e íconos +50% — solo en la ventana
+   dedicada, el footer del resto de las páginas no se toca. */
+@media (min-width: 820px){
+  footer.contact--standalone .contact-block a{
+    font-size: 30px; /* 20px + 50% */
+  }
+  footer.contact--standalone .contact-block svg{
+    width: 25.5px; height: 25.5px; /* 17px + 50% */
+  }
+}
 
 /* ============================================
    RESPONSIVE
