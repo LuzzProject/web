@@ -536,6 +536,20 @@ footer.contact{
   border-top: none;
   border-image: none;
 }
+/* ---------- Ventana de Contacto (contacto.html): el mismo footer,
+   pero como contenido único de toda la página, centrado también en
+   vertical (no solo el conjunto centrado horizontalmente, como en el
+   resto de las páginas) — ocupa el resto de la pantalla debajo de la
+   nav. Sin línea divisoria: la nav queda justo arriba, mismo criterio
+   que la primera sección de Bio (ver .grid-section--no-divider en
+   producto.css). ---------- */
+footer.contact--standalone{
+  min-height: calc(100vh - var(--nav-h));
+  padding: 0 var(--margin-x);
+  justify-content: center;
+  border-top: none;
+  border-image: none;
+}
 .contact-block{
   display:inline-flex;
   flex-direction:column;
