@@ -1330,9 +1330,10 @@ section.grid-section--no-divider{
   .section-subtitle--left{ font-size: 30px; }
 }
 
-/* ---------- Prensa: subtítulo "La Nación" (+6px que
-   .admin-block .section-subtitle en cada quiebre), "por Leila Sobol"
-   en el tamaño de ese mismo subtítulo (sin el +6px), la cita en
+/* ---------- Prensa: subtítulo "La Nación" (celular: mismo tamaño que
+   .section-subtitle--left "Church y Trinity...", +5px; tablet/desktop:
+   +6px que .admin-block .section-subtitle, +5px), "por Leila Sobol"
+   en el tamaño de ese mismo subtítulo sin ningún extra, la cita en
    itálica al tamaño estándar del resto de los textos, y el link
    alineado al piso de la foto (columna estirada a su altura completa,
    ver .split-section--press). ---------- */
@@ -1342,13 +1343,13 @@ section.grid-section--no-divider{
   font-variation-settings: "wdth" 125;
   font-weight: 400;
   margin: 0 0 8px;
-  font-size: 20px; /* celular: mismo tamaño que .section-subtitle--left ("Church y Trinity..."), a pedido del cliente — ahí no lleva el +6px que sí tiene en tablet/desktop */
+  font-size: 25px; /* 20px (celular, igual a .section-subtitle--left) + 5px */
 }
 @media (min-width: 641px) and (max-width: 819px){
-  .press-title{ font-size: 30px; } /* 24px + 6px */
+  .press-title{ font-size: 35px; } /* 24px + 6px + 5px */
 }
 @media (min-width: 820px){
-  .press-title{ font-size: 36px; } /* 30px + 6px */
+  .press-title{ font-size: 41px; } /* 30px + 6px + 5px */
 }
 .press-byline{
   font-size: 20px; /* igual a .admin-block .section-subtitle, sin el +6px del título */
