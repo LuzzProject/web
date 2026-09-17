@@ -1133,10 +1133,20 @@
 
 /* ---------- Primera sección de la página (Biografía): no hay hero
    antes, la nav queda justo arriba — sin línea divisoria, para no
-   pintar un renglón pegado al borde de la barra. ---------- */
-.grid-section--no-divider{
+   pintar un renglón pegado al borde de la barra. Selector con el
+   mismo "section.grid-section" del que hereda, si no la especificidad
+   empata con la regla base y esta nunca gana (bug real: quedaba
+   visible igual). También acerca el título a la nav, con el mismo
+   criterio de separación que usa .work-header (Trabajos, la otra
+   página sin hero) en vez del padding-top de sección estándar (90px,
+   pensado para cuando arriba hay una línea divisoria de verdad). ---------- */
+section.grid-section--no-divider{
   border-top: none;
   border-image: none;
+  padding-top: 12.5px;
+}
+@media (min-width: 820px){
+  section.grid-section--no-divider{ padding-top: 40px; }
 }
 
 /* ---------- Bloque de dos mitades: una mitad el texto, la otra la
@@ -1332,7 +1342,7 @@
   font-variation-settings: "wdth" 125;
   font-weight: 400;
   margin: 0 0 8px;
-  font-size: 26px; /* 20px (.admin-block .section-subtitle en mobile) + 6px */
+  font-size: 20px; /* celular: mismo tamaño que .section-subtitle--left ("Church y Trinity..."), a pedido del cliente — ahí no lleva el +6px que sí tiene en tablet/desktop */
 }
 @media (min-width: 641px) and (max-width: 819px){
   .press-title{ font-size: 30px; } /* 24px + 6px */
