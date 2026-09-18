@@ -1416,6 +1416,7 @@ section.grid-section--no-divider{
 @media (min-width: 820px){
   #plataforma-arte-digital .section-caption{
     max-width: 1400px;
+    padding-bottom: 130px; /* 100px + 30%: más separación hasta las capturas de la app de abajo */
   }
 }
 
@@ -1465,9 +1466,24 @@ section.grid-section--no-divider{
     height: calc((100vw - var(--photo-gap)) / 2);
   }
   .lm-screens .photo-caption-grid__item p{
-    max-width: calc((100vw - var(--photo-gap)) / 2 * 0.4633);
+    /* mismo ancho que la foto (ver .lm-screens .thumb) + un poco más
+       de cada lado, centrado contra la foto */
+    max-width: calc((100vw - var(--photo-gap)) / 2 * 0.4633 + 60px);
     margin-inline: auto;
     padding-inline: 0;
+  }
+}
+
+/* ---------- Tablet y celular: la foto de cada captura de la app
+   (set "tablet y mobile") se mostraba recortada — .photo-caption-grid__item
+   .thumb fuerza aspect-ratio:1/1 para las grillas cuadradas del resto
+   del sitio, pero estas capturas no son cuadradas (967x1400 ya
+   redimensionadas). Se sobreescribe con su proporción real para que
+   entre la captura completa, de borde a borde (mismo ancho que
+   cualquier otra foto de .photo-caption-grid, edge-to-edge). */
+@media (max-width: 819px){
+  .lm-screens .thumb{
+    aspect-ratio: 967 / 1400;
   }
 }
 
