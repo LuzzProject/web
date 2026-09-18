@@ -1404,6 +1404,20 @@ section.grid-section--no-divider{
 .lm-screens .photo-caption-grid__item p{
   text-align: justify;
 }
+/* Desktop: en 2 renglones en vez de 3 — el max-width de .section-caption
+   (900px desde los 1139px) se queda corto para este texto más largo.
+   1400px no es un ancho "real": es a propósito más grande que
+   cualquier pantalla de verdad, para que el límite efectivo lo ponga
+   siempre el viewport (y el padding lateral propio de .section-caption)
+   y no este valor — así entra en 2 renglones en cualquier desktop
+   real y solo pasa a 3 si la ventana se angosta lo suficiente (medido:
+   necesita ~972px de texto disponible en tablet ancha/desktop chico
+   con fuente 20px, ~1200px con fuente 26px desde 1139px). */
+@media (min-width: 820px){
+  #plataforma-arte-digital .section-caption{
+    max-width: 1400px;
+  }
+}
 
 /* ---------- 4 capturas de la app con su propio pie ("Playing",
    "Browse", "Filters", "Brightness"). Reutiliza
@@ -1413,11 +1427,11 @@ section.grid-section--no-divider{
    desktop (≥820px) el navegador elige sola la versión "desktop" (las
    mismas capturas, recortadas más de cerca al teléfono) sin JS ni
    duplicar el HTML de las leyendas.
-   En desktop el layout cambia por completo, así que se sobreescribe
-   acá mismo en vez de heredar el grid de .photo-caption-grid: una
-   sola fila con el mismo espacio entre fotos que entre las fotos y
-   los laterales (justify-content:space-evenly) y cada foto a la
-   altura de las fotos cuadradas del duo-gallery de "Plataforma de
+   En desktop, igual que en el mockup: dos fotos con su texto arriba,
+   las otras dos abajo (2x2, no una sola fila) — mismo espacio entre
+   las dos fotos de cada renglón que entre cada una y el lateral
+   correspondiente (justify-content:space-evenly). Cada foto queda a
+   la altura de las fotos cuadradas del duo-gallery de "Plataforma de
    Arte Digital" de arriba (mismo cálculo: (100vw - --photo-gap) / 2).
    Como estas fotos son rectangulares, no cuadradas, el ancho que les
    toca a esa altura sale de su proporción real (834x1800 ya
@@ -1437,12 +1451,10 @@ section.grid-section--no-divider{
 @media (min-width: 820px){
   .lm-screens{
     display: grid;
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: max-content;
+    grid-template-columns: repeat(2, max-content);
     justify-content: space-evenly;
     align-items: flex-start;
-    gap: 0; /* el espacio entre fotos ya lo da justify-content */
+    gap: 100px 0; /* horizontal ya la da justify-content; vertical, entre renglón 1 y 2 */
   }
   .lm-screens .photo-caption-grid__item{
     padding-bottom: 100px;
