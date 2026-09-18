@@ -426,6 +426,26 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
     ? noteEl.querySelector('.grid-note__caption')
     : null;
 
+  // Pie de foto sincronizado por índice (Light Mirage: 4 capturas, 4
+  // textos distintos — a diferencia de refEl/captionEl arriba, que
+  // soportan un único índice especial). Si existe un .synced-captions
+  // entre los hermanos siguientes (vacío en el HTML), se llena una
+  // sola vez clonando el <p> de cada tarjeta (misma fuente que ya usa
+  // el 2x2 de desktop, ver CSS) y después se alterna cuál clon está
+  // visible según la foto activa del swipe.
+  let syncedCaptionsEl = anchor.nextElementSibling;
+  while (syncedCaptionsEl && !syncedCaptionsEl.classList.contains('synced-captions')) {
+    syncedCaptionsEl = syncedCaptionsEl.nextElementSibling;
+  }
+  let syncedCaptions = null;
+  if (syncedCaptionsEl) {
+    items.forEach(item => {
+      const p = item.querySelector('p');
+      if (p) syncedCaptionsEl.appendChild(p.cloneNode(true));
+    });
+    syncedCaptions = [...syncedCaptionsEl.children];
+  }
+
   function updateActiveDot(){
     let realIndex;
     if (loop) {
@@ -445,7 +465,9 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
     [...dots].forEach((d, i) => d.classList.toggle('active', i === realIndex));
     if (refEl) refEl.classList.toggle('is-own-photo', realIndex === refHideIndex);
     if (captionEl) captionEl.classList.toggle('is-own-photo', realIndex === refHideIndex);
+    if (syncedCaptions) syncedCaptions.forEach((p, i) => p.classList.toggle('is-active', i === realIndex));
   }
+  updateActiveDot(); // estado inicial (foto real 0), sin esperar al primer scroll
 
   let dotsTickScheduled = false;
   gallery.addEventListener('scroll', () => {

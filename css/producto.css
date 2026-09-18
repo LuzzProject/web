@@ -1464,6 +1464,13 @@ section.grid-section--no-divider{
     aspect-ratio: auto;
     width: calc((100vw - var(--photo-gap)) / 2 * 0.4633);
     height: calc((100vw - var(--photo-gap)) / 2);
+    /* el pie de foto (ver más abajo) es más ancho que la imagen
+       (+60px), por lo que la columna de la grilla termina siendo tan
+       ancha como el texto — sin este margin-inline:auto la imagen
+       quedaba pegada al lateral izquierdo de esa columna en vez de
+       centrada, aunque el texto sí se veía centrado (bug real: el
+       texto solo parecía "expandirse" hacia la derecha). */
+    margin-inline: auto;
   }
   .lm-screens .photo-caption-grid__item p{
     /* mismo ancho que la foto (ver .lm-screens .thumb) + un poco más
@@ -1487,15 +1494,86 @@ section.grid-section--no-divider{
   }
 }
 
-/* ---------- Cierre de página: el archivo del cliente trae solo el
-   ícono circular (a diferencia de Trinity/Omni/Infinity, que ya
-   incluyen el nombre del producto dentro del mismo PNG) — el nombre
-   se agrega acá como texto, mismo tamaño/tracking que el resto de
-   los textos chicos del sitio. ---------- */
-.product-outro__wordmark{
-  margin: 20px 0 0;
-  font-size: 20px;
-  font-weight: 300;
-  letter-spacing: 0.04em;
-  color: var(--fg);
+/* ---------- Tablet: mismo swipe que celular ----------
+   Pedido explícito del cliente: en tablet las 4 capturas de la app
+   también se deslizan una por una (como en celular), en vez de la
+   grilla 2x2 de desktop. Mismas propiedades que .swipe-grid en
+   celular (ver arriba), pero acá scopeadas a .lm-screens nada más —
+   los demás usos de .swipe-grid del sitio (ej. "App integrada..." de
+   Omni) siguen en grilla en tablet, sin cambios. */
+@media (min-width: 641px) and (max-width: 819px){
+  .lm-screens{
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .lm-screens::-webkit-scrollbar{ display: none; }
+  .lm-screens > *{
+    flex: 0 0 100%;
+    width: 100%;
+    scroll-snap-align: center;
+  }
+  .lm-screens.photo-caption-grid .photo-caption-grid__item{
+    padding-bottom: 0;
+  }
+  .lm-screens + .gallery-dots{
+    display: flex;
+  }
+}
+
+/* ---------- Puntitos + pie de foto sincronizado (celular y tablet) ----------
+   Pedido explícito: durante el swipe, el orden visual tiene que ser
+   foto -> puntitos -> texto (mismo orden que la galería de arriba,
+   "Plataforma de Arte Digital"), no foto -> texto -> puntitos como
+   quedaba antes: el <p> de cada captura vivía adentro de su propia
+   tarjeta, pegado a la foto, y los puntitos (únicos, uno solo para
+   las 4 fotos) aparecían recién al final, después de la última.
+   El texto de cada captura sigue viviendo en un solo lugar (su <p>
+   adentro de .photo-caption-grid__item — es lo que se ve en el 2x2 de
+   desktop): acá ese <p> se oculta y el JS (main.js) clona su
+   contenido dentro de .synced-captions (vacío en el HTML, después de
+   los puntitos), un clon por foto. Los 4 clones comparten la misma
+   celda de grilla (superpuestos) y se muestran/ocultan con
+   visibility según qué foto está activa en el swipe — así el alto del
+   bloque no cambia entre una captura y otra y no salta la línea
+   divisoria de más abajo. */
+.synced-captions{
+  display: none; /* solo existe en celular/tablet — en desktop cada captura ya muestra su propio <p>, ver .lm-screens .photo-caption-grid__item p más arriba */
+}
+@media (max-width: 819px){
+  .lm-screens .thumb{
+    margin-bottom: 0; /* ese espacio lo pone ahora .gallery-dots (margin-top propio), no la foto: acá el pie de foto ya no sigue directo a la imagen, van primero los puntitos */
+  }
+  .lm-screens .photo-caption-grid__item p{
+    display: none; /* clonado en .synced-captions vía JS, ver comentario arriba */
+  }
+  .lm-screens + .gallery-dots{
+    margin-bottom: 0; /* ya no son los puntitos lo último antes de la próxima sección — ahora sigue el pie de foto (.synced-captions), que aporta esos 100px, ver abajo */
+  }
+  .synced-captions{
+    display: grid;
+    max-width: 640px;
+    margin: 23px auto 0; /* mismo criterio que .section-caption: puntitos -> texto, cerca */
+    padding: 0 var(--margin-x) 100px; /* mismo espacio hasta la línea divisoria que el resto de los pies de foto del sitio */
+    text-align: justify;
+  }
+  .synced-captions p{
+    grid-row: 1;
+    grid-column: 1;
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.6;
+    font-weight: 300;
+    color: var(--fg);
+    visibility: hidden;
+  }
+  .synced-captions p.is-active{
+    visibility: visible;
+  }
 }
