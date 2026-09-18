@@ -546,6 +546,18 @@
   margin: 0 auto;
   display: block;
 }
+/* Light Mirage: a diferencia de Trinity/Omni/Infinity (donde el ícono
+   circular ocupa borde a borde el ancho del PNG), el archivo de este
+   logo es más ancho que el ícono porque abajo lleva el nombre del
+   producto en un renglón más ancho que el círculo — con los mismos
+   110px de .product-outro__mark de arriba, el ícono en sí renderizaba
+   más chico que en las otras 3 ventanas. Se compensa agrandando el
+   ancho del contenedor (110px / 0.5942, la proporción real ícono/lienzo
+   del archivo) para que el círculo quede al mismo tamaño real que en
+   Trinity/Omni/Infinity. */
+.product-outro--light-mirage .product-outro__mark{
+  width: 185px;
+}
 
 /* Aplicaciones (Omni y futuras páginas de producto): mismas tarjetas
    que las grillas del Home, pero acá no son link a ningún lado, y en
