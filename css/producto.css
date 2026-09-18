@@ -1485,9 +1485,10 @@ section.grid-section--no-divider{
     margin-inline: auto;
   }
   .lm-screens .photo-caption-grid__item p{
-    /* mismo ancho que la foto (ver .lm-screens .thumb) + un poco más
-       de cada lado, centrado contra la foto */
-    max-width: calc((100vw - var(--photo-gap)) / 2 * 0.4633 + 60px);
+    /* mismo ancho que la foto (ver .lm-screens .thumb) + más todavía
+       de cada lado (30px -> 50px, pedido explícito de expandir más),
+       centrado contra la foto */
+    max-width: calc((100vw - var(--photo-gap)) / 2 * 0.4633 + 100px);
     margin-inline: auto;
     padding-inline: 0;
   }

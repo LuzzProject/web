@@ -358,7 +358,15 @@ nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color:
   .logo-section p.desc{ font-size: 23px; }
 }
 @media (min-width: 820px){
-  .logo-section p.desc{ font-size: clamp(23px, 0.4839vw + 19.032px, 26px); }
+  .logo-section p.desc{
+    font-size: clamp(23px, 0.4839vw + 19.032px, 26px);
+    /* Desktop: en 3 renglones en vez de 4 (860px se quedaba corto,
+       medido: necesita entre 900-1350px de texto disponible según el
+       tamaño de letra de cada ancho real, 23px a 820px hasta 26px de
+       1440px en adelante). 1100px queda cómodo en el medio de ese
+       rango en cualquier desktop real (1000px a 1920px+ probado). */
+    max-width: 1100px;
+  }
 }
 .logo-section .eyebrow{
   font-size: 20px;
@@ -609,6 +617,12 @@ footer.contact svg{
   :root{ --margin-x: var(--margin-x-tab); }
   .item-grid{ grid-template-columns: repeat(2, 1fr); }
   .hero{ aspect-ratio: 1 / 1; } /* tablet: hero cuadrado */
+  /* Texto de contacto (footer) un 50% más cerca de lo que haya arriba
+     (logo de cierre, texto o foto, según la página) — pedido explícito
+     del cliente, solo tablet/mobile: 220px -> 110px. En celular (ver
+     @media max-width:640px más abajo) tiene su propio valor de base
+     más alto por el título sticky, y se reduce aparte desde ese valor. */
+  footer.contact{ padding-top: 110px; }
 }
 
 /* Celular */
@@ -629,6 +643,6 @@ footer.contact svg{
     padding: 14px 0;
   }
   .item-grid{ grid-template-columns: 1fr; }
-  footer.contact{ padding: 340px var(--margin-x-mob) 240px; } /* arriba: más espacio para que el título sticky de la sección anterior alcance a despegarse y subir antes de que aparezca el contenido */
+  footer.contact{ padding: 170px var(--margin-x-mob) 240px; } /* arriba: -50% (340px -> 170px), pedido explícito del cliente — el título sticky de la sección anterior se despega solo (su propio contenedor), este padding es nada más el respiro visual hasta el texto de contacto */
   .hero{ aspect-ratio: 9 / 16; } /* celular: hero vertical 9:16 */
 }
