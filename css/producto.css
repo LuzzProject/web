@@ -53,6 +53,32 @@
   }
 }
 
+/* ---------- Video de prueba (Trinity, debajo del hero) ----------
+   A modo de prueba, para que el cliente vea cómo queda un video de
+   YouTube embebido en la página — no es un componente definitivo
+   todavía. Mismo criterio que el resto del sitio: fondo negro propio
+   del bloque (nunca heredado), separado del contenido que hace fade
+   (regla de oro #2). */
+.product-video{
+  background: #000000;
+  padding: 80px var(--margin-x);
+}
+.product-video__frame{
+  position: relative;
+  max-width: 960px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+.product-video__frame iframe{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
 /* ---------- Título de sección sin grid-section (ej: "Hard & Soft" /
    "Experiencia interactiva", que son h3 chicos dentro de columnas,
    no un h2 de sección) ---------- */
@@ -1423,6 +1449,32 @@ section.grid-section--no-divider{
 .untitled-section .section-caption p{
   text-align: justify;
 }
+/* Trinity (solo celular): "Proyección", "Escultura" y "Arte Digital". */
+@media (max-width: 640px){
+  #proyeccion .section-caption p,
+  #escultura .section-caption p,
+  #arte-digital .section-caption p{
+    text-align: justify;
+  }
+}
+
+/* ---------- Omni: "Integra múltiples facetas..." en una sola línea
+   (desktop real, desde el Punto Quiebre Hamburguesa 1139px) — es la
+   más larga de las 4 leyendas debajo del hero y quedaba partida en 2
+   renglones. Por debajo de los 1139px no hay ancho de columna real
+   para sostener el renglón completo a un tamaño legible (el texto
+   necesitaría ~500px y la columna en tablet no llega a eso), así que
+   ahí se deja como el resto: normal, en 2 renglones. Tamaño de letra
+   propio (17px) en vez del clamp compartido con las otras 3 leyendas
+   — más chico a propósito, es lo que permite que entre en un renglón
+   sin invadir la columna de al lado. */
+@media (min-width: 1139px){
+  .untitled-section .photo-caption-grid__item p.caption-oneline{
+    white-space: nowrap;
+    max-width: none;
+    font-size: 17px;
+  }
+}
 
 /* ============================================
    Light Mirage
@@ -1511,9 +1563,9 @@ section.grid-section--no-divider{
   }
   .lm-screens .photo-caption-grid__item p{
     /* mismo ancho que la foto (ver .lm-screens .thumb) + más todavía
-       de cada lado (30px -> 50px, pedido explícito de expandir más),
-       centrado contra la foto */
-    max-width: calc((100vw - var(--photo-gap)) / 2 * 0.4633 + 100px);
+       de cada lado (30px -> 50px -> 75px, pedidos explícitos sucesivos
+       de expandir más), centrado contra la foto */
+    max-width: calc((100vw - var(--photo-gap)) / 2 * 0.4633 + 150px);
     margin-inline: auto;
     padding-inline: 0;
   }
