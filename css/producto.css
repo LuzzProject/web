@@ -1390,3 +1390,84 @@ section.grid-section--no-divider{
      var(--margin-x) — mismo criterio que Statement. */
   padding-right: var(--margin-x);
 }
+
+/* ============================================
+   Light Mirage
+   ============================================ */
+
+/* ---------- Textos justificados (a pedido del cliente, solo en esta
+   ventana): el texto de cierre de "Plataforma de Arte Digital" y el
+   pie de cada captura de la app. El texto superpuesto sobre la foto
+   de hero (.product-hero__caption) no entra acá — sigue centrado,
+   como en el resto de las páginas de producto. ---------- */
+#plataforma-arte-digital .section-caption p,
+.lm-screens .photo-caption-grid__item p{
+  text-align: justify;
+}
+
+/* ---------- 4 capturas de la app con su propio pie ("Playing",
+   "Browse", "Filters", "Brightness"). Reutiliza
+   .photo-caption-grid.swipe-grid tal cual (grilla 2x2 en tablet, foto
+   cuadrada, swipe+puntitos en celular) con las fotos del set "tablet
+   y mobile" que dio el cliente. Cada foto es un <picture>: en
+   desktop (≥820px) el navegador elige sola la versión "desktop" (las
+   mismas capturas, recortadas más de cerca al teléfono) sin JS ni
+   duplicar el HTML de las leyendas.
+   En desktop el layout cambia por completo, así que se sobreescribe
+   acá mismo en vez de heredar el grid de .photo-caption-grid: una
+   sola fila con el mismo espacio entre fotos que entre las fotos y
+   los laterales (justify-content:space-evenly) y cada foto a la
+   altura de las fotos cuadradas del duo-gallery de "Plataforma de
+   Arte Digital" de arriba (mismo cálculo: (100vw - --photo-gap) / 2).
+   Como estas fotos son rectangulares, no cuadradas, el ancho que les
+   toca a esa altura sale de su proporción real (834x1800 ya
+   redimensionadas, equivalente a las 4493x9697 originales = 0.4633) —
+   el pie de cada una usa el mismo cálculo de ancho para quedar
+   centrado y justificado contra su propia foto, no contra toda la
+   tarjeta.
+   display:grid en vez de flex a propósito: setupLoopingCarousel()
+   (main.js) arma clones para loop infinito en cualquier galería cuyo
+   display computado sea "flex" — .swipe-grid ya usa ese chequeo para
+   saber si de verdad es un carrusel activo (display:flex, o sea
+   celular) o no (grid, desktop/tablet). Si acá se pusiera flex,
+   quedaría marcado como carrusel también en desktop y main.js le
+   sumaría clones del primer/último ítem, duplicando fotos. Grid con
+   justify-content:space-evenly logra la misma distribución simétrica
+   sin ese efecto secundario. */
+@media (min-width: 820px){
+  .lm-screens{
+    display: grid;
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    gap: 0; /* el espacio entre fotos ya lo da justify-content */
+  }
+  .lm-screens .photo-caption-grid__item{
+    padding-bottom: 100px;
+  }
+  .lm-screens .thumb{
+    aspect-ratio: auto;
+    width: calc((100vw - var(--photo-gap)) / 2 * 0.4633);
+    height: calc((100vw - var(--photo-gap)) / 2);
+  }
+  .lm-screens .photo-caption-grid__item p{
+    max-width: calc((100vw - var(--photo-gap)) / 2 * 0.4633);
+    margin-inline: auto;
+    padding-inline: 0;
+  }
+}
+
+/* ---------- Cierre de página: el archivo del cliente trae solo el
+   ícono circular (a diferencia de Trinity/Omni/Infinity, que ya
+   incluyen el nombre del producto dentro del mismo PNG) — el nombre
+   se agrega acá como texto, mismo tamaño/tracking que el resto de
+   los textos chicos del sitio. ---------- */
+.product-outro__wordmark{
+  margin: 20px 0 0;
+  font-size: 20px;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+}
