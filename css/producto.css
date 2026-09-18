@@ -1404,6 +1404,27 @@ section.grid-section--no-divider{
 }
 
 /* ============================================
+   Textos justificados (pedido explícito, por página)
+   ============================================ */
+/* Omni: texto de cada una de las 4 fotos debajo del hero (sin título
+   de sección, ver .untitled-section en omni.html) y el de "App
+   integrada para experiencia interactiva". */
+.untitled-section .photo-caption-grid__item p,
+#app-integrada .photo-caption-grid__item p{
+  text-align: justify;
+}
+/* Trinity: "Hard & Soft" y "Experiencia interactiva". */
+#hard-soft .duo-columns__col p{
+  text-align: justify;
+}
+/* Infinity: texto debajo de las 2 fotos que siguen al hero (sin
+   título de sección, mismo .untitled-section que Omni pero acá con
+   duo-gallery + .section-caption en vez de photo-caption-grid). */
+.untitled-section .section-caption p{
+  text-align: justify;
+}
+
+/* ============================================
    Light Mirage
    ============================================ */
 
@@ -1483,6 +1504,10 @@ section.grid-section--no-divider{
        centrada, aunque el texto sí se veía centrado (bug real: el
        texto solo parecía "expandirse" hacia la derecha). */
     margin-inline: auto;
+    /* Separación entre la foto y su pie de texto: +50% sobre la
+       separación general del sitio (15px, .photo-caption-grid__item
+       .thumb) — pedido explícito, solo para estas 4 capturas. */
+    margin-bottom: 22.5px; /* 15px + 50% */
   }
   .lm-screens .photo-caption-grid__item p{
     /* mismo ancho que la foto (ver .lm-screens .thumb) + más todavía
