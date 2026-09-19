@@ -1703,3 +1703,16 @@ section.grid-section--no-divider{
     visibility: visible;
   }
 }
+/* "App integrada..." (Omni) es swipe solo en celular (a diferencia de
+   Light Mirage, que también lo es en tablet, ver .lm-screens más
+   arriba) — la regla genérica de arriba muestra .synced-captions
+   hasta los 819px, pero en tablet esta sección vuelve a la grilla
+   2 columnas normal, con cada <p> ya visible dentro de su propia
+   tarjeta: sin este corte, el texto de "Integra múltiples
+   funciones..." se veía duplicado (una vez en su tarjeta, otra en
+   .synced-captions, que seguía de pie). */
+@media (min-width: 641px) and (max-width: 819px){
+  #app-integrada .synced-captions{
+    display: none;
+  }
+}
