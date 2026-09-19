@@ -63,12 +63,25 @@
   background: #000000;
   padding: 80px var(--margin-x);
 }
+/* Tablet y celular: de borde a borde, sin margen lateral ni tope de
+   ancho — pedido explícito, a diferencia del desktop, que sí lo
+   conserva centrado con margen. */
+@media (max-width: 819px){
+  .product-video{
+    padding: 80px 0;
+  }
+}
 .product-video__frame{
   position: relative;
   max-width: 960px;
   margin: 0 auto;
   aspect-ratio: 16 / 9;
   overflow: hidden;
+}
+@media (max-width: 819px){
+  .product-video__frame{
+    max-width: none;
+  }
 }
 .product-video__frame iframe{
   position: absolute;
@@ -643,10 +656,25 @@
   .swipe-grid + .gallery-dots{
     margin-bottom: 84px; /* + 16px de margin-top = 100px, mismo criterio que el resto del sitio */
   }
-  /* "App integrada..." queda justo antes de las fotos finales: un 50%
-     más de separación ahí (100px -> 150px), igual que en tablet/desktop. */
+  /* "App integrada...": mismo orden foto -> puntitos -> texto que
+     Light Mirage (ver .synced-captions más abajo) — el texto de cada
+     tarjeta se oculta acá (se clona en .synced-captions vía JS) y los
+     puntitos dejan de ser lo último antes de la próxima sección,
+     así que ya no necesitan el margen extra de abajo; ese respiro
+     (150px = 100px + 50%, la misma separación que ya tenía en
+     tablet/desktop por quedar justo antes de las fotos finales) pasa
+     a ponerlo .synced-captions. */
+  #app-integrada .thumb{
+    margin-bottom: 0;
+  }
+  #app-integrada .photo-caption-grid__item p{
+    display: none;
+  }
   #app-integrada .swipe-grid + .gallery-dots{
-    margin-bottom: 134px; /* + 16px de margin-top = 150px */
+    margin-bottom: 0;
+  }
+  #app-integrada .synced-captions{
+    padding-bottom: 150px;
   }
 }
 
@@ -991,6 +1019,13 @@
 @media (min-width: 1139px){
   .grid-note__caption{ font-size: 26px; }
   .grid-note__ref{ font-size: 19.5px; } /* 13px + 50% */
+}
+/* Desktop: espaciado izquierdo más chico (pedido explícito, valor
+   exacto dado por el cliente: 34px en vez de los 64px de
+   var(--margin-x) que usa el resto de los textos de la sección). El
+   padding derecho no se toca. */
+@media (min-width: 820px){
+  .grid-note__caption{ padding-left: 34px; }
 }
 @media (max-width: 640px){
   .grid-note{
@@ -1439,6 +1474,13 @@ section.grid-section--no-divider{
 #app-integrada .photo-caption-grid__item p{
   text-align: justify;
 }
+/* Omni (solo tablet): las 4 fotos debajo del hero, sin justificar —
+   alineadas a la izquierda. Desktop y celular quedan justificados. */
+@media (min-width: 641px) and (max-width: 819px){
+  .untitled-section .photo-caption-grid__item p{
+    text-align: left;
+  }
+}
 /* Trinity: "Hard & Soft" y "Experiencia interactiva". */
 #hard-soft .duo-columns__col p{
   text-align: justify;
@@ -1455,24 +1497,6 @@ section.grid-section--no-divider{
   #escultura .section-caption p,
   #arte-digital .section-caption p{
     text-align: justify;
-  }
-}
-
-/* ---------- Omni: "Integra múltiples facetas..." en una sola línea
-   (desktop real, desde el Punto Quiebre Hamburguesa 1139px) — es la
-   más larga de las 4 leyendas debajo del hero y quedaba partida en 2
-   renglones. Por debajo de los 1139px no hay ancho de columna real
-   para sostener el renglón completo a un tamaño legible (el texto
-   necesitaría ~500px y la columna en tablet no llega a eso), así que
-   ahí se deja como el resto: normal, en 2 renglones. Tamaño de letra
-   propio (17px) en vez del clamp compartido con las otras 3 leyendas
-   — más chico a propósito, es lo que permite que entre en un renglón
-   sin invadir la columna de al lado. */
-@media (min-width: 1139px){
-  .untitled-section .photo-caption-grid__item p.caption-oneline{
-    white-space: nowrap;
-    max-width: none;
-    font-size: 17px;
   }
 }
 
