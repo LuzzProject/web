@@ -729,13 +729,25 @@
      página (abre el lightbox en la misma), así que no lleva el efecto
      de subir opacidad/brillo al tocar — ver .item para dónde sí va. */
 }
-.final-gallery .thumb{ cursor: pointer; } /* se abren en grande al tocarlas */
+/* ---------- Lightbox genérico: cualquier galería marcada con
+   [data-lightbox] se abre en grande al tocar una foto (ver js/main.js
+   para qué formato responde cada valor: "always" o "tablet"). Cursor
+   en forma de mano como pista, nada más donde de verdad responde al
+   toque en este ancho — "always" en cualquier formato, "tablet" solo
+   ahí (en celular esas galerías ya son swipe en la propia página, en
+   desktop se ven todas las fotos juntas). */
+[data-lightbox="always"] img{ cursor: pointer; }
+@media (min-width: 641px) and (max-width: 819px){
+  [data-lightbox="tablet"] img{ cursor: pointer; }
+}
 
-/* ---------- Lightbox: foto de la galería final en grande ----------
-   Se abre al tocar/cliquear cualquier foto de .final-gallery. Adentro,
-   la foto tocada queda centrada y se puede deslizar (swipe) para ver
-   las demás, con los mismos puntitos que el resto del sitio (ver
-   .gallery-dots) — acá siempre visibles, sea cual sea el tamaño de
+/* ---------- Lightbox: foto en grande, con swipe entre las demás de
+   la misma galería ----------
+   Se abre al tocar/cliquear cualquier foto de una galería marcada con
+   [data-lightbox]. Adentro, la foto tocada queda centrada y se puede
+   deslizar (swipe) para ver las demás de esa galería, con los mismos
+   puntitos que el resto del sitio (ver .gallery-dots) — acá siempre
+   visibles, sea cual sea el tamaño de
    pantalla, a diferencia de las otras galerías que solo los muestran
    en celular. */
 .lightbox{

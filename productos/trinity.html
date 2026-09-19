@@ -83,7 +83,7 @@
 <!-- ============ ESCULTURA ============ -->
 <section class="grid-section" id="escultura">
   <h2>Escultura</h2>
-  <div class="trio-gallery">
+  <div class="trio-gallery" data-lightbox="tablet">
     <img src="../img/trinity/escultura-izquierda.jpg" alt="Detalle de la escultura Trinity" data-reveal>
     <img src="../img/trinity/escultura-centro.jpg" alt="Escultura Trinity completa" data-reveal>
     <img src="../img/trinity/escultura-derecha.jpg" alt="Detalle de la escultura Trinity" data-reveal>
@@ -98,7 +98,7 @@
 <!-- ============ ARTE DIGITAL ============ -->
 <section class="grid-section" id="arte-digital">
   <h2>Arte Digital</h2>
-  <div class="trio-gallery">
+  <div class="trio-gallery" data-lightbox="tablet">
     <img src="../img/trinity/arte-digital-izquierda.jpg" alt="Arte digital proyectado sobre Trinity" data-reveal>
     <img src="../img/trinity/arte-digital-centro.jpg" alt="Arte digital proyectado sobre Trinity" data-reveal>
     <img src="../img/trinity/arte-digital-derecha.jpg" alt="Arte digital proyectado sobre Trinity" data-reveal>
@@ -113,7 +113,7 @@
 <!-- ============ PROYECCIÓN ============ -->
 <section class="grid-section" id="proyeccion">
   <h2>Proyección</h2>
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="../img/trinity/proyeccion-izquierda.jpg" alt="Proyección de Trinity en evento"></div>
     <div class="thumb" data-reveal><img src="../img/trinity/proyeccion-derecha.jpg" alt="Proyección de Trinity en interior"></div>
   </div>
@@ -143,7 +143,7 @@
 
 <!-- ============ GALERÍA FINAL ============ -->
 <section class="final-gallery-section">
-  <div class="final-gallery">
+  <div class="final-gallery" data-lightbox="always">
     <div class="thumb" data-reveal><img src="../img/trinity/final-arriba-izquierda.jpg" alt="Trinity en evento social"></div>
     <div class="thumb" data-reveal><img src="../img/trinity/final-arriba-derecha.jpg" alt="Trinity en restaurante"></div>
     <div class="thumb" data-reveal><img src="../img/trinity/final-abajo-izquierda.jpg" alt="Trinity en living de noche"></div>
@@ -151,16 +151,12 @@
   </div>
 </section>
 
-<!-- ============ LIGHTBOX (fotos finales en grande, con swipe) ============ -->
+<!-- ============ LIGHTBOX (compartido: cualquier galería marcada con
+     data-lightbox se abre acá, ver js/main.js) ============ -->
 <div class="lightbox" id="lightbox" aria-hidden="true">
   <button class="lightbox__close" id="lightboxClose" aria-label="Cerrar">✕</button>
   <div class="lightbox__stage">
-    <div class="lightbox__track" id="lightboxTrack">
-      <div class="lightbox__item"><img src="../img/trinity/final-arriba-izquierda.jpg" alt="Trinity en evento social"></div>
-      <div class="lightbox__item"><img src="../img/trinity/final-arriba-derecha.jpg" alt="Trinity en restaurante"></div>
-      <div class="lightbox__item"><img src="../img/trinity/final-abajo-izquierda.jpg" alt="Trinity en living de noche"></div>
-      <div class="lightbox__item"><img src="../img/trinity/final-abajo-derecha.jpg" alt="Trinity iluminada en living"></div>
-    </div>
+    <div class="lightbox__track" id="lightboxTrack"></div>
     <div class="lightbox__zones">
       <button class="lightbox__zone" id="lightboxZoneLeft" aria-label="Foto anterior"></button>
       <button class="lightbox__zone" id="lightboxZoneRight" aria-label="Foto siguiente"></button>

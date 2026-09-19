@@ -69,7 +69,7 @@
 <section class="grid-section work-item" id="nacion-sushi">
   <h2>Nación Sushi</h2>
   <p class="section-intro" data-reveal>Diseño, desarrollo y técnica de mapping para mural del restaurant Nación Sushi</p>
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="img/trabajos/nacion-sushi-1.jpg" alt="Mural de mapping en Nación Sushi, sombrero de paja con fondo urbano en rosa y azul"></div>
     <div class="thumb" data-reveal><img src="img/trabajos/nacion-sushi-2.jpg" alt="Mural de mapping en Nación Sushi, escena en montaña con paleta violeta"></div>
     <div class="thumb" data-reveal><img src="img/trabajos/nacion-sushi-3.jpg" alt="Mural de mapping en Nación Sushi, geometría colorida sobre la figura"></div>
@@ -85,7 +85,7 @@
 <section class="grid-section work-item" id="gewin-iconnect">
   <h2>Gewin / Edificio Iconnect</h2>
   <p class="section-intro" data-reveal>Diseño, desarrollo y técnica de visuales artísticas para hall de edificio ICONNNECT</p>
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="img/trabajos/iconnect-1.jpg" alt="Pantalla LED con visual abstracto de ondas rojas y naranjas en hall de Iconnect"></div>
     <div class="thumb" data-reveal><img src="img/trabajos/iconnect-2.jpg" alt="Pantalla LED con patrón geométrico azul en hall de Iconnect"></div>
     <div class="thumb" data-reveal><img src="img/trabajos/iconnect-3.jpg" alt="Pantalla LED con visual de datos en violeta y naranja en hall de Iconnect"></div>
@@ -101,7 +101,7 @@
 <section class="grid-section work-item" id="moala">
   <h2>Moala</h2>
   <p class="section-intro" data-reveal>Diseño, desarrollo y técnica de mapping para revestimiento 3D de madera en chocolatería Moala</p>
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="img/trabajos/moala-1.jpg" alt="Logo Moala Chocolates proyectado en revestimiento de madera, paleta arcoíris"></div>
     <div class="thumb" data-reveal><img src="img/trabajos/moala-2.jpg" alt="Logo Moala Chocolates proyectado en revestimiento de madera, paleta verde y flores"></div>
     <div class="thumb" data-reveal><img src="img/trabajos/moala-3.jpg" alt="Logo Moala Chocolates proyectado en revestimiento de madera, paleta azul con flamencos"></div>
@@ -117,7 +117,7 @@
 <section class="grid-section work-item" id="alberto-ferreras">
   <h2>Instalación para Alberto Ferreras</h2>
   <p class="section-intro" data-reveal>Diseño de instalación multipantalla para exposición del artista Alberto Ferreras</p>
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="img/trabajos/albert-1.jpg" alt="Instalación multipantalla de Alberto Ferreras, retratos en blanco y negro"></div>
     <div class="thumb" data-reveal><img src="img/trabajos/albert-2.jpg" alt="Instalación multipantalla de Alberto Ferreras, escena de campamento en blanco y negro"></div>
   </div>
@@ -126,6 +126,20 @@
     <p class="grid-note__ref">25 / 06 / 26</p>
   </div>
 </section>
+
+<!-- ============ LIGHTBOX (compartido: cualquier galería marcada con
+     data-lightbox se abre acá, ver js/main.js) ============ -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox__close" id="lightboxClose" aria-label="Cerrar">✕</button>
+  <div class="lightbox__stage">
+    <div class="lightbox__track" id="lightboxTrack"></div>
+    <div class="lightbox__zones">
+      <button class="lightbox__zone" id="lightboxZoneLeft" aria-label="Foto anterior"></button>
+      <button class="lightbox__zone" id="lightboxZoneRight" aria-label="Foto siguiente"></button>
+    </div>
+  </div>
+  <div class="gallery-dots" aria-hidden="true"></div>
+</div>
 
 <!-- ============ FOOTER / CONTACTO ============ -->
 <footer class="contact" id="contacto">

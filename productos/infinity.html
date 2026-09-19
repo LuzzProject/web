@@ -76,7 +76,7 @@
 
 <!-- ============ COMIENZO (sin título de sección) ============ -->
 <section class="untitled-section">
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="../img/infinity/comienzo-izquierda.jpg" alt="Infinity — detalle de las pistas"></div>
     <div class="thumb" data-reveal><img src="../img/infinity/comienzo-derecha.jpg" alt="Infinity iluminada en pared de hormigón"></div>
   </div>
@@ -89,7 +89,7 @@
 <!-- ============ PROYECCIÓN MAPEADA ============ -->
 <section class="grid-section" id="proyeccion-mapeada">
   <h2>Proyección mapeada</h2>
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="../img/infinity/proyeccion-arriba-izquierda.jpg" alt="Proyección mapeada sobre Infinity, visuales blancas con detalle rojo"></div>
     <div class="thumb" data-reveal><img src="../img/infinity/proyeccion-arriba-derecha.jpg" alt="Proyección mapeada sobre Infinity en sala de estar"></div>
     <div class="thumb" data-reveal><img src="../img/infinity/proyeccion-abajo-izquierda.jpg" alt="Proyección mapeada sobre Infinity en escala de grises"></div>
@@ -104,7 +104,7 @@
 <!-- ============ FORMATO DISPLAY ============ -->
 <section class="grid-section" id="formato-display">
   <h2>Formato Display</h2>
-  <div class="natural-gallery">
+  <div class="natural-gallery" data-lightbox="tablet">
     <div class="natural-gallery__item" data-reveal><img src="../img/infinity/display-izquierda.jpg" alt="Infinity en formato display, pantalla vertical"></div>
     <div class="natural-gallery__item" data-reveal><img src="../img/infinity/display-derecha.jpg" alt="Infinity en formato display, pantalla LED vertical"></div>
   </div>
@@ -118,6 +118,20 @@
 <section class="product-outro">
   <img class="product-outro__mark" src="../img/infinity/logo-outro.png" alt="Infinity">
 </section>
+
+<!-- ============ LIGHTBOX (compartido: cualquier galería marcada con
+     data-lightbox se abre acá, ver js/main.js) ============ -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox__close" id="lightboxClose" aria-label="Cerrar">✕</button>
+  <div class="lightbox__stage">
+    <div class="lightbox__track" id="lightboxTrack"></div>
+    <div class="lightbox__zones">
+      <button class="lightbox__zone" id="lightboxZoneLeft" aria-label="Foto anterior"></button>
+      <button class="lightbox__zone" id="lightboxZoneRight" aria-label="Foto siguiente"></button>
+    </div>
+  </div>
+  <div class="gallery-dots" aria-hidden="true"></div>
+</div>
 
 <!-- ============ FOOTER / CONTACTO ============ -->
 <footer class="contact" id="contacto">

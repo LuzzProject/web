@@ -74,7 +74,7 @@
 <section class="grid-section" id="creacion-instalaciones">
   <h2>Creación de Instalaciones<br>artísticas digitales</h2>
   <p class="section-tags" data-reveal>LED · Mapping · Display · Ingeniería óptica · Montaje</p>
-  <div class="duo-gallery" data-ref-hide-index="2">
+  <div class="duo-gallery" data-ref-hide-index="2" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="img/desarrollos/instalaciones-1.jpg" alt="Fachada con paneles curvos de LED en tienda Chanel"></div>
     <div class="thumb" data-reveal><img src="img/desarrollos/instalaciones-2.jpg" alt="Instalación de columnas de luz en espacio de eventos"></div>
     <div class="thumb thumb--with-caption" data-reveal>
@@ -94,7 +94,7 @@
 <section class="grid-section" id="generacion-contenido">
   <h2>Generación de contenido</h2>
   <p class="section-intro" data-reveal>Desarrollo de visuales creadas específicamente para cada instalación.</p>
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="img/desarrollos/contenido-1.jpg" alt="Columnas de piedra con proyección de visuales orgánicas"></div>
     <div class="thumb" data-reveal><img src="img/desarrollos/contenido-2.jpg" alt="Pantalla LED curva con visual de ciudad en tienda Louis Vuitton"></div>
     <div class="thumb" data-reveal><img src="img/desarrollos/contenido-3.jpg" alt="Muro de plantas con pantallas LED integradas"></div>
@@ -110,7 +110,7 @@
 <section class="grid-section" id="definicion-identidad">
   <h2>Definición de la<br>identidad del lugar</h2>
   <p class="section-intro" data-reveal>Para cada instalación se define la forma de la obra y las líneas estética del contenido.</p>
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="img/desarrollos/identidad-1.jpg" alt="Escalera mecánica con diseño de neón en espiral"></div>
     <div class="thumb" data-reveal><img src="img/desarrollos/identidad-2.jpg" alt="Pantallas digitales con ilustración floral en mármol"></div>
     <div class="thumb" data-reveal><img src="img/desarrollos/identidad-3.jpg" alt="Pasillo con paneles de LED reflejados en espejos"></div>
@@ -129,7 +129,7 @@
   <div class="admin-block">
     <h3 class="section-subtitle" data-reveal>Administración Remota</h3>
     <p class="admin-block__text" data-reveal>Se suben nuevas visuales y gestionan las listas de reproducción desde la nube de Light&nbsp;Mirage.</p>
-    <div class="duo-gallery">
+    <div class="duo-gallery" data-lightbox="tablet">
       <div class="thumb" data-reveal><img src="img/desarrollos/administracion-1.jpg" alt="Pantalla LED en esquina con visual abstracto de colores"></div>
       <div class="thumb" data-reveal><img src="img/desarrollos/administracion-3.jpg" alt="Pasillo con paneles LED de diseño oriental en rojo y dorado"></div>
     </div>
@@ -142,7 +142,7 @@
   <div class="admin-block">
     <h3 class="section-subtitle" data-reveal>Administración Local</h3>
     <p class="admin-block__text" data-reveal>Los visitantes eligen la obra desde un banco de imágenes, a través de un dispositivo ubicado junto a la instalación.</p>
-    <div class="duo-gallery">
+    <div class="duo-gallery" data-lightbox="tablet">
       <div class="thumb" data-reveal><img src="img/desarrollos/administracion-2.jpg" alt="Hall de acceso con pantalla LED de bosque nevado"></div>
       <div class="thumb" data-reveal><img src="img/desarrollos/administracion-4.jpg" alt="Galería con pantallas digitales de retratos florales"></div>
     </div>
@@ -152,6 +152,20 @@
     </div>
   </div>
 </section>
+
+<!-- ============ LIGHTBOX (compartido: cualquier galería marcada con
+     data-lightbox se abre acá, ver js/main.js) ============ -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox__close" id="lightboxClose" aria-label="Cerrar">✕</button>
+  <div class="lightbox__stage">
+    <div class="lightbox__track" id="lightboxTrack"></div>
+    <div class="lightbox__zones">
+      <button class="lightbox__zone" id="lightboxZoneLeft" aria-label="Foto anterior"></button>
+      <button class="lightbox__zone" id="lightboxZoneRight" aria-label="Foto siguiente"></button>
+    </div>
+  </div>
+  <div class="gallery-dots" aria-hidden="true"></div>
+</div>
 
 <!-- ============ FOOTER / CONTACTO ============ -->
 <footer class="contact" id="contacto">

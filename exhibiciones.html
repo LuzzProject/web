@@ -69,7 +69,7 @@
 <section class="grid-section work-item" id="ugallery">
   <h2>UGallery</h2>
   <p class="section-intro" data-reveal>Inauguración de la obra lumínica Trinity en UGallery, bajo la curaduría de Marcela Furlani</p>
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="img/exhibiciones/ugallery-1.jpg" alt="Trinity en UGallery junto al curador, escultura lumínica en colores"></div>
     <div class="thumb" data-reveal><img src="img/exhibiciones/ugallery-2.jpg" alt="Visitante fotografiando Trinity en UGallery, patrón blanco"></div>
     <div class="thumb" data-reveal><img src="img/exhibiciones/ugallery-3.jpg" alt="Trinity en UGallery, sala vacía con patrón blanco iluminado"></div>
@@ -85,7 +85,7 @@
 <section class="grid-section work-item" id="otro-dia-perdido">
   <h2>Otro Día Perdido</h2>
   <p class="section-intro" data-reveal>Presentación de Trinity en el Programa Otro Día Perdido, conducido por Mario Pergolini</p>
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="img/exhibiciones/otro-dia-perdido-1.jpg" alt="Trinity en el estudio de Otro Día Perdido, detalle dorado, y Mario Pergolini presentando la obra"></div>
     <div class="thumb" data-reveal><img src="img/exhibiciones/otro-dia-perdido-2.jpg" alt="Trinity en el estudio de Otro Día Perdido, detalle en blanco y azul"></div>
     <div class="thumb" data-reveal><img src="img/exhibiciones/otro-dia-perdido-3.jpg" alt="Trinity en el estudio de Otro Día Perdido, detalle multicolor"></div>
@@ -101,7 +101,7 @@
 <section class="grid-section work-item" id="mirabilia-851">
   <h2>Mirabilia 851</h2>
   <p class="section-intro" data-reveal>Presentación de Omni en el marco del evento del Mes del Diseño y la Arquitectura</p>
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="img/exhibiciones/mirabilia-1.jpg" alt="Omni en Mirabilia 851, pasillo con esfera anaranjada"></div>
     <div class="thumb" data-reveal><img src="img/exhibiciones/mirabilia-2.jpg" alt="Omni en Mirabilia 851, visual circular multicolor"></div>
     <div class="thumb" data-reveal><img src="img/exhibiciones/mirabilia-3.jpg" alt="Omni en Mirabilia 851, visual de luna"></div>
@@ -117,7 +117,7 @@
 <section class="grid-section work-item" id="tendencia-arenales">
   <h2>Tendencia Arenales</h2>
   <p class="section-intro" data-reveal>Exhibición de las obras Trinity, Omni e Infinity en el hotel Grand Brizzo durante el evento Tendencia Arenales</p>
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="img/exhibiciones/tendencia-arenales-1.jpg" alt="Trinity en el hotel Grand Brizzo, visitantes fotografiando la obra"></div>
     <div class="thumb" data-reveal><img src="img/exhibiciones/tendencia-arenales-2.jpg" alt="Omni en el lounge del hotel Grand Brizzo, visual circular"></div>
     <div class="thumb" data-reveal><img src="img/exhibiciones/tendencia-arenales-3.jpg" alt="Trinity en el hotel Grand Brizzo, visual verde"></div>
@@ -128,6 +128,20 @@
     <p class="grid-note__ref">29 / 05 / 25</p>
   </div>
 </section>
+
+<!-- ============ LIGHTBOX (compartido: cualquier galería marcada con
+     data-lightbox se abre acá, ver js/main.js) ============ -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox__close" id="lightboxClose" aria-label="Cerrar">✕</button>
+  <div class="lightbox__stage">
+    <div class="lightbox__track" id="lightboxTrack"></div>
+    <div class="lightbox__zones">
+      <button class="lightbox__zone" id="lightboxZoneLeft" aria-label="Foto anterior"></button>
+      <button class="lightbox__zone" id="lightboxZoneRight" aria-label="Foto siguiente"></button>
+    </div>
+  </div>
+  <div class="gallery-dots" aria-hidden="true"></div>
+</div>
 
 <!-- ============ FOOTER / CONTACTO ============ -->
 <footer class="contact" id="contacto">

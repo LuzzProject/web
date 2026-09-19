@@ -491,27 +491,90 @@ window.addEventListener('load', () => {
   });
 });
 
-/* ---------- Lightbox de la galería final ----------
-   Tocar/cliquear cualquier foto de .final-gallery la abre en grande,
-   ya centrada en esa foto, y se puede deslizar para ver las demás
-   (mismo carrusel + puntitos que el resto del sitio, ver arriba). */
+/* ---------- Lightbox genérico ----------
+   Un solo lightbox por página (mismo bloque que ya usaba la galería
+   final de Trinity), reusado para cualquier galería marcada con
+   [data-lightbox]: tocar una foto la abre en pantalla completa, ya
+   centrada en esa foto, con swipe entre las demás fotos de ESA MISMA
+   galería (si hay más de una) — el <div id="lightboxTrack"> arranca
+   vacío en el HTML y se rearma con las fotos que correspondan cada
+   vez que se abre.
+   El atributo data-lightbox decide en qué formato responde el toque:
+   - "always": en los 3 formatos (ej. la galería final de Trinity).
+   - "tablet": solo tablet, 641-819px (pedido explícito para el resto
+     de las galerías: en celular cada una ya es swipe en la propia
+     página, en desktop se ven todas las fotos juntas). */
 const lightbox = document.getElementById('lightbox');
 const lightboxTrack = document.getElementById('lightboxTrack');
 const lightboxClose = document.getElementById('lightboxClose');
-const finalThumbs = document.querySelectorAll('.final-gallery .thumb');
+const lightboxDotsEl = lightbox ? lightbox.querySelector('.gallery-dots') : null;
+const lightboxGalleries = document.querySelectorAll('[data-lightbox]');
 
-if (lightbox && lightboxTrack && lightboxClose && finalThumbs.length) {
-  // el track es carrusel (flex) en los 3 formatos, así que siempre
-  // tiene loop armado (ver setupLoopingCarousel más arriba); los
-  // índices reales (0..3) se corren +1 en allItems por el clon inicial
-  const loop = lightboxTrack.__loop;
+if (lightbox && lightboxTrack && lightboxClose && lightboxDotsEl && lightboxGalleries.length) {
+  const lightboxZoneLeft = document.getElementById('lightboxZoneLeft');
+  const lightboxZoneRight = document.getElementById('lightboxZoneRight');
+  const tabletMedia = window.matchMedia('(min-width: 641px) and (max-width: 819px)');
 
-  function openLightbox(index){
+  let activeLoop = null;
+
+  function openLightbox(images, startIndex){
+    // rearma el track con las fotos de la galería tocada (clonando
+    // src/alt, no los nodos: la galería de origen no se toca)
+    lightboxTrack.innerHTML = '';
+    images.forEach(img => {
+      const item = document.createElement('div');
+      item.className = 'lightbox__item';
+      const clone = document.createElement('img');
+      clone.src = img.currentSrc || img.src;
+      clone.alt = img.alt || '';
+      item.appendChild(clone);
+      lightboxTrack.appendChild(item);
+    });
+
+    const loop = setupLoopingCarousel(lightboxTrack);
+    lightboxTrack.__loop = loop;
+    activeLoop = loop;
+
+    lightboxDotsEl.innerHTML = '';
+    const items = loop ? loop.allItems.slice(1, -1) : [...lightboxTrack.children];
+    items.forEach((_, i) => {
+      const d = document.createElement('span');
+      if (i === startIndex) d.classList.add('active');
+      lightboxDotsEl.appendChild(d);
+    });
+    const dots = lightboxDotsEl.children;
+
+    function updateActiveDot(){
+      let realIndex;
+      if (loop) {
+        realIndex = ((loop.closestIndex() - 1) + loop.total) % loop.total;
+      } else {
+        const center = lightboxTrack.scrollLeft + lightboxTrack.clientWidth / 2;
+        let closest = 0, dist = Infinity;
+        items.forEach((item, i) => {
+          const itemCenter = item.offsetLeft + item.offsetWidth / 2;
+          const distance = Math.abs(itemCenter - center);
+          if (distance < dist) { dist = distance; closest = i; }
+        });
+        realIndex = closest;
+      }
+      [...dots].forEach((d, i) => d.classList.toggle('active', i === realIndex));
+    }
+    let dotsTickScheduled = false;
+    lightboxTrack.addEventListener('scroll', () => {
+      if (dotsTickScheduled) return;
+      dotsTickScheduled = true;
+      requestAnimationFrame(() => {
+        updateActiveDot();
+        dotsTickScheduled = false;
+      });
+    }, { passive: true });
+
     lightbox.classList.add('open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden'; // no scrollear la página de atrás mientras está abierto
-    if (loop) loop.jump(index + 1, 'auto');
-    lightboxTrack.dispatchEvent(new Event('scroll')); // recalcula el puntito activo de una
+    if (loop) loop.jump(startIndex + 1, 'auto');
+    updateActiveDot();
   }
   function closeLightbox(){
     lightbox.classList.remove('open');
@@ -519,13 +582,23 @@ if (lightbox && lightboxTrack && lightboxClose && finalThumbs.length) {
     document.body.style.overflow = '';
   }
 
-  finalThumbs.forEach((thumb, i) => {
-    thumb.setAttribute('tabindex', '0');
-    thumb.setAttribute('role', 'button');
-    thumb.setAttribute('aria-label', 'Ver foto en grande');
-    thumb.addEventListener('click', () => openLightbox(i));
-    thumb.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); }
+  lightboxGalleries.forEach(gallery => {
+    const scope = gallery.dataset.lightbox; // "always" | "tablet"
+    const imgs = [...gallery.querySelectorAll('img')];
+    if (imgs.length < 1) return;
+    imgs.forEach((img, i) => {
+      img.setAttribute('tabindex', '0');
+      img.setAttribute('role', 'button');
+      img.setAttribute('aria-label', 'Ver foto en grande');
+      const open = (e) => {
+        if (scope === 'tablet' && !tabletMedia.matches) return;
+        e.preventDefault();
+        openLightbox(imgs, i);
+      };
+      img.addEventListener('click', open);
+      img.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') open(e);
+      });
     });
   });
 
@@ -539,21 +612,20 @@ if (lightbox && lightboxTrack && lightboxClose && finalThumbs.length) {
 
   /* Navegación por clic (desktop/tablet, sin touch para hacer swipe):
      dos zonas invisibles a los costados de la foto, mismo criterio que
-     los zoneLeft/zoneRight del hero del Home. */
-  const lightboxZoneLeft = document.getElementById('lightboxZoneLeft');
-  const lightboxZoneRight = document.getElementById('lightboxZoneRight');
-
-  // clic en la zona derecha estando en la última foto (o en la
-  // izquierda estando en la primera) desliza suave hacia el clon
-  // correspondiente; setupLoopingCarousel lo detecta al asentarse el
-  // scroll y salta sin animación a la foto real — así el clic también
-  // da la vuelta en loop, igual que el swipe.
-  if (loop) {
-    if (lightboxZoneLeft) {
-      lightboxZoneLeft.addEventListener('click', () => loop.jump(loop.closestIndex() - 1, 'smooth'));
-    }
-    if (lightboxZoneRight) {
-      lightboxZoneRight.addEventListener('click', () => loop.jump(loop.closestIndex() + 1, 'smooth'));
-    }
+     los zoneLeft/zoneRight del hero del Home. clic en la zona derecha
+     estando en la última foto (o en la izquierda estando en la
+     primera) desliza suave hacia el clon correspondiente;
+     setupLoopingCarousel lo detecta al asentarse el scroll y salta
+     sin animación a la foto real — así el clic también da la vuelta
+     en loop, igual que el swipe. */
+  if (lightboxZoneLeft) {
+    lightboxZoneLeft.addEventListener('click', () => {
+      if (activeLoop) activeLoop.jump(activeLoop.closestIndex() - 1, 'smooth');
+    });
+  }
+  if (lightboxZoneRight) {
+    lightboxZoneRight.addEventListener('click', () => {
+      if (activeLoop) activeLoop.jump(activeLoop.closestIndex() + 1, 'smooth');
+    });
   }
 }

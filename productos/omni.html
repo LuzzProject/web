@@ -74,7 +74,7 @@
 
 <!-- ============ 4 FOTOS CON LEYENDA (sin título de sección) ============ -->
 <section class="untitled-section">
-  <div class="photo-caption-grid">
+  <div class="photo-caption-grid" data-lightbox="tablet">
     <div class="photo-caption-grid__item" data-reveal>
       <div class="thumb"><img src="../img/omni/pantalla-led.jpg" alt="Omni — pantalla circular de LED"></div>
       <p>Omni es una pantalla circular de LED de alta resolución</p>
@@ -137,7 +137,7 @@
 
 <!-- ============ 2 FOTOS FINALES (sin texto) ============ -->
 <section style="background:#000000;">
-  <div class="duo-gallery">
+  <div class="duo-gallery" data-lightbox="tablet">
     <div class="thumb" data-reveal><img src="../img/omni/final-izquierda.jpg" alt="Omni — detalle circular"></div>
     <div class="thumb" data-reveal><img src="../img/omni/final-derecha.jpg" alt="Omni sobre pie"></div>
   </div>
@@ -148,6 +148,20 @@
 <section class="product-outro product-outro--omni">
   <img class="product-outro__mark" src="../img/omni/logo-outro.png" alt="Omni">
 </section>
+
+<!-- ============ LIGHTBOX (compartido: cualquier galería marcada con
+     data-lightbox se abre acá, ver js/main.js) ============ -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox__close" id="lightboxClose" aria-label="Cerrar">✕</button>
+  <div class="lightbox__stage">
+    <div class="lightbox__track" id="lightboxTrack"></div>
+    <div class="lightbox__zones">
+      <button class="lightbox__zone" id="lightboxZoneLeft" aria-label="Foto anterior"></button>
+      <button class="lightbox__zone" id="lightboxZoneRight" aria-label="Foto siguiente"></button>
+    </div>
+  </div>
+  <div class="gallery-dots" aria-hidden="true"></div>
+</div>
 
 <!-- ============ FOOTER / CONTACTO ============ -->
 <footer class="contact" id="contacto">
