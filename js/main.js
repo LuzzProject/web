@@ -245,7 +245,7 @@ document.querySelectorAll('.item').forEach(item => {
    afuera — sus fotos de ancho disparejo (angosta-ancha-angosta) no
    admiten el padding de centrado sin dejar un hueco negro/cortar la
    foto central, así que ahí el swipe sigue sin loop. */
-function setupLoopingCarousel(gallery){
+function setupLoopingCarousel(gallery, signal){
   if (gallery.classList.contains('trio-gallery')) return null;
   if (getComputedStyle(gallery).display !== 'flex') return null;
   const realItems = [...gallery.children];
@@ -314,11 +314,24 @@ function setupLoopingCarousel(gallery){
       if (idx === 0) jump(total, 'auto');          // llegó al clon del último -> salta a la real
       else if (idx === total + 1) jump(1, 'auto'); // llegó al clon del primero -> salta a la real
     }, 120); // espera a que el scroll/snap se asiente antes de decidir si hay que saltar
-  }, { passive: true });
+  }, { passive: true, signal });
 
+  // "signal" (AbortSignal, opcional): quita este listener solo cuando
+  // el que llama lo pide explícitamente — lo usa el lightbox genérico
+  // (ver más abajo) porque arma este carrusel de nuevo cada vez que se
+  // abre con otra galería, sobre el mismo <div id="lightboxTrack">
+  // reutilizado; sin esto, cada apertura sumaba un listener más
+  // (nunca se sacaban los anteriores) y los viejos seguían disparando
+  // jump() con su propio allItems ya desconectado del DOM (la galería
+  // anterior, borrada al reconstruir el track) — eso es lo que se
+  // sentía como que el swipe "se traba": listeners viejos peleando
+  // con el nuevo por controlar el scroll. Las demás galerías del
+  // sitio arman su carrusel una sola vez al cargar la página, así que
+  // llaman a esta función sin "signal" (undefined es válido para
+  // addEventListener) y no necesitan este cuidado.
   window.addEventListener('resize', () => {
     jump(closestIndex(), 'auto'); // reacomoda sin animar, sin perder la foto actual
-  });
+  }, { signal });
 
   return { allItems, total, jump, closestIndex };
 }
@@ -516,8 +529,12 @@ if (lightbox && lightboxTrack && lightboxClose && lightboxDotsEl && lightboxGall
   const tabletMedia = window.matchMedia('(min-width: 641px) and (max-width: 819px)');
 
   let activeLoop = null;
+  let lightboxAbort = null; // ver comentario en setupLoopingCarousel: corta los listeners de la apertura anterior antes de armar los nuevos
 
   function openLightbox(images, startIndex){
+    if (lightboxAbort) lightboxAbort.abort();
+    lightboxAbort = new AbortController();
+
     // rearma el track con las fotos de la galería tocada (clonando
     // src/alt, no los nodos: la galería de origen no se toca)
     lightboxTrack.innerHTML = '';
@@ -531,7 +548,7 @@ if (lightbox && lightboxTrack && lightboxClose && lightboxDotsEl && lightboxGall
       lightboxTrack.appendChild(item);
     });
 
-    const loop = setupLoopingCarousel(lightboxTrack);
+    const loop = setupLoopingCarousel(lightboxTrack, lightboxAbort.signal);
     lightboxTrack.__loop = loop;
     activeLoop = loop;
 
@@ -568,7 +585,7 @@ if (lightbox && lightboxTrack && lightboxClose && lightboxDotsEl && lightboxGall
         updateActiveDot();
         dotsTickScheduled = false;
       });
-    }, { passive: true });
+    }, { passive: true, signal: lightboxAbort.signal });
 
     lightbox.classList.add('open');
     lightbox.setAttribute('aria-hidden', 'false');
