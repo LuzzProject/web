@@ -53,6 +53,30 @@
   }
 }
 
+/* ---------- Omni: bajada del hero más grande (pedido explícito, solo
+   esta ventana — Trinity/Infinity siguen con el tamaño de arriba) ----------
+   +20% en mobile, +30% en tablet y desktop, cada uno sobre su propio
+   valor actual (no todos desde el mismo base): 20px -> 24px en
+   mobile; 20px -> 26px en tablet/desktop angosto (641-1138px, el
+   mismo tramo que hoy comparte tamaño con mobile); 26px -> 33.8px en
+   desktop real (≥1139px, que ya tenía su propio +30% aplicado antes
+   de este pedido). */
+@media (max-width: 640px){
+  .product-hero__caption.product-hero__caption--omni{
+    font-size: 24px; /* 20px + 20% */
+  }
+}
+@media (min-width: 641px) and (max-width: 1138px){
+  .product-hero__caption.product-hero__caption--omni{
+    font-size: 26px; /* 20px + 30% */
+  }
+}
+@media (min-width: 1139px){
+  .product-hero__caption.product-hero__caption--omni{
+    font-size: 33.8px; /* 26px + 30% */
+  }
+}
+
 /* ---------- Video de prueba (Trinity, debajo del hero) ----------
    A modo de prueba, para que el cliente vea cómo queda un video de
    YouTube embebido en la página — no es un componente definitivo
@@ -778,7 +802,7 @@
   font-size: 24px;
   line-height: 1;
   cursor: pointer;
-  z-index: 2;
+  z-index: 3; /* por encima de .lightbox__zones (z-index:2): con el mismo valor, la zona derecha (que viene después en el HTML) le tapaba el toque a la cruz en esa esquina */
 }
 .lightbox__stage{
   position: relative;
@@ -1536,6 +1560,24 @@ section.grid-section--no-divider{
   #escultura .section-caption p,
   #arte-digital .section-caption p{
     text-align: justify;
+  }
+}
+
+/* ---------- Omni: "Integra múltiples facetas..." en un solo renglón
+   mientras el ancho de pantalla lo permita (pedido explícito) — con
+   la MISMA letra que las otras 3 leyendas (a diferencia de un intento
+   anterior, que la achicaba para que entrara siempre: el cliente
+   prefiere que quede pareja y, si no entra, que pase a 2 renglones
+   como el resto). Medido en vivo: el texto sin cortar necesita
+   754.6px a la letra más grande (26px, ver clamp de
+   .photo-caption-grid__item p) — la columna de esta leyenda (borde a
+   borde, sin var(--margin-x)) llega a esa medida recién pasados los
+   ~1500px de ancho real de pantalla; 1550px deja un margen chico de
+   sobra. Por debajo de eso, sigue en 2 renglones, igual que siempre. */
+@media (min-width: 1550px){
+  .untitled-section .photo-caption-grid__item p.caption-oneline{
+    white-space: nowrap;
+    max-width: none;
   }
 }
 
