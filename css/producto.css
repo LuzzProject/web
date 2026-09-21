@@ -833,23 +833,22 @@
   margin: 20px 0 0;
 }
 
-/* ---------- Lightbox a pantalla completa (desktop) ----------
+/* ---------- Lightbox más grande (desktop) ----------
    Pedido explícito para la galería final de Trinity (la única con
    data-lightbox="always" hoy — main.js le suma esta clase al abrir):
-   en desktop, la foto ocupa todo el alto y ancho de la pantalla, sin
-   la franja negra arriba/abajo que deja el resto de las fotos
-   (.lightbox__track en 80vh, object-fit:contain). Acá el alto pasa a
-   100vh y la foto usa cover (se recorta lo que haga falta con tal de
-   no dejar espacio vacío) — los puntitos, que ya no entran como
-   contenido aparte debajo de la foto, quedan flotando encima, cerca
-   del borde inferior. Solo desktop: en el resto de los formatos esta
-   galería sigue igual que antes (80vh, sin recortar). */
+   en desktop, la foto ocupa más pantalla que el resto de las galerías
+   (.lightbox__track en 80vh) pero sigue viéndose ENTERA, sin
+   recortar — el alto pasa a 100vh, object-fit se mantiene en contain
+   (heredado del estilo base). No es "pantalla completa" literal: si
+   la proporción de la foto no es exactamente la de la pantalla,
+   sigue quedando algo de espacio vacío a los costados o arriba/abajo,
+   pero mucho menos que antes de este cambio. Los puntitos, que ya no
+   entran como contenido aparte debajo de la foto, quedan flotando
+   encima, cerca del borde inferior. Solo desktop: en el resto de los
+   formatos esta galería sigue igual que siempre (80vh). */
 @media (min-width: 820px){
   .lightbox--fill .lightbox__track{
     height: 100vh;
-  }
-  .lightbox--fill .lightbox__item img{
-    object-fit: cover;
   }
   .lightbox--fill .gallery-dots{
     position: absolute;
