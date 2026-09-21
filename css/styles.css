@@ -615,7 +615,7 @@ footer.contact svg{
   bottom: 24px;
   width: 60px;
   height: 60px;
-  background: #25D366;
+  background: rgba(255,255,255,0.3); /* gris al 30% — mismo criterio que el resto de los grises del sitio (blanco a un % de opacidad sobre el negro), pedido explícito en vez del verde de marca de WhatsApp */
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -629,6 +629,19 @@ footer.contact svg{
   width: 32px;
   height: 32px;
   fill: #ffffff;
+}
+/* Desktop: +30% (pedido explícito) — el círculo y el ícono adentro
+   crecen juntos, para no perder la proporción. Tablet (641-819) queda
+   en el tamaño base de arriba (60px/32px), sin cambios. */
+@media (min-width: 820px){
+  .whatsapp-float{
+    width: 78px; /* 60px + 30% */
+    height: 78px;
+  }
+  .whatsapp-float svg{
+    width: 41.6px; /* 32px + 30% */
+    height: 41.6px;
+  }
 }
 @media (max-width: 640px){
   .whatsapp-float{
