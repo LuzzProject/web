@@ -531,9 +531,15 @@ if (lightbox && lightboxTrack && lightboxClose && lightboxDotsEl && lightboxGall
   let activeLoop = null;
   let lightboxAbort = null; // ver comentario en setupLoopingCarousel: corta los listeners de la apertura anterior antes de armar los nuevos
 
-  function openLightbox(images, startIndex){
+  function openLightbox(images, startIndex, scope){
     if (lightboxAbort) lightboxAbort.abort();
     lightboxAbort = new AbortController();
+
+    // Trinity (galería final, "always"): en desktop, pedido explícito
+    // de que la foto ocupe toda la pantalla (sin las franjas negras
+    // arriba/abajo que deja el resto de las galerías, "tablet", que
+    // ni siquiera abren el lightbox en ese ancho — ver CSS .lightbox--fill).
+    lightbox.classList.toggle('lightbox--fill', scope === 'always');
 
     // rearma el track con las fotos de la galería tocada (clonando
     // src/alt, no los nodos: la galería de origen no se toca)
@@ -610,7 +616,7 @@ if (lightbox && lightboxTrack && lightboxClose && lightboxDotsEl && lightboxGall
       const open = (e) => {
         if (scope === 'tablet' && !tabletMedia.matches) return;
         e.preventDefault();
-        openLightbox(imgs, i);
+        openLightbox(imgs, i, scope);
       };
       img.addEventListener('click', open);
       img.addEventListener('keydown', (e) => {
