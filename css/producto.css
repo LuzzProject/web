@@ -77,6 +77,20 @@
   }
 }
 
+/* ---------- Omni: bajada del hero, corte de renglón fijo solo en
+   tablet (641-819px, breakpoint general del sitio) — "Transforma el
+   espacio" / "creando una experiencia cautivante." en 2 renglones
+   pedidos a mano, no por wrap natural. En mobile y desktop sigue
+   fluyendo como texto corrido normal. */
+.product-hero__caption--omni .omni-hero-break{
+  display: none;
+}
+@media (min-width: 641px) and (max-width: 819px){
+  .product-hero__caption--omni .omni-hero-break{
+    display: inline;
+  }
+}
+
 /* ---------- Video de prueba (Trinity, debajo del hero) ----------
    A modo de prueba, para que el cliente vea cómo queda un video de
    YouTube embebido en la página — no es un componente definitivo
@@ -1573,11 +1587,18 @@ section.grid-section--no-divider{
    .photo-caption-grid__item p) — la columna de esta leyenda (borde a
    borde, sin var(--margin-x)) llega a esa medida recién pasados los
    ~1500px de ancho real de pantalla; 1550px deja un margen chico de
-   sobra. Por debajo de eso, sigue en 2 renglones, igual que siempre. */
+   sobra. Por debajo de eso, sigue en 2 renglones, igual que siempre.
+   width:fit-content + margin-inline:auto: en 1 renglón la caja pasa a
+   medir justo el ancho del texto, así el centrado (margin:auto) queda
+   centrado respecto a la foto de arriba, igual que las otras 3 leyendas
+   (si no, al quitar el max-width la caja ocupa toda la columna y el
+   texto, justificado, queda pegado a la izquierda en vez de centrado). */
 @media (min-width: 1550px){
   .untitled-section .photo-caption-grid__item p.caption-oneline{
     white-space: nowrap;
     max-width: none;
+    width: fit-content;
+    margin-inline: auto;
   }
 }
 
