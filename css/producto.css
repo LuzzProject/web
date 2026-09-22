@@ -1000,9 +1000,11 @@
    permita, centrado respecto a la grilla de fotos (pedido explícito,
    solo para este texto puntual, no para el resto de .section-intro
    del sitio). Medido en vivo: el texto sin cortar (26px) necesita
-   1145.97px de ancho propio; sumado al padding de 64px de cada lado
+   1179.2px de ancho propio; sumado al padding de 64px de cada lado
    (var(--margin-x) en desktop), hace falta un ancho real de pantalla
-   de ~1274px para que entre; 1320px deja un margen chico de sobra.
+   de ~1307px para que entre; 1320px deja un margen chico de sobra
+   (re-medido tras un cambio de texto — si se vuelve a editar este
+   texto, volver a medir el ancho real antes de tocar el breakpoint).
    Por debajo de eso, sigue en 2 renglones como el resto de las
    leyendas .section-intro. width:fit-content además de quitar el
    max-width: así la caja mide justo el ancho del texto y el
