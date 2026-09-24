@@ -166,9 +166,15 @@ nav.menu > a.lang-switch{
    hamburguesa (mismo ítem de header.nav) para que quede pegado a su
    izquierda — sin este wrapper, al ser 2 ítems sueltos más el brand,
    justify-content:space-between de header.nav los separaba (uno al
-   centro, otro al borde) en vez de dejarlos juntos. */
+   centro, otro al borde) en vez de dejarlos juntos.
+   display:none por default (recién pasa a flex en el Punto Quiebre
+   Hamburguesa más abajo): si quedara en flex siempre, en desktop
+   sería un 3er ítem "fantasma" (vacío, pero activo) para
+   justify-content:space-between de header.nav — nav.menu, al pasar a
+   ser el ítem del medio en vez del último, se corría hacia el centro
+   en vez de quedar pegado al borde derecho como siempre. */
 .nav-burger-group{
-  display:flex;
+  display:none;
   align-items:center;
   gap: 14px;
 }
@@ -722,6 +728,7 @@ footer.contact svg{
    medida sobre el sitio real (con SF Pro), no calculado a ciegas. */
 @media (max-width: 1138px){
   nav.menu{ display:none; }
+  .nav-burger-group{ display:flex; }
   .burger{ display:block; }
   .lang-switch--mobile{ display:inline-flex; }
 }
