@@ -75,14 +75,29 @@
 
 <!-- ============ PLATAFORMA DE ARTE DIGITAL ============ -->
 <section class="grid-section" id="plataforma-arte-digital">
-  <h2>Plataforma de Arte Digital</h2>
-  <div class="duo-gallery">
-    <div class="thumb" data-reveal><img src="../img/light-mirage/plataforma-1.jpg" alt="Light Mirage controlando una instalación con esfera de luz azul"></div>
-    <div class="thumb" data-reveal><img src="../img/light-mirage/plataforma-2.jpg" alt="Light Mirage explorando artistas y obras en la app"></div>
-  </div>
-  <div class="gallery-dots" aria-hidden="true"></div>
-  <div class="section-caption" data-reveal>
-    <p>Esta aplicación móvil integra múltiples funciones como seleccionar obras mediante filtros personalizados, crear playlists, ajustar el brillo, etc., ofreciendo una experiencia de uso completa e intuitiva.</p>
+  <!-- .lm-intro envuelve el título junto con las 2 fotos y su texto
+       (no las capturas de la app): en celular, el título sticky (ver
+       section.grid-section h2 en styles.css) queda pegado a la nav
+       mientras se scrollea el contenedor que lo tiene arriba/adentro
+       — sin este wrapper, ese contenedor sería toda la section, y el
+       título seguiría fijo también al pasar por las 8 capturas de
+       abajo. Con el wrapper más chico, se despega apenas termina el
+       texto, antes de #app-screens — pedido explícito del cliente.
+       El h2 pasa a llevar data-reveal a mano: ya no es hijo directo
+       de section.grid-section, así que no matchea más el selector
+       genérico section.grid-section > h2 que main.js usa para el
+       fade-in (ver revealItems) — data-reveal replica el mismo
+       comportamiento sin depender de esa jerarquía. -->
+  <div class="lm-intro">
+    <h2 data-reveal>Plataforma de Arte Digital</h2>
+    <div class="duo-gallery">
+      <div class="thumb" data-reveal><img src="../img/light-mirage/plataforma-1.jpg" alt="Light Mirage controlando una instalación con esfera de luz azul"></div>
+      <div class="thumb" data-reveal><img src="../img/light-mirage/plataforma-2.jpg" alt="Light Mirage explorando artistas y obras en la app"></div>
+    </div>
+    <div class="gallery-dots" aria-hidden="true"></div>
+    <div class="section-caption" data-reveal>
+      <p>Esta aplicación móvil integra múltiples funciones como seleccionar obras mediante filtros personalizados, crear playlists, ajustar el brillo, etc., ofreciendo una experiencia de uso completa e intuitiva.</p>
+    </div>
   </div>
 
   <div class="photo-caption-grid swipe-grid lm-screens" id="app-screens">
