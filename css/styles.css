@@ -73,6 +73,7 @@ header.nav{
 
 nav.menu{
   display:flex;
+  align-items: center; /* la pastilla del selector de idioma es más alta que los links de texto (tiene padding+borde) — sin esto, los links de texto quedaban "estirados" al alto del ítem más alto y se veían descentrados */
   gap: clamp(12px, 2.5vw, 34px);
 }
 /* Solo los links de primer nivel (no los del desplegable de PRODUCTOS,
@@ -90,21 +91,34 @@ nav.menu > a:hover, nav.menu > a:focus-visible,
 nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color: var(--fg); }
 
 /* ---------- Selector de idioma (EN / ES) ----------
-   Un link más al final de la nav, pero con su propia pastilla
-   (borde redondeado) para diferenciarlo de los links de sección: no
-   lleva a otra parte del sitio, cambia el sitio entero de idioma.
-   Texto de 2 letras a propósito (EN / ES, no "English"/"Español")
-   para sumar el menor ancho posible a la nav — ver Punto Quiebre
-   Hamburguesa (1138px) más abajo, ya medido al límite con el resto
-   de los ítems reales del menú. */
-nav.menu > a.lang-switch{
-  border: 1px solid var(--line-strong);
+   Pastilla con borde (gris al 70%, pedido explícito, no el gris más
+   tenue del resto de las líneas del sitio) para diferenciarse de los
+   links de sección: no lleva a otra parte del sitio, cambia el sitio
+   entero de idioma. Texto de 2 letras a propósito (EN / ES, no
+   "English"/"Español") para sumar el menor ancho posible a la nav —
+   ver Punto Quiebre Hamburguesa (1138px) más abajo, ya medido al
+   límite con el resto de los ítems reales del menú.
+   Estilos completos acá (no heredados de nav.menu > a): en
+   mobile/tablet esta misma clase se usa afuera de nav.menu, al lado
+   del botón hamburguesa (ver .nav-burger-group / .lang-switch--mobile
+   más abajo), así que no puede depender de esa herencia. */
+.lang-switch{
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,0.7); /* gris al 70% */
   border-radius: 999px;
   padding: 5px 13px;
+  font-weight: 500;
   letter-spacing: 0.06em;
+  color: var(--fg);
+  white-space: nowrap;
+  transition: border-color 0.2s ease;
 }
-nav.menu > a.lang-switch:hover, nav.menu > a.lang-switch:focus-visible{
+.lang-switch:hover, .lang-switch:focus-visible{
   border-color: var(--fg);
+}
+nav.menu > a.lang-switch{
+  font-size: clamp(9px, calc(1.6vw - 3px), 17.25px); /* mismo clamp que el resto de la nav desktop */
 }
 
 /* ---------- Desplegable de PRODUCTOS (desktop) ----------
@@ -148,6 +162,20 @@ nav.menu > a.lang-switch:hover, nav.menu > a.lang-switch:focus-visible{
 }
 .dropdown a:hover, .dropdown a:focus-visible{ color: var(--fg); }
 
+/* Agrupa el selector de idioma mobile/tablet junto al botón
+   hamburguesa (mismo ítem de header.nav) para que quede pegado a su
+   izquierda — sin este wrapper, al ser 2 ítems sueltos más el brand,
+   justify-content:space-between de header.nav los separaba (uno al
+   centro, otro al borde) en vez de dejarlos juntos. */
+.nav-burger-group{
+  display:flex;
+  align-items:center;
+  gap: 14px;
+}
+.lang-switch--mobile{
+  display:none; /* aparece junto con el burger — ver Punto Quiebre Hamburguesa más abajo */
+  font-size: 13px;
+}
 .burger{
   display:none;
   width:26px; height:18px;
@@ -197,17 +225,6 @@ nav.menu > a.lang-switch:hover, nav.menu > a.lang-switch:focus-visible{
   letter-spacing:0.02em;
   color:var(--fg);
 }
-/* Selector de idioma (mobile): mismo criterio que en desktop (ver
-   nav.menu > a.lang-switch), separado del resto de los links con una
-   línea propia en vez de la pastilla (acá no hace falta ahorrar
-   ancho, es columna vertical). */
-.mobile-menu a.lang-switch{
-  padding-top: 22px;
-  border-top: 1px solid var(--line);
-  font-size: 18px;
-  color: var(--fg-dim);
-}
-
 /* ---------- Acordeón de PRODUCTOS (mobile) ----------
    No hay hover en touch, así que acá "Productos" es un botón que
    despliega la lista al tocarlo, en vez de abrir un dropdown. */
@@ -706,6 +723,7 @@ footer.contact svg{
 @media (max-width: 1138px){
   nav.menu{ display:none; }
   .burger{ display:block; }
+  .lang-switch--mobile{ display:inline-flex; }
 }
 
 /* Tablet / intermedio — breakpoint corrido un 20% hacia abajo
