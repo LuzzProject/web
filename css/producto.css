@@ -91,6 +91,16 @@
   }
 }
 
+/* ---------- Desarrollos a Medida (solo inglés): "Digital Art
+   Installation Design" y "Space Identity Definition" en 1 renglón en
+   desktop ---------- */
+@media (min-width: 820px){
+  #creacion-instalaciones h2 .dev-oneline-break,
+  #definicion-identidad h2 .dev-oneline-break{
+    display: none;
+  }
+}
+
 /* ---------- Video de prueba (Trinity, debajo del hero) ----------
    A modo de prueba, para que el cliente vea cómo queda un video de
    YouTube embebido en la página — no es un componente definitivo
@@ -961,7 +971,14 @@
    bajando el archivo real de Archivo aparte para probarlo. */
 @media (max-width: 640px){
   .dev-hero__title--oneline{
-    font-size: 30px; /* con la fuente real, entra en 1 renglón desde los 340px de ancho real en adelante */
+    /* Lo más grande posible en cada ancho, siempre en 1 renglón —
+       fluido en vez de un tamaño fijo (pedido explícito): crece con
+       el ancho real de pantalla, tope en 54px (mismo tamaño con el
+       que arranca el h1 en tablet, así no da un salto raro al cruzar
+       los 640px). Por debajo de los ~337px de ancho real ya no entra
+       en 1 renglón ni al piso de 30px — caso límite, celulares muy
+       angostos que casi no existen hoy. */
+    font-size: clamp(30px, 10.2vw - 5px, 54px);
   }
 }
 @media (min-width: 641px) and (max-width: 819px){
