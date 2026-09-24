@@ -947,6 +947,20 @@
   font-size: 50px; /* antes 58px (29px x2) */
   letter-spacing: 0.012em;
 }
+/* Desarrollos a Medida (solo versión en inglés): "Custom Projects" es
+   más corto que "Desarrollos a Medida" y a los 50px de acá arriba
+   entra en 1 renglón recién pasados los ~420px de ancho real — por
+   debajo (celulares comunes, 360-390px) partía a 2 renglones. A
+   diferencia del español (donde "Desarrollos a Medida" no entra en 1
+   renglón ni achicando bastante la letra, así que el corte a 2
+   renglones es el diseño buscado, no un bug), acá alcanza con bajar
+   un poco el tamaño para que entre siempre. Medido en vivo: a 41px
+   entra en 1 renglón desde los 360px de ancho real en adelante. */
+@media (max-width: 640px){
+  .dev-hero__title--oneline{
+    font-size: 41px;
+  }
+}
 @media (min-width: 641px) and (max-width: 819px){
   /* 50% más grande que el h2 de sección en tablet (36px x1.5 = 54px).
      A ese tamaño el texto entra en un renglón si se lo deja libre, así
