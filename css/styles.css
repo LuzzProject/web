@@ -597,6 +597,18 @@ footer.contact svg{
     width: 25.5px; height: 25.5px; /* 17px + 50% */
   }
 }
+/* Pie de contacto al final de cada ventana (no el de la ventana de
+   Contacto, que ya tiene su propio +50% arriba): mismo tamaño y mismo
+   achicamiento gradual que "los textos" del sitio (mismo clamp() que
+   .photo-caption-grid__item p en producto.css) — antes quedaba fijo
+   en 20px en cualquier ancho de pantalla. :not(.contact--standalone)
+   para no pisar la regla de arriba (misma especificidad, ganaría por
+   orden si no se excluye explícitamente). */
+@media (min-width: 820px){
+  footer.contact:not(.contact--standalone) .contact-block a{
+    font-size: clamp(20px, 0.9662vw + 12.087px, 26px);
+  }
+}
 
 /* ============================================
    BOTÓN FLOTANTE DE WHATSAPP

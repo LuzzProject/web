@@ -1638,6 +1638,18 @@ section.grid-section--no-divider{
 .lm-screens .photo-caption-grid__item p{
   text-align: justify;
 }
+/* "Display standard" e "Instalación Infinity": pies cortos de una
+   sola línea, no un párrafo — justify no los centra (una sola línea
+   queda alineada a la izquierda), se ven pegados al borde izquierdo
+   de la caja en vez de centrados contra su foto. Se pisa a center
+   solo para estos dos (clase puesta en el HTML), tanto en la versión
+   desktop (cada uno con su propio <p>) como en el clon dentro de
+   .synced-captions que usan tablet/celular (mismo <p>, clonado por
+   JS con sus clases, ver setupLoopingCarousel en main.js). */
+.lm-screens .photo-caption-grid__item p.caption-centered,
+.synced-captions p.caption-centered{
+  text-align: center;
+}
 /* Desktop: en 2 renglones en vez de 3 — el max-width de .section-caption
    (900px desde los 1139px) se queda corto para este texto más largo.
    1400px no es un ancho "real": es a propósito más grande que
