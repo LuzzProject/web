@@ -119,6 +119,7 @@ nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color:
 }
 nav.menu > a.lang-switch{
   font-size: clamp(9px, calc(1.6vw - 3px), 17.25px); /* mismo clamp que el resto de la nav desktop */
+  border-width: 1.5px; /* el 1px base (ver .lang-switch) se veía muy fino en desktop; sutil, no tan grueso como para perder la pastilla liviana */
 }
 
 /* ---------- Desplegable de PRODUCTOS (desktop) ----------
