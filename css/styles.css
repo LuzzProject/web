@@ -89,6 +89,24 @@ nav.menu > .menu-item > a{
 nav.menu > a:hover, nav.menu > a:focus-visible,
 nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color: var(--fg); }
 
+/* ---------- Selector de idioma (EN / ES) ----------
+   Un link más al final de la nav, pero con su propia pastilla
+   (borde redondeado) para diferenciarlo de los links de sección: no
+   lleva a otra parte del sitio, cambia el sitio entero de idioma.
+   Texto de 2 letras a propósito (EN / ES, no "English"/"Español")
+   para sumar el menor ancho posible a la nav — ver Punto Quiebre
+   Hamburguesa (1138px) más abajo, ya medido al límite con el resto
+   de los ítems reales del menú. */
+nav.menu > a.lang-switch{
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 5px 13px;
+  letter-spacing: 0.06em;
+}
+nav.menu > a.lang-switch:hover, nav.menu > a.lang-switch:focus-visible{
+  border-color: var(--fg);
+}
+
 /* ---------- Desplegable de PRODUCTOS (desktop) ----------
    Se abre al pasar el mouse (o con teclado, vía :focus-within) sobre
    el ítem del menú. Independiente del breakpoint hamburguesa: por
@@ -178,6 +196,16 @@ nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color:
   font-weight:400;
   letter-spacing:0.02em;
   color:var(--fg);
+}
+/* Selector de idioma (mobile): mismo criterio que en desktop (ver
+   nav.menu > a.lang-switch), separado del resto de los links con una
+   línea propia en vez de la pastilla (acá no hace falta ahorrar
+   ancho, es columna vertical). */
+.mobile-menu a.lang-switch{
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+  font-size: 18px;
+  color: var(--fg-dim);
 }
 
 /* ---------- Acordeón de PRODUCTOS (mobile) ----------
