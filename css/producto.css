@@ -623,17 +623,30 @@
   margin: 0 auto;
   display: block;
 }
-/* Light Mirage: a diferencia de Trinity/Omni/Infinity (donde el ícono
-   circular ocupa borde a borde el ancho del PNG), el archivo de este
-   logo es más ancho que el ícono porque abajo lleva el nombre del
-   producto en un renglón más ancho que el círculo — con los mismos
-   110px de .product-outro__mark de arriba, el ícono en sí renderizaba
-   más chico que en las otras 3 ventanas. Se compensa agrandando el
-   ancho del contenedor (110px / 0.5942, la proporción real ícono/lienzo
+/* Light Mirage: a diferencia de Trinity/Omni (donde el ícono ocupa
+   borde a borde el ancho del PNG), el archivo de este logo es más
+   ancho que el ícono porque abajo lleva el nombre del producto en un
+   renglón más ancho que el círculo — con los mismos 110px de
+   .product-outro__mark de arriba, el ícono en sí renderizaba más
+   chico que en las otras ventanas. Se compensa agrandando el ancho
+   del contenedor (110px / 0.5942, la proporción real ícono/lienzo
    del archivo) para que el círculo quede al mismo tamaño real que en
-   Trinity/Omni/Infinity. */
+   Trinity/Omni. */
 .product-outro--light-mirage .product-outro__mark{
   width: 185px;
+}
+/* Infinity: acá el ícono (el doble loop) sí ocupa el ancho del PNG
+   borde a borde como en Trinity/Omni, pero es una forma más ancha
+   que alta (proporción real ancho:alto del ícono, sin contar el
+   nombre de abajo, 1.53:1 — Trinity/Omni son ~1:1, un cubo y un
+   círculo). Con el mismo width:110px de arriba, height:auto lo
+   dejaba mucho más bajo que el resto (medido: ~71px de alto real
+   contra ~108px en Trinity/Omni) — se veía chico en proporción, no
+   por el ancho sino por el alto. Se agranda el contenedor (110px x
+   1.53 ≈ 168px) para que el alto real del ícono quede igual al de
+   Trinity/Omni. */
+.product-outro--infinity .product-outro__mark{
+  width: 168px;
 }
 
 /* Aplicaciones (Omni y futuras páginas de producto): mismas tarjetas
