@@ -1574,6 +1574,20 @@ section.grid-section--no-divider{
 #app-integrada .photo-caption-grid__item p{
   text-align: justify;
 }
+/* Omni, solo versión en inglés: "Omni is a high-resolution circular
+   LED display" y "A luxury object with a simple, minimalist finish"
+   son más cortas que su equivalente en español y entran en un solo
+   renglón — un renglón único con justify no se centra (justify no
+   estira la única línea de un párrafo), queda pegado al borde
+   izquierdo de su caja en vez de centrado contra la foto. Se pisa a
+   center solo para estas dos (clase puesta en el HTML), en cualquier
+   ancho de pantalla — a diferencia de .caption-oneline (que fuerza
+   un renglón desde cierto ancho), acá alcanza con centrar: el texto
+   ya entra en 1 o 2 renglones según el ancho, y center se ve bien en
+   cualquiera de los dos casos. */
+.untitled-section .photo-caption-grid__item p.caption-centered{
+  text-align: center;
+}
 /* Omni (solo tablet): las 4 fotos debajo del hero, sin justificar —
    alineadas a la izquierda. Desktop y celular quedan justificados. */
 @media (min-width: 641px) and (max-width: 819px){
