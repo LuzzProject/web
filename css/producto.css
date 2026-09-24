@@ -948,17 +948,20 @@
   letter-spacing: 0.012em;
 }
 /* Desarrollos a Medida (solo versión en inglés): "Custom Projects" es
-   más corto que "Desarrollos a Medida" y a los 50px de acá arriba
-   entra en 1 renglón recién pasados los ~420px de ancho real — por
-   debajo (celulares comunes, 360-390px) partía a 2 renglones. A
-   diferencia del español (donde "Desarrollos a Medida" no entra en 1
-   renglón ni achicando bastante la letra, así que el corte a 2
-   renglones es el diseño buscado, no un bug), acá alcanza con bajar
-   un poco el tamaño para que entre siempre. Medido en vivo: a 41px
-   entra en 1 renglón desde los 360px de ancho real en adelante. */
+   más corto que "Desarrollos a Medida", así que a diferencia del
+   español (donde ese título no entra en 1 renglón ni achicando
+   bastante la letra, y el corte a 2 renglones en tablet de acá abajo
+   es el diseño buscado, no un bug) acá alcanza con ajustar tamaño y
+   ancho para que entre siempre en 1 renglón.
+   OJO al medir esto: la fuente real (Archivo, font-stretch:125%) no
+   carga en este entorno de pruebas (Google Fonts bloqueado), así que
+   medir con la fuente de reemplazo del navegador da anchos muy por
+   debajo de los reales — la primera vez que se ajustó este bloque
+   quedó mal calculado por eso (41px, insuficiente). Vuelto a medir
+   bajando el archivo real de Archivo aparte para probarlo. */
 @media (max-width: 640px){
   .dev-hero__title--oneline{
-    font-size: 41px;
+    font-size: 30px; /* con la fuente real, entra en 1 renglón desde los 340px de ancho real en adelante */
   }
 }
 @media (min-width: 641px) and (max-width: 819px){
@@ -970,6 +973,15 @@
     font-size: 54px;
     max-width: 460px;
     margin: 0 auto;
+  }
+  /* "Custom Projects" a 54px (con la fuente real) mide ~520px, más
+     ancho que los 460px de arriba (pensados para forzar el corte a 2
+     renglones en español) pero bien por debajo del ancho real
+     disponible en cualquier ancho de tablet (561px como mínimo, a
+     los 641px) — con quitarle el max-width alcanza, sin tocar el
+     tamaño de letra. */
+  .dev-hero__title--oneline{
+    max-width: none;
   }
 }
 @media (min-width: 820px){
