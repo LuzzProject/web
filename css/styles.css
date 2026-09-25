@@ -667,6 +667,16 @@ footer.contact svg{
   footer.contact:not(.contact--standalone) .contact-block a{
     font-size: clamp(20px, 0.9662vw + 12.087px, 26px);
   }
+  /* Íconos: mismo achicamiento/agrandamiento que el texto de acá
+     arriba, no un tamaño fijo — si no, quedaban chicos en proporción
+     al texto (que sí crecía) al acercarse a los 1440px. Misma curva,
+     escalada por la relación 17/20 (0.85) entre el ícono base (17px)
+     y el texto base (20px) — el mismo 0.85 que ya usa el +50% de la
+     ventana de Contacto (25.5px ícono / 30px texto). */
+  footer.contact:not(.contact--standalone) .contact-block svg{
+    width: clamp(17px, 0.8213vw + 10.274px, 22.1px);
+    height: clamp(17px, 0.8213vw + 10.274px, 22.1px);
+  }
 }
 
 /* ============================================
