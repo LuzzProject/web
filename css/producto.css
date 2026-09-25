@@ -1292,7 +1292,18 @@
   }
 }
 .work-header__eyebrow{
-  display: inline-flex;
+  /* display:flex (no inline-flex) + width:100%: con inline-flex, si
+     el conjunto línea+texto+línea llegaba a medir más que el ancho
+     real de pantalla (pasó al agrandar las líneas un 50%, sobre todo
+     con textos más largos como "EXHIBITIONS"), text-align:center del
+     padre (heredado, ver .work-header) no lo podía centrar — el
+     navegador lo dejaba pegado contra el borde izquierdo en vez de
+     centrarlo aunque se pasara de ancho. Con flex + width:100% el
+     centrado (justify-content:center) es real independientemente de
+     si el contenido entra o no en el ancho disponible. */
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
   align-items: baseline; /* las líneas arrancan desde la base del texto, no desde el centro */
   justify-content: center;
   gap: 16px;
