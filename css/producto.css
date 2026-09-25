@@ -1295,15 +1295,15 @@
 .work-header__eyebrow::before,
 .work-header__eyebrow::after{
   content: '';
-  /* Mobile/tablet: sin cambios, tope en 240px (ya escala con el
-     viewport para no desbordar). */
-  width: min(240px, 18vw);
+  /* Mobile/tablet: tope en 360px (240px + 50%, pedido explícito),
+     ya escala con el viewport para no desbordar. */
+  width: min(360px, 27vw);
   height: 1.5px; /* 1px + 50% */
 }
 @media (min-width: 820px){
   .work-header__eyebrow::before,
   .work-header__eyebrow::after{
-    width: min(480px, 29vw); /* 240px x2, solo en desktop */
+    width: min(720px, 43.5vw); /* 360px x2 (mismo x2 de siempre), solo en desktop */
   }
 }
 .work-header__eyebrow::before{
