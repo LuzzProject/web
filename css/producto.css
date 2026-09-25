@@ -979,6 +979,12 @@
        en 1 renglón ni al piso de 30px — caso límite, celulares muy
        angostos que casi no existen hoy. */
     font-size: clamp(30px, 10.2vw - 5px, 54px);
+    /* +20px de separación con el header, pedido explícito — solo
+       acá (mobile, inglés): el padding-top del contenedor
+       (.dev-hero__scrim) es compartido con tablet/desktop y con la
+       versión en español, así que se baja con margin-top en el
+       título en vez de tocar ese padding. */
+    margin-top: 20px;
   }
 }
 @media (min-width: 641px) and (max-width: 819px){
