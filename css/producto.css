@@ -1575,6 +1575,18 @@ section.grid-section--no-divider{
 @media (min-width: 820px){
   .section-subtitle--left{ font-size: 30px; }
 }
+/* Bio: "Church y Trinity, / un viaje introspectivo" (ES) / "Church
+   and Trinity, / an Introspective Journey" (EN) en 2 renglones fijos
+   en tablet y celular — pedido explícito. En desktop sigue corrido
+   como texto normal (sin el corte). */
+.trinity-subtitle-break{
+  display: none;
+}
+@media (max-width: 819px){
+  .trinity-subtitle-break{
+    display: inline;
+  }
+}
 
 /* ---------- Prensa: subtítulo "La Nación" (celular: mismo tamaño que
    .section-subtitle--left "Church y Trinity...", +5px; tablet/desktop:
