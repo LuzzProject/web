@@ -394,12 +394,14 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
   const loop = setupLoopingCarousel(gallery);
   gallery.__loop = loop; // el lightbox lo reusa para sus zonas de clic
 
-  // el lightbox ya tiene su propia zona de clic (.lightbox__zones, ver
-  // CSS/HTML), que además queda por encima del track: no hace falta
-  // (ni funcionaría) sumarle este mismo mecanismo genérico.
-  if (!gallery.classList.contains('lightbox__track')) {
-    setupTapToAdvance(gallery);
-  }
+  // En desktop/tablet, .lightbox__zones sigue tapando el 100% del
+  // track por encima (ver CSS), así que este listener genérico nunca
+  // llega a dispararse ahí — no hace nada, pero tampoco molesta. En
+  // celular, esas zonas pasan a pointer-events:none (ver CSS) para no
+  // tapar el arrastre con el dedo, así que ahí sí hace falta este
+  // mecanismo genérico para que el toque siga avanzando/retrocediendo
+  // una foto, exactamente igual que antes.
+  setupTapToAdvance(gallery);
 
   // el lightbox envuelve su track (junto a las zonas de clic) en
   // .lightbox__stage, así que ahí los puntitos son hermanos del stage,

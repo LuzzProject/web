@@ -268,6 +268,13 @@
     height: 78vw; /* foto grande a propósito: no entran las 3 juntas, hay que deslizar */
     scroll-snap-align: center;
   }
+  /* La centro (la ancha/rectangular) es la que se ve primero al entrar
+     a la sección; deslizando se llega a las angostas de los costados.
+     Solo reordena visualmente (order, dentro del flex de celular): el
+     grid de desktop/tablet, que depende del orden real en el HTML
+     para que cada foto caiga en su columna angosta/ancha/angosta, no
+     se toca. */
+  .trio-gallery img:nth-child(2){ order: -1; }
 }
 
 /* ---------- Galería de 2 fotos cuadradas (Proyección) ----------
@@ -754,6 +761,17 @@
   border-top: none;
   border-image: none;
 }
+/* Separación pedida entre esta grilla y el video que la sigue: el
+   doble del padding-top estándar de .product-video en celular (80px,
+   ver arriba). Selector ~ (no +) porque el lightbox queda como
+   hermano en el medio, entre la galería y el video. Solo celular:
+   afecta nada más a este video (el único después de la grilla final),
+   no al de más arriba de la página. */
+@media (max-width: 640px){
+  .final-gallery-section ~ .product-video{
+    padding-top: 160px;
+  }
+}
 /* Tampoco la línea divisoria antes del footer cuando la página cierra
    con el aro + nombre del producto (.product-outro, ver más abajo). */
 .product-outro ~ footer.contact{
@@ -870,6 +888,23 @@
   background: transparent;
   border: none;
   cursor: pointer;
+}
+/* En celular, este contenedor queda tapando el track por encima (para
+   que los botones puedan recibir el toque) pero al ser hermano del
+   track (no hijo), un arrastre que arranca sobre él nunca llega a
+   considerarse swipe del track de abajo — solo el tap (que sí
+   burbujea como click) funcionaba, no el deslizamiento clásico. Con
+   pointer-events:none acá (en el contenedor: un botón hijo con
+   pointer-events:none no alcanza, el div que lo envuelve sigue
+   interceptando igual), el toque pasa directo al track: el arrastre
+   nativo empieza a funcionar, y el avance por toque lo toma
+   setupTapToAdvance() puesto directo sobre el track (ver JS) en su
+   lugar. Solo celular: en desktop/tablet este contenedor sigue
+   exactamente igual (ahí no hay swipe con el dedo que tapar). */
+@media (max-width: 640px){
+  .lightbox__zones{
+    pointer-events: none;
+  }
 }
 .lightbox__item{
   flex: 0 0 100%;
