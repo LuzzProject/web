@@ -73,18 +73,28 @@ if (heroEl && track && dotsWrap) {
     [...dots].forEach((d,i) => d.classList.toggle('active', i === realIndex));
   }
 
+  // Mientras el track está animando una transición real (no las
+  // correcciones instantáneas con 'none'), next()/prev() no hacen nada.
+  // Sin esto, un doble clic en una zona disparaba dos clicks casi
+  // simultáneos: el índice avanzaba dos veces antes de que terminara la
+  // primera transición, pasándose de largo del clon del final (posición
+  // fuera del track, sin ninguna foto) y mostrando negro.
+  let isAnimating = false;
+
   function goTo(newIndex, transitionValue = TRANSITION){
     index = newIndex;
+    if (transitionValue !== 'none') isAnimating = true;
     setPosition(-index * containerWidth, transitionValue);
     updateDots();
   }
 
-  function next(){ goTo(index + 1); }
-  function prev(){ goTo(index - 1); }
+  function next(){ if (isAnimating) return; goTo(index + 1); }
+  function prev(){ if (isAnimating) return; goTo(index - 1); }
 
   // Al terminar la transición, si estamos parados sobre un clon, saltamos
   // sin animación al slide real equivalente. Esto ocurre ya fuera de pantalla.
   track.addEventListener('transitionend', () => {
+    isAnimating = false;
     if(index === total + 1){        // llegó al clon del primero
       goTo(1, 'none');
     } else if(index === 0){         // llegó al clon del último
