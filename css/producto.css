@@ -294,6 +294,13 @@
   }
   .trio-gallery img.trio-gallery__mobile-photo{
     display: block;
+    /* La centro llega de lateral a lateral por sí sola (su ancho:auto
+       calculado desde su propia proporción a height:78vw da ~99vw, así
+       de casualidad) pero la proporción de esta foto da un poco menos
+       — se fuerza el ancho al 100% y se recorta con object-fit:cover
+       (heredado de .trio-gallery img de más arriba) para que también
+       ocupe la pantalla entera. */
+    width: 100%;
   }
 }
 
