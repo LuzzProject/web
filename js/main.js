@@ -99,20 +99,47 @@ if (heroEl && track && dotsWrap) {
   function next(){ if (isAnimating) return; goTo(index + 1); }
   function prev(){ if (isAnimating) return; goTo(index - 1); }
 
-  // Al terminar la transición, si estamos parados sobre un clon, saltamos
-  // sin animación al slide real equivalente. Esto ocurre ya fuera de pantalla.
-  track.addEventListener('transitionend', () => {
-    isAnimating = false;
-    if(index === total + 1){        // llegó al clon del primero
-      goTo(1, 'none');
-    } else if(index === 0){         // llegó al clon del último
-      goTo(total, 'none');
+  // Corta cualquier transición en curso y deja todo en un estado
+  // consistente para tomar control manual de la posición del track
+  // (arranque de un arrastre, o un resize) sin esperar a transitionend.
+  // Si index está parado en un clon (llegó ahí, o era el destino de la
+  // transición que se está cortando a mitad de camino), lo corrige ya
+  // mismo a su equivalente real, desplazando la posición real la misma
+  // cantidad de anchos de pantalla — visualmente no cambia nada (el
+  // clon y la foto real muestran exactamente la misma imagen), pero
+  // index vuelve a estar dentro del rango válido [1, total].
+  // Sin esto: cortar una transición que iba hacia un clon (ej. al
+  // empezar a arrastrar mientras el autoplay todavía estaba animando,
+  // o por un resize a mitad de camino) nunca dispara transitionend, así
+  // que ese índice fuera de rango quedaba pegado ahí — la próxima vez
+  // que se navegaba desde ese punto, se salía del rango real del track
+  // (pantalla negra) o el swipe se sentía trabado (isAnimating también
+  // quedaba en true para siempre, bloqueando next()/prev()).
+  function settleTransition(){
+    let pos = currentTranslateX();
+    if(index === total + 1){        // era o iba hacia el clon del primero
+      index = 1;
+      pos += total * containerWidth;
+    } else if(index === 0){         // era o iba hacia el clon del último
+      index = total;
+      pos -= total * containerWidth;
     }
-  });
+    isAnimating = false;
+    track.style.transition = 'none';
+    track.style.transform = `translateX(${pos}px)`;
+    updateDots();
+  }
+
+  // Al terminar la transición naturalmente (llegó sola, sin que nada la
+  // corte antes), settleTransition ya hace exactamente esta misma
+  // corrección — acá currentTranslateX() coincide siempre con la
+  // posición exacta del clon, así que el desplazamiento no se nota.
+  track.addEventListener('transitionend', settleTransition);
 
   window.addEventListener('resize', () => {
+    settleTransition(); // por si el resize corta una transición a mitad de camino hacia un clon
     containerWidth = heroEl.clientWidth;
-    setPosition(-index * containerWidth, 'none'); // reacomoda sin animar, sin saltos visibles
+    setPosition(-index * containerWidth, 'none'); // reacomoda con el ancho nuevo, sin saltos visibles
   });
 
   function startAutoplay(){
@@ -143,12 +170,12 @@ if (heroEl && track && dotsWrap) {
 
   heroEl.addEventListener('touchstart', (e) => {
     stopAutoplay();
+    settleTransition(); // toma control manual: corta cualquier transición en curso y corrige el índice si hacía falta (ver comentario en su definición)
     startX = lastX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
     dragStartPx = currentTranslateX();
     dragging = true;
     dragDecided = false;
-    track.style.transition = 'none'; // sigue al dedo sin demora
   }, { passive: true });
 
   heroEl.addEventListener('touchmove', (e) => {
