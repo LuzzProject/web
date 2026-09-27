@@ -323,7 +323,7 @@ document.querySelectorAll('.item').forEach(item => {
    afuera — sus fotos de ancho disparejo (angosta-ancha-angosta) no
    admiten el padding de centrado sin dejar un hueco negro/cortar la
    foto central, así que ahí el swipe sigue sin loop. */
-function setupLoopingCarousel(gallery, signal){
+function setupLoopingCarousel(gallery, signal, initialIndex = 1){
   if (gallery.classList.contains('trio-gallery')) return null;
   if (getComputedStyle(gallery).display !== 'flex') return null;
   const realItems = [...gallery.children];
@@ -382,7 +382,15 @@ function setupLoopingCarousel(gallery, signal){
     const left = item.offsetLeft + item.offsetWidth / 2 - gallery.clientWidth / 2;
     gallery.scrollTo({ left, behavior: behavior || 'auto' });
   }
-  jump(1, 'auto'); // arranca en la foto real 0 (índice 1, después del clon del último)
+  // Arranca directo en la foto pedida (por defecto la real 0, índice 1
+  // después del clon del último). En el lightbox, que puede abrir en
+  // cualquier foto según cuál se tocó, esto evita un segundo scrollTo()
+  // aparte inmediatamente después: dos saltos de scroll en el mismo
+  // instante (sin que el navegador llegue a procesar el primero)
+  // confundía el motor de scroll-snap nativo — se sentía como que el
+  // primer swipe dentro del lightbox no hacía nada, y recién el
+  // segundo intento sí cambiaba de foto.
+  jump(initialIndex, 'auto');
 
   // Mientras el dedo sigue tocando la pantalla, nunca se dispara el
   // salto de corrección (aunque el debounce de abajo ya se haya
@@ -654,7 +662,7 @@ if (lightbox && lightboxTrack && lightboxClose && lightboxDotsEl && lightboxGall
       lightboxTrack.appendChild(item);
     });
 
-    const loop = setupLoopingCarousel(lightboxTrack, lightboxAbort.signal);
+    const loop = setupLoopingCarousel(lightboxTrack, lightboxAbort.signal, startIndex + 1);
     lightboxTrack.__loop = loop;
     activeLoop = loop;
 
@@ -696,7 +704,6 @@ if (lightbox && lightboxTrack && lightboxClose && lightboxDotsEl && lightboxGall
     lightbox.classList.add('open');
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden'; // no scrollear la página de atrás mientras está abierto
-    if (loop) loop.jump(startIndex + 1, 'auto');
     updateActiveDot();
   }
   function closeLightbox(){
