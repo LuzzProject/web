@@ -245,6 +245,14 @@
   height: 100%;
   object-fit: cover;
 }
+/* Foto extra que solo existe para el formato celular (Trinity —
+   Escultura y Arte Digital): en desktop/tablet no se toca la grilla
+   de 3 fotos angosta-ancha-angosta de siempre, esta se queda afuera.
+   Selector con "img" repetido (no solo la clase) para igualar la
+   especificidad de ".trio-gallery img" de arriba y poder ganarle. */
+.trio-gallery img.trio-gallery__mobile-photo{
+  display: none;
+}
 
 @media (max-width: 640px){
   .trio-gallery{
@@ -275,6 +283,18 @@
      para que cada foto caiga en su columna angosta/ancha/angosta, no
      se toca. */
   .trio-gallery img:nth-child(2){ order: -1; }
+  /* En celular, izquierda y derecha se reemplazan por una sola foto
+     pensada para ese formato (.trio-gallery__mobile-photo, ya última
+     en el HTML): centro sigue siendo la primera foto y, al deslizar
+     hacia la derecha, se llega directo a esta — no a las angostas de
+     los costados, que en este formato no se usan. */
+  .trio-gallery img:nth-child(1),
+  .trio-gallery img:nth-child(3){
+    display: none;
+  }
+  .trio-gallery img.trio-gallery__mobile-photo{
+    display: block;
+  }
 }
 
 /* ---------- Galería de 2 fotos cuadradas (Proyección) ----------

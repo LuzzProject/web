@@ -489,7 +489,14 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
   }
   if (!dotsEl) return;
 
-  const items = loop ? loop.allItems.slice(1, -1) : [...gallery.children];
+  // El filtro por display distinto de 'none' es por trio-gallery
+  // (Trinity — Escultura/Arte Digital): en celular, dos de sus fotos
+  // se ocultan a favor de una sola pensada para ese formato (ver CSS,
+  // .trio-gallery__mobile-photo) — sin este filtro, esas fotos
+  // ocultas seguían contando puntito propio aunque no se pudiera
+  // llegar a ellas deslizando. No afecta a ninguna otra galería: son
+  // las únicas con hijos que a veces están display:none.
+  const items = loop ? loop.allItems.slice(1, -1) : [...gallery.children].filter(el => getComputedStyle(el).display !== 'none');
   if (items.length < 2) return;
 
   items.forEach((_, i) => {
