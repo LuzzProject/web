@@ -178,6 +178,26 @@ if (heroEl && track && dotsWrap) {
     dragDecided = false;
   }, { passive: true });
 
+  // El transform que sigue al dedo se aplica una sola vez por cuadro de
+  // animación (requestAnimationFrame), no en cada evento touchmove: el
+  // navegador puede dispararlos muchas más veces por segundo de las que
+  // en realidad se pintan, y escribir el estilo en cada uno de esos
+  // eventos (en vez de agrupados por cuadro) competía con lo que sea
+  // que el hilo principal estuviera haciendo en ese instante — a
+  // diferencia del resto de las galerías del sitio, que al deslizar con
+  // scroll nativo del navegador no dependen para nada del hilo de JS.
+  let pendingDragPx = null;
+  let dragFrameScheduled = false;
+  function applyDragFrame(){
+    dragFrameScheduled = false;
+    // Si para cuando el cuadro pendiente por fin se pinta ya soltamos
+    // el dedo (dragging es false), no hay que aplicar esta posición
+    // vieja: pisaría el destino que goTo() ya dejó puesto en touchend
+    // (el "enganche" a la foto más cercana), dejando la foto a mitad
+    // de camino en vez de en su lugar.
+    if (dragging && pendingDragPx !== null) track.style.transform = `translateX(${pendingDragPx}px)`;
+  }
+
   heroEl.addEventListener('touchmove', (e) => {
     if(!dragging) return;
     const x = e.touches[0].clientX;
@@ -197,7 +217,11 @@ if (heroEl && track && dotsWrap) {
 
     e.preventDefault(); // gesto horizontal: no scrollear la página mientras se arrastra
     lastX = x;
-    track.style.transform = `translateX(${dragStartPx + dx}px)`;
+    pendingDragPx = dragStartPx + dx;
+    if (!dragFrameScheduled) {
+      dragFrameScheduled = true;
+      requestAnimationFrame(applyDragFrame);
+    }
   }, { passive: false });
 
   heroEl.addEventListener('touchend', () => {

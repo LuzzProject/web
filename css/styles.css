@@ -300,6 +300,7 @@ nav.menu > a.lang-switch{
   display:flex;
   width:100%;
   height:100%;
+  will-change: transform; /* el resto de las galerías del sitio deslizan con scroll nativo del navegador (siempre en su propia capa de composición, fluido gratis); ésta mueve "transform" a mano por JS en cada movimiento del dedo, así que sin este aviso el navegador no la separa en su propia capa y cada cuadro repinta de más — se sentía mucho menos fluido que el resto de los swipes del sitio. */
   /* la transición (2.1s, ease tipo AE) la aplica el JS en cada movimiento,
      así se puede desactivar para el salto invisible del loop infinito */
 }
