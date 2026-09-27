@@ -337,6 +337,7 @@ nav.menu > a.lang-switch{
   background:transparent;
   border:none;
   cursor:pointer;
+  -webkit-tap-highlight-color: transparent; /* sin esto, al tocar/arrastrar en celular y tablet el navegador pinta su resaltado gris/negro por defecto encima de toda la zona (la mitad de la foto) — el arrastre funciona igual por debajo, pero se ve tapado por ese sombreado. Mismo fix que .item más abajo. */
 }
 
 .hero-dots{
