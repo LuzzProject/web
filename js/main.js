@@ -147,8 +147,17 @@ if (heroEl && track && dotsWrap) {
   }
   startAutoplay();
 
+  // Al interactuar (tocar/arrastrar, o clic en las zonas) se detiene el
+  // autoplay, pero se retoma solo tras un rato sin volver a interactuar
+  // — cada nueva interacción empuja de nuevo esa espera, así que sigue
+  // quieto mientras alguien sigue mirando/deslizando fotos.
+  let resumeAutoplayTimer = null;
+  const AUTOPLAY_RESUME_DELAY = 6000;
+
   function stopAutoplay(){
     clearInterval(autoplayTimer);
+    clearTimeout(resumeAutoplayTimer);
+    resumeAutoplayTimer = setTimeout(startAutoplay, AUTOPLAY_RESUME_DELAY);
   }
 
   const zoneLeft = document.getElementById('zoneLeft');
