@@ -82,9 +82,17 @@ if (heroEl && track && dotsWrap) {
   let isAnimating = false;
 
   function goTo(newIndex, transitionValue = TRANSITION){
+    const targetPx = -newIndex * containerWidth;
+    // Si el destino es el mismo lugar donde ya está (ej: un toque sin
+    // arrastre real, que dispara el "vuelve a la foto actual" del drag
+    // con dx=0), el cambio de transform no dispara transitionend — sin
+    // este chequeo, isAnimating quedaba en true para siempre y
+    // bloqueaba todo toque/clic posterior de ahí en adelante.
+    if (transitionValue !== 'none' && Math.round(currentTranslateX()) !== Math.round(targetPx)) {
+      isAnimating = true;
+    }
     index = newIndex;
-    if (transitionValue !== 'none') isAnimating = true;
-    setPosition(-index * containerWidth, transitionValue);
+    setPosition(targetPx, transitionValue);
     updateDots();
   }
 
@@ -316,10 +324,23 @@ function setupLoopingCarousel(gallery, signal){
   }
   jump(1, 'auto'); // arranca en la foto real 0 (índice 1, después del clon del último)
 
+  // Mientras el dedo sigue tocando la pantalla, nunca se dispara el
+  // salto de corrección (aunque el debounce de abajo ya se haya
+  // cumplido): moverle el scroll por JS a una galería que el dedo
+  // todavía está arrastrando desincroniza el seguimiento nativo del
+  // gesto — se sentía como que el swipe se trababa al llegar al final
+  // y después "pegaba un salto" de dos fotos de una vez, en vez de
+  // dar la vuelta del loop sin que se note.
+  let isTouching = false;
+  gallery.addEventListener('touchstart', () => { isTouching = true; }, { passive: true, signal });
+  gallery.addEventListener('touchend', () => { isTouching = false; }, { passive: true, signal });
+  gallery.addEventListener('touchcancel', () => { isTouching = false; }, { passive: true, signal });
+
   let scrollEndTimer = null;
   gallery.addEventListener('scroll', () => {
     clearTimeout(scrollEndTimer);
     scrollEndTimer = setTimeout(() => {
+      if (isTouching) return; // se vuelve a chequear solo con el próximo scroll (o al soltar)
       const idx = closestIndex();
       if (idx === 0) jump(total, 'auto');          // llegó al clon del último -> salta a la real
       else if (idx === total + 1) jump(1, 'auto'); // llegó al clon del primero -> salta a la real
