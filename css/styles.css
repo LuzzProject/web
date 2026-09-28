@@ -49,6 +49,20 @@ button{ font-family:inherit; }
   *{ animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
+/* título h1 presente para SEO pero sin impacto visual (el diseño ya comunica
+   la marca/producto con el logo e imágenes) */
+.sr-only{
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* ============================================
    NAV
    ============================================ */
