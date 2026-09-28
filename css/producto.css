@@ -184,21 +184,41 @@
 }
 .section-caption p:last-child{ margin-bottom: 0; }
 
-/* Opciones (Trinity / Infinity): el bloque de texto queda centrado en
-   la página (heredado de .section-caption), pero el listado de
-   bullets se alinea a la izquierda dentro del bloque para que cada
-   ítem arranque parejo. Solo el primer .section-caption de la sección
-   (los bullets) — el segundo (WhatsApp) sigue centrado como cualquier
-   otra leyenda. */
-#opciones .section-caption:first-of-type p{
-  display: inline-block;
-  text-align: left;
+/* Opciones (Trinity / Infinity): título con el doble de separación de
+   las fotos de arriba (180px = 90px estándar x2, pedido explícito). */
+#opciones{
+  padding-top: 180px;
 }
 /* Subtítulo "Disponible para Venta o Alquiler": centrado igual que el
    h2 de arriba, a diferencia del uso de .section-subtitle en Hard &
    Soft (ahí queda a la izquierda, dentro de una columna). */
 #opciones .section-subtitle{
   text-align: center;
+}
+/* "Consultas por WhatsApp": mismo tamaño que los subtítulos
+   "Administración Remota/Local" (.admin-block .section-subtitle),
+   pedido explícito del cliente — 20px/24px/30px, mismos quiebres.
+   El link a WhatsApp lleva subrayado para que se note que es un
+   link (el resto de los links del sitio no lo llevan). */
+#opciones .section-caption:last-of-type p{
+  font-size: 20px;
+}
+@media (min-width: 641px) and (max-width: 819px){
+  #opciones .section-caption:last-of-type p{ font-size: 24px; }
+}
+@media (min-width: 820px){
+  #opciones .section-caption:last-of-type p{ font-size: 30px; }
+}
+#opciones .section-caption a{
+  text-decoration: underline;
+}
+/* Proyección mapeada (Infinity): ya no cierra con un .section-caption
+   propio (se movió a #opciones), así que hay que devolverle a mano el
+   mismo espacio hasta la línea divisoria de la sección siguiente que
+   tiene el resto de las secciones del sitio (100px, ver
+   .section-caption más arriba). */
+#proyeccion-mapeada{
+  padding-bottom: 100px;
 }
 /* Desktop: mismo tamaño que el texto del hero (.product-hero__caption,
    ver más arriba), mismo breakpoint (1139px, Punto Quiebre Hamburguesa). */
