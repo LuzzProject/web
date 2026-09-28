@@ -1995,6 +1995,24 @@ section.grid-section--no-divider{
    tarjeta: sin este corte, el texto de "Integra múltiples
    funciones..." se veía duplicado (una vez en su tarjeta, otra en
    .synced-captions, que seguía de pie). */
+/* El título sticky de la sección (ver section.grid-section h2 en
+   styles.css) queda pegado mientras la CAJA de la sección todavía
+   sigue por debajo de la barra — esa caja incluye el padding-bottom
+   de .synced-captions (100px), que es espacio en blanco, no texto. El
+   título mide más que esos 100px, así que quedaba pegado tapando ese
+   espacio vacío bastante después de que el texto real ya había
+   desaparecido de la pantalla. Se mueve ese mismo espacio a la
+   sección siguiente (mismo negro de fondo, mismo total visual) para
+   que el título se despegue apenas se deja de ver el texto. Solo
+   celular: es el único formato donde el título es sticky. */
+@media (max-width: 640px){
+  #app-integrada .synced-captions{
+    padding-bottom: 0;
+  }
+  #app-integrada + section{
+    padding-top: 100px;
+  }
+}
 @media (min-width: 641px) and (max-width: 819px){
   #app-integrada .synced-captions{
     display: none;
