@@ -235,6 +235,13 @@
 #formato-display{
   padding-bottom: 100px;
 }
+/* Infinity: línea divisoria entre Opciones y el logo de cierre
+   (.product-outro no trae una por defecto). + (no ~) porque en esta
+   página son hermanos directos, uno al lado del otro. */
+#opciones + .product-outro{
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(to right, #000000 0%, rgba(255,255,255,0.7) 50%, #000000 100%) 1;
+}
 /* Desktop: mismo tamaño que el texto del hero (.product-hero__caption,
    ver más arriba), mismo breakpoint (1139px, Punto Quiebre Hamburguesa). */
 @media (min-width: 1139px){
