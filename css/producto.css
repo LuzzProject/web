@@ -184,14 +184,21 @@
 }
 .section-caption p:last-child{ margin-bottom: 0; }
 
-/* Proyección mapeada / Formato Display: el bloque de texto queda
-   centrado en la página (heredado de .section-caption), pero el
-   listado de bullets se alinea a la izquierda dentro del bloque para
-   que cada ítem arranque parejo. */
-#proyeccion-mapeada .section-caption p,
-#formato-display .section-caption p{
+/* Opciones (Trinity / Infinity): el bloque de texto queda centrado en
+   la página (heredado de .section-caption), pero el listado de
+   bullets se alinea a la izquierda dentro del bloque para que cada
+   ítem arranque parejo. Solo el primer .section-caption de la sección
+   (los bullets) — el segundo (WhatsApp) sigue centrado como cualquier
+   otra leyenda. */
+#opciones .section-caption:first-of-type p{
   display: inline-block;
   text-align: left;
+}
+/* Subtítulo "Disponible para Venta o Alquiler": centrado igual que el
+   h2 de arriba, a diferencia del uso de .section-subtitle en Hard &
+   Soft (ahí queda a la izquierda, dentro de una columna). */
+#opciones .section-subtitle{
+  text-align: center;
 }
 /* Desktop: mismo tamaño que el texto del hero (.product-hero__caption,
    ver más arriba), mismo breakpoint (1139px, Punto Quiebre Hamburguesa). */
