@@ -212,12 +212,27 @@
 #opciones .section-caption a{
   text-decoration: underline;
 }
+/* Desktop: el subrayado de WhatsApp queda un poco más fino (el texto
+   ya es más grande acá, 30px, así que el subrayado automático
+   también engrosa). */
+@media (min-width: 820px){
+  #opciones .section-caption a{
+    text-decoration-thickness: 1px;
+  }
+}
 /* Proyección mapeada (Infinity): ya no cierra con un .section-caption
    propio (se movió a #opciones), así que hay que devolverle a mano el
-   mismo espacio hasta la línea divisoria de la sección siguiente que
-   tiene el resto de las secciones del sitio (100px, ver
-   .section-caption más arriba). */
+   espacio hasta la línea divisoria de Formato Display — acá un 50%
+   más que el estándar del resto del sitio (150px en vez de 100px),
+   pedido explícito del cliente para este quiebre puntual. */
 #proyeccion-mapeada{
+  padding-bottom: 150px;
+}
+/* Formato Display: mismo caso, tampoco cierra con .section-caption
+   propio — se le devuelve el espacio estándar (100px, el mismo que
+   usa el resto de las secciones) hasta la línea divisoria de
+   Opciones, que ahora la sigue. */
+#formato-display{
   padding-bottom: 100px;
 }
 /* Desktop: mismo tamaño que el texto del hero (.product-hero__caption,
@@ -806,7 +821,8 @@
    entre columnas como entre filas porque no hay texto que separe. */
 .final-gallery-section{
   background: #000000;
-  /* sin línea divisoria arriba ni abajo, a propósito */
+  /* sin línea divisoria propia arriba, a propósito */
+  padding-bottom: 100px; /* espacio estándar hasta la línea divisoria de Opciones, que ahora la sigue */
 }
 /* Tampoco la línea que trae el footer por defecto (sí la conserva en
    el resto de las páginas). Usa ~ (no +) porque el lightbox queda
@@ -815,14 +831,19 @@
   border-top: none;
   border-image: none;
 }
-/* Separación pedida entre esta grilla y el video que la sigue: el
-   doble del padding-top estándar de .product-video (80px en los tres
-   formatos, ver arriba) en cualquier ancho de pantalla. Selector ~ (no
-   +) porque el lightbox queda como hermano en el medio, entre la
-   galería y el video. Afecta nada más a este video (el único después
-   de la grilla final), no al de más arriba de la página. */
+/* Separación pedida entre la sección Opciones y el video que la
+   sigue: el doble del padding-top estándar de .product-video (80px en
+   los tres formatos, ver arriba) en cualquier ancho de pantalla, más
+   su propia línea divisoria (mismo estilo que .grid-section — este
+   video no trae una por defecto). Selector ~ (no +) porque el
+   lightbox y la sección Opciones quedan como hermanos en el medio,
+   entre la galería final y el video. Afecta nada más a este video (el
+   único después de la grilla final), no al de más arriba de la
+   página. */
 .final-gallery-section ~ .product-video{
   padding-top: 160px;
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(to right, #000000 0%, rgba(255,255,255,0.7) 50%, #000000 100%) 1;
 }
 /* Tampoco la línea divisoria antes del footer cuando la página cierra
    con el aro + nombre del producto (.product-outro, ver más abajo). */
