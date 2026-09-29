@@ -191,21 +191,23 @@
 #opciones{
   padding-top: 100px;
 }
-/* "Consultanos por las modalidades..." / "Escribinos por WhatsApp":
-   mismo tamaño que los subtítulos "Administración Remota/Local"
-   (.admin-block .section-subtitle), pedido explícito del cliente —
-   20px/24px/30px, mismos quiebres. El link a WhatsApp lleva
-   subrayado para que se note que es un link (el resto de los links
-   del sitio no lo llevan). */
-#opciones .section-caption:last-of-type p{
-  font-size: 20px;
+/* "Consultanos por las modalidades de Venta o Alquiler": mismo
+   estilo que los títulos de sección (h2), como "Opciones" arriba —
+   centrado, igual que el resto de los usos de .section-subtitle
+   fuera de Hard & Soft (ahí queda a la izquierda, en columna). */
+#opciones .section-subtitle{
+  text-align: center;
 }
-@media (min-width: 641px) and (max-width: 819px){
-  #opciones .section-caption:last-of-type p{ font-size: 24px; }
+/* Separación entre los bullets de arriba y este subtítulo: -30% del
+   estándar (100px -> 70px), pedido puntual para este quiebre. */
+#opciones .section-caption:first-of-type{
+  padding-bottom: 70px;
 }
-@media (min-width: 820px){
-  #opciones .section-caption:last-of-type p{ font-size: 30px; }
-}
+/* "Escribinos por WhatsApp" queda al tamaño normal de leyenda (el
+   mismo que los bullets de arriba, .section-caption p sin overrides)
+   — más chico que el subtítulo. El link lleva subrayado para que se
+   note que es un link (el resto de los links del sitio no lo
+   llevan). */
 #opciones .section-caption a{
   text-decoration: underline;
 }
