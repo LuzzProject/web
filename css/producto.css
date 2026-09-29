@@ -184,22 +184,19 @@
 }
 .section-caption p:last-child{ margin-bottom: 0; }
 
-/* Opciones (Trinity / Infinity): título con el doble de separación de
-   las fotos de arriba (180px = 90px estándar x2, pedido explícito). */
+/* Opciones (Trinity / Infinity): separación del título a la línea
+   divisoria de arriba, igual a la separación que queda del texto de
+   WhatsApp a la línea divisoria de abajo (100px, el padding-bottom
+   estándar de .section-caption — ver más abajo). */
 #opciones{
-  padding-top: 180px;
+  padding-top: 100px;
 }
-/* Subtítulo "Disponible para Venta o Alquiler": centrado igual que el
-   h2 de arriba, a diferencia del uso de .section-subtitle en Hard &
-   Soft (ahí queda a la izquierda, dentro de una columna). */
-#opciones .section-subtitle{
-  text-align: center;
-}
-/* "Consultas por WhatsApp": mismo tamaño que los subtítulos
-   "Administración Remota/Local" (.admin-block .section-subtitle),
-   pedido explícito del cliente — 20px/24px/30px, mismos quiebres.
-   El link a WhatsApp lleva subrayado para que se note que es un
-   link (el resto de los links del sitio no lo llevan). */
+/* "Consultanos por las modalidades..." / "Escribinos por WhatsApp":
+   mismo tamaño que los subtítulos "Administración Remota/Local"
+   (.admin-block .section-subtitle), pedido explícito del cliente —
+   20px/24px/30px, mismos quiebres. El link a WhatsApp lleva
+   subrayado para que se note que es un link (el resto de los links
+   del sitio no lo llevan). */
 #opciones .section-caption:last-of-type p{
   font-size: 20px;
 }
