@@ -208,6 +208,17 @@
 .spec-columns__col .section-subtitle{
   margin-bottom: 20px;
 }
+/* Desktop angosto (820px-1440px): los 3 títulos quedaban muy pegados
+   entre sí con el tamaño estándar del h2 (que recién llega a su
+   mínimo, 36px, a partir de acá). Este clamp() propio arranca más
+   chico (32px) a los 820px y llega al mismo tamaño que el resto de
+   los títulos del sitio (46.8px) recién a los 1440px de referencia
+   — mismo criterio que el clamp() del h2, con piso más bajo. */
+@media (min-width: 820px){
+  .spec-columns__col .section-subtitle{
+    font-size: clamp(32px, 2.387vw + 12.43px, 46.8px);
+  }
+}
 .spec-columns__col p{
   font-size: 20px;
   line-height: 1.6;
