@@ -1,83 +1,143 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.luzzproject.com/</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/index.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/bio.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/en/index.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/index.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/contacto.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/bio.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/bio.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/bio.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/bio.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/desarrollos.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/en/bio.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/bio.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/bio.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/bio.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/exhibiciones.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/contacto.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/contacto.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/contacto.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/contacto.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/trabajos.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/en/contacto.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/contacto.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/contacto.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/contacto.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/productos/trinity.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/desarrollos.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/desarrollos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/desarrollos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/desarrollos.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/productos/omni.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/en/desarrollos.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/desarrollos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/desarrollos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/desarrollos.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/productos/infinity.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/exhibiciones.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/exhibiciones.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/exhibiciones.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/exhibiciones.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/productos/light-mirage.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/en/exhibiciones.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/exhibiciones.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/exhibiciones.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/exhibiciones.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/en/index.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/trabajos.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/trabajos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/trabajos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/trabajos.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/en/bio.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/en/trabajos.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/trabajos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/trabajos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/trabajos.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/en/contacto.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/productos/trinity.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/productos/trinity.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/productos/trinity.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/productos/trinity.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/en/desarrollos.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/en/productos/trinity.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/productos/trinity.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/productos/trinity.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/productos/trinity.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/en/exhibiciones.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/productos/omni.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/productos/omni.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/productos/omni.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/productos/omni.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/en/trabajos.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/en/productos/omni.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/productos/omni.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/productos/omni.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/productos/omni.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/en/productos/trinity.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/productos/infinity.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/productos/infinity.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/productos/infinity.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/productos/infinity.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/en/productos/omni.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/en/productos/infinity.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/productos/infinity.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/productos/infinity.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/productos/infinity.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/en/productos/infinity.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/productos/light-mirage.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/productos/light-mirage.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/productos/light-mirage.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/productos/light-mirage.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
   <url>
-    <loc>https://www.luzzproject.com/en/productos/light-mirage.html</loc>
-    <lastmod>2026-09-26</lastmod>
+    <loc>https://luzzproject.com/en/productos/light-mirage.html</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://luzzproject.com/productos/light-mirage.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://luzzproject.com/en/productos/light-mirage.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://luzzproject.com/productos/light-mirage.html"/>
+    <lastmod>2026-09-30</lastmod>
   </url>
 </urlset>

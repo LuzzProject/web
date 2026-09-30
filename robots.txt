@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.luzzproject.com/sitemap.xml
+Sitemap: https://luzzproject.com/sitemap.xml
