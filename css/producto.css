@@ -184,39 +184,55 @@
 }
 .section-caption p:last-child{ margin-bottom: 0; }
 
-/* Opciones (Trinity / Infinity): separación del título a la línea
-   divisoria de arriba, igual a la separación que queda del texto de
-   WhatsApp a la línea divisoria de abajo (100px, el padding-bottom
-   estándar de .section-caption — ver más abajo). */
+/* Opciones (Trinity / Infinity / Omni): separación del título a la
+   línea divisoria de arriba, mismo criterio de espaciado estándar
+   (100px) que se usa en el resto de las secciones sin foto/galería
+   propia arriba. */
 #opciones{
   padding-top: 100px;
 }
-/* "Consultanos por las modalidades de Venta o Alquiler": mismo
-   estilo que los títulos de sección (h2), como "Opciones" arriba —
-   centrado, igual que el resto de los usos de .section-subtitle
-   fuera de Hard & Soft (ahí queda a la izquierda, en columna). */
-#opciones .section-subtitle{
+/* ---------- 3 columnas de datos (Dimensiones / Adquisición /
+   Contenido) ----------
+   Desktop: lado a lado. Los títulos van más chicos que el h2
+   estándar del sitio (36px-46.8px) — pedido explícito, si no, las 3
+   columnas no entran juntas en el ancho de pantalla.
+   Tablet y celular: apiladas, cada título con su propio texto debajo
+   (no hay problema de ancho acá, así que no hace falta achicarlos). */
+.spec-columns{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--photo-gap);
   text-align: center;
 }
-/* Separación entre los bullets de arriba y este subtítulo: -30% del
-   estándar (100px -> 70px), pedido puntual para este quiebre. */
-#opciones .section-caption:first-of-type{
-  padding-bottom: 70px;
+.spec-columns__col .section-subtitle{
+  margin-bottom: 20px;
 }
-/* "Escribinos por WhatsApp" queda al tamaño normal de leyenda (el
-   mismo que los bullets de arriba, .section-caption p sin overrides)
-   — más chico que el subtítulo. El link lleva subrayado para que se
-   note que es un link (el resto de los links del sitio no lo
-   llevan). */
-#opciones .section-caption a{
-  text-decoration: underline;
+.spec-columns__col p{
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--fg);
+  font-weight: 300;
+  margin: 0 0 20px;
+  padding-inline: 16px;
 }
-/* Desktop: el subrayado de WhatsApp queda un poco más fino (el texto
-   ya es más grande acá, 30px, así que el subrayado automático
-   también engrosa). */
+.spec-columns__col p:last-child{ margin-bottom: 0; }
+@media (min-width: 1139px){
+  .spec-columns__col p{ font-size: 22px; }
+}
 @media (min-width: 820px){
-  #opciones .section-caption a{
-    text-decoration-thickness: 1px;
+  .spec-columns__col .section-subtitle{
+    font-size: 28px; /* más chico que el clamp() de 36-46.8px del h2 estándar */
+  }
+}
+@media (max-width: 819px){
+  .spec-columns{
+    display: block; /* apiladas: título + texto, una columna debajo de la otra */
+  }
+  .spec-columns__col{
+    padding-bottom: 60px;
+  }
+  .spec-columns__col:last-child{
+    padding-bottom: 0;
   }
 }
 /* Proyección mapeada (Infinity): ya no cierra con un .section-caption
@@ -232,6 +248,13 @@
    usa el resto de las secciones) hasta la línea divisoria de
    Opciones, que ahora la sigue. */
 #formato-display{
+  padding-bottom: 100px;
+}
+/* Omni: mismo caso que Proyección mapeada/Formato Display en
+   Infinity — las 2 fotos finales tampoco cierran con
+   .section-caption propio, se le agrega el espacio estándar hasta
+   la línea divisoria de Opciones. */
+#omni-final-fotos{
   padding-bottom: 100px;
 }
 /* Infinity: línea divisoria entre Opciones y el logo de cierre
