@@ -114,6 +114,18 @@
   }
 }
 
+/* ---------- Infinity — Opciones/Dimensiones (solo celular): "desde
+   60 x 40 cm hasta 2 x 1,4 m" entero en el segundo renglón, mismo
+   criterio que Trinity arriba. ---------- */
+.infinity-dim-mobile-break{
+  display: none;
+}
+@media (max-width: 640px){
+  .infinity-dim-mobile-break{
+    display: inline;
+  }
+}
+
 /* ---------- Video de prueba (Trinity, debajo del hero) ----------
    A modo de prueba, para que el cliente vea cómo queda un video de
    YouTube embebido en la página — no es un componente definitivo
@@ -995,10 +1007,10 @@
   touch-action: pan-x; /* restringe el movimiento a horizontal, ninguna galería con swipe se mueve en vertical */
   overscroll-behavior: contain; /* al llegar al final del swipe no "pasa" el resto del arrastre a la página (scroll chaining), que se sentía como movimiento vertical residual */
 }
-/* Navegación por clic (desktop/tablet, sin touch): dos zonas invisibles,
+/* Navegación por clic (desktop, sin touch): dos zonas invisibles,
    mitad izquierda/derecha, mismo criterio que .hero-zones del Home. En
-   celular no estorban: el swipe sigue andando igual, un tap ahí solo
-   avanza/retrocede una foto además. */
+   celular y tablet no estorban: el swipe con el dedo sigue andando
+   igual, un tap ahí solo avanza/retrocede una foto además. */
 .lightbox__zones{
   position: absolute;
   inset: 0;
@@ -1011,19 +1023,22 @@
   border: none;
   cursor: pointer;
 }
-/* En celular, este contenedor queda tapando el track por encima (para
-   que los botones puedan recibir el toque) pero al ser hermano del
-   track (no hijo), un arrastre que arranca sobre él nunca llega a
-   considerarse swipe del track de abajo — solo el tap (que sí
-   burbujea como click) funcionaba, no el deslizamiento clásico. Con
-   pointer-events:none acá (en el contenedor: un botón hijo con
-   pointer-events:none no alcanza, el div que lo envuelve sigue
-   interceptando igual), el toque pasa directo al track: el arrastre
-   nativo empieza a funcionar, y el avance por toque lo toma
-   setupTapToAdvance() puesto directo sobre el track (ver JS) en su
-   lugar. Solo celular: en desktop/tablet este contenedor sigue
-   exactamente igual (ahí no hay swipe con el dedo que tapar). */
-@media (max-width: 640px){
+/* En celular y tablet (pantallas táctiles), este contenedor queda
+   tapando el track por encima (para que los botones puedan recibir
+   el toque) pero al ser hermano del track (no hijo), un arrastre que
+   arranca sobre él nunca llega a considerarse swipe del track de
+   abajo — solo el tap (que sí burbujea como click) funcionaba, no el
+   deslizamiento clásico. Con pointer-events:none acá (en el
+   contenedor: un botón hijo con pointer-events:none no alcanza, el
+   div que lo envuelve sigue interceptando igual), el toque pasa
+   directo al track: el arrastre nativo empieza a funcionar, y el
+   avance por toque lo toma setupTapToAdvance() puesto directo sobre
+   el track (ver JS) en su lugar. Hasta 819px (celular + tablet):
+   pedido explícito de que todo el swipe de tablet también se pueda
+   hacer con el dedo, no solo con el toque tipo historias. En desktop
+   este contenedor sigue exactamente igual (ahí no hay dedo que
+   tapar). */
+@media (max-width: 819px){
   .lightbox__zones{
     pointer-events: none;
   }

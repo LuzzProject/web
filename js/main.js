@@ -396,38 +396,37 @@ function setupLoopingCarousel(gallery, signal, initialIndex = 1){
   // salto de corrección (aunque el debounce de abajo ya se haya
   // cumplido): moverle el scroll por JS a una galería que el dedo
   // todavía está arrastrando desincroniza el seguimiento nativo del
-  // gesto — se sentía como que el swipe se trababa al llegar al final
-  // y después "pegaba un salto" de dos fotos de una vez, en vez de
-  // dar la vuelta del loop sin que se note.
+  // gesto — se probó corregir apenas empieza el gesto nuevo (en
+  // touchstart) pero el dedo ya está apoyado en ese instante, así que
+  // el mismo problema aparecía igual, salteado: el swipe se sentía
+  // trabado una vez y a veces terminaba pasando dos fotos de un
+  // saque. En vez de eso, si el debounce de abajo se cumple mientras
+  // el dedo ya está tocando de nuevo, la corrección queda pendiente y
+  // se aplica recién al soltar ese gesto (touchend) — ahí el dedo ya
+  // no está en pantalla, así que no hay gesto activo que desincronizar.
   let isTouching = false;
-  gallery.addEventListener('touchstart', () => {
-    // Si el dedo vuelve a tocar justo en la ventana en la que el salto
-    // de corrección todavía no se disparó (scroll recién asentándose,
-    // debounce de abajo sin cumplirse todavía), ese salto queda
-    // cancelado (ver guarda "if (isTouching) return" de abajo) y el
-    // nuevo arrastre arranca parado sobre el clon — que no tiene nada
-    // después, así que el swipe se siente trabado, sin poder avanzar
-    // más. Se corrige acá mismo, antes de que arranque el gesto nuevo:
-    // como el clon es idéntico a la foto real, el salto es invisible.
-    if (!isTouching) {
-      clearTimeout(scrollEndTimer);
-      const idx = closestIndex();
-      if (idx === 0) jump(total, 'auto');
-      else if (idx === total + 1) jump(1, 'auto');
+  let pendingCorrection = false;
+  function correctIfOnClone(){
+    const idx = closestIndex();
+    if (idx === 0) jump(total, 'auto');          // llegó al clon del último -> salta a la real
+    else if (idx === total + 1) jump(1, 'auto'); // llegó al clon del primero -> salta a la real
+  }
+  gallery.addEventListener('touchstart', () => { isTouching = true; }, { passive: true, signal });
+  gallery.addEventListener('touchend', () => {
+    isTouching = false;
+    if (pendingCorrection) {
+      pendingCorrection = false;
+      correctIfOnClone();
     }
-    isTouching = true;
   }, { passive: true, signal });
-  gallery.addEventListener('touchend', () => { isTouching = false; }, { passive: true, signal });
   gallery.addEventListener('touchcancel', () => { isTouching = false; }, { passive: true, signal });
 
   let scrollEndTimer = null;
   gallery.addEventListener('scroll', () => {
     clearTimeout(scrollEndTimer);
     scrollEndTimer = setTimeout(() => {
-      if (isTouching) return; // se vuelve a chequear solo con el próximo scroll (o al soltar)
-      const idx = closestIndex();
-      if (idx === 0) jump(total, 'auto');          // llegó al clon del último -> salta a la real
-      else if (idx === total + 1) jump(1, 'auto'); // llegó al clon del primero -> salta a la real
+      if (isTouching) { pendingCorrection = true; return; } // se corrige recién al soltar (ver touchend arriba)
+      correctIfOnClone();
     }, 120); // espera a que el scroll/snap se asiente antes de decidir si hay que saltar
   }, { passive: true, signal });
 
