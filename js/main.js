@@ -380,7 +380,22 @@ function setupLoopingCarousel(gallery, signal, initialIndex = 1){
     // en vez de la buscada.
     const item = allItems[index];
     const left = item.offsetLeft + item.offsetWidth / 2 - gallery.clientWidth / 2;
-    gallery.scrollTo({ left, behavior: behavior || 'auto' });
+    if (behavior === 'smooth') {
+      gallery.scrollTo({ left, behavior: 'smooth' });
+    } else {
+      // Asignación directa (no scrollTo con behavior:'auto'): en los
+      // saltos "instantáneos" — el de corrección del loop y el de
+      // apertura del lightbox — necesitamos que el cambio de posición
+      // sea sincrónico de verdad. scrollTo({behavior:'auto'}) debería
+      // ser instantáneo, pero no todos los motores lo garantizan sin
+      // ninguna animación/demora de por medio; con el dedo recién
+      // soltado (o a punto de tocar de nuevo), esa demora, por mínima
+      // que sea, es tiempo suficiente para que el gesto siguiente
+      // arranque antes de que el salto termine de aplicarse — se
+      // sentía como que el swipe se trababa. scrollLeft sí es síncrono
+      // siempre.
+      gallery.scrollLeft = left;
+    }
   }
   // Arranca directo en la foto pedida (por defecto la real 0, índice 1
   // después del clon del último). En el lightbox, que puede abrir en

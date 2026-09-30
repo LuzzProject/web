@@ -217,6 +217,17 @@
   padding-top: 100px;
   padding-bottom: 100px; /* misma separación que arriba, hasta la línea divisoria de abajo */
 }
+/* Celular: las líneas divisorias (arriba y abajo de la sección) quedan
+   un 50% más cerca del texto de Opciones (100px -> 50px). El espacio
+   de las líneas hacia afuera (a las fotos de arriba / al video o al
+   logo de abajo) no es este padding — es el de la sección vecina — así
+   que queda sin tocar. */
+@media (max-width: 640px){
+  #opciones{
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+}
 /* ---------- 3 columnas de datos (Dimensiones / Adquisición /
    Contenido) ----------
    Desktop: lado a lado. Los títulos van más chicos que el h2
