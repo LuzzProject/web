@@ -400,7 +400,23 @@ function setupLoopingCarousel(gallery, signal, initialIndex = 1){
   // y después "pegaba un salto" de dos fotos de una vez, en vez de
   // dar la vuelta del loop sin que se note.
   let isTouching = false;
-  gallery.addEventListener('touchstart', () => { isTouching = true; }, { passive: true, signal });
+  gallery.addEventListener('touchstart', () => {
+    // Si el dedo vuelve a tocar justo en la ventana en la que el salto
+    // de corrección todavía no se disparó (scroll recién asentándose,
+    // debounce de abajo sin cumplirse todavía), ese salto queda
+    // cancelado (ver guarda "if (isTouching) return" de abajo) y el
+    // nuevo arrastre arranca parado sobre el clon — que no tiene nada
+    // después, así que el swipe se siente trabado, sin poder avanzar
+    // más. Se corrige acá mismo, antes de que arranque el gesto nuevo:
+    // como el clon es idéntico a la foto real, el salto es invisible.
+    if (!isTouching) {
+      clearTimeout(scrollEndTimer);
+      const idx = closestIndex();
+      if (idx === 0) jump(total, 'auto');
+      else if (idx === total + 1) jump(1, 'auto');
+    }
+    isTouching = true;
+  }, { passive: true, signal });
   gallery.addEventListener('touchend', () => { isTouching = false; }, { passive: true, signal });
   gallery.addEventListener('touchcancel', () => { isTouching = false; }, { passive: true, signal });
 
