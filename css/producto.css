@@ -101,6 +101,19 @@
   }
 }
 
+/* ---------- Trinity — Opciones/Dimensiones (solo celular): "1 m,
+   1,60 m y 2,20 m de ancho" entero en el segundo renglón, pedido
+   puntual del cliente. En tablet/desktop sigue en el mismo renglón
+   que "Disponible en 3 tamaños:", sin salto forzado. ---------- */
+.trinity-dim-mobile-break{
+  display: none;
+}
+@media (max-width: 640px){
+  .trinity-dim-mobile-break{
+    display: inline;
+  }
+}
+
 /* ---------- Video de prueba (Trinity, debajo del hero) ----------
    A modo de prueba, para que el cliente vea cómo queda un video de
    YouTube embebido en la página — no es un componente definitivo
