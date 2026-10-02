@@ -75,6 +75,14 @@ Contacto: hello@luzzproject.com · +54 911 3365 1652 · @luzzproject
    visor. Preguntar o sugerir la verificación en Safari cuando algo no tenga
    explicación en el código.
 
+## Versión de los archivos de estilos y scripts (caché)
+
+Todas las páginas cargan `css/styles.css`, `css/producto.css` y `js/main.js` con un
+número de versión al final (`?v=2`). Sirve para que los navegadores (sobre todo Safari
+del iPhone) descarguen el archivo nuevo en vez de usar uno guardado. **Cada vez que se
+cambie un CSS o el JS, subir el número en las 20 páginas** (ES + EN) y recordarle al
+cliente que suba también las páginas por FTP, no solo el archivo modificado.
+
 ## Sistema de fade-in (scroll-linked, no IntersectionObserver)
 
 No usa umbrales fijos con `transition` de CSS. La opacidad se recalcula en cada frame
