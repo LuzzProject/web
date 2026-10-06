@@ -137,9 +137,13 @@ nav.menu > a.lang-switch{
 }
 
 /* ---------- Desplegable de PRODUCTOS (desktop) ----------
-   Se abre al pasar el mouse (o con teclado, vía :focus-within) sobre
-   el ítem del menú. Independiente del breakpoint hamburguesa: por
-   debajo de 1138px nav.menu ya está oculto y esto no aplica. */
+   Se abre al pasar el mouse sobre el ítem del menú, o al hacer clic
+   en "PRODUCTOS" (queda abierto hasta otro clic, afuera o con Esc).
+   "PRODUCTOS" ya no es un link a una sección: solo abre la lista
+   (ver .menu-trigger y el JS). Independiente del breakpoint
+   hamburguesa: por debajo de 1138px nav.menu ya está oculto y esto
+   no aplica. */
+.menu-trigger{ cursor: pointer; }
 .menu-item{
   position: relative;
 }
@@ -160,7 +164,7 @@ nav.menu > a.lang-switch{
   z-index: 120;
 }
 .menu-item:hover .dropdown,
-.menu-item:focus-within .dropdown{
+.menu-item.open .dropdown{
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
@@ -271,12 +275,17 @@ nav.menu > a.lang-switch{
   letter-spacing:0.02em;
   color:var(--fg);
 }
+/* Flechita de "Productos": chevron fino (línea de 1.5px, puntas rectas,
+   vértice filoso), 13x17px, blanco. Cerrado apunta a la derecha (>);
+   al abrir gira 90° y apunta hacia abajo (V). Antes: triángulo relleno
+   ▾ de 32px que giraba 180°. */
 .mobile-menu-caret{
-  font-size:32px; /* 16px + 100% (el doble) */
-  color: var(--fg); /* blanco, antes fg-dim */
+  display: inline-flex;
+  color: var(--fg);
   transition: transform 0.25s ease;
 }
-.mobile-menu-item.open .mobile-menu-caret{ transform:rotate(180deg); }
+.mobile-menu-caret svg{ display: block; }
+.mobile-menu-item.open .mobile-menu-caret{ transform:rotate(90deg); }
 .mobile-submenu{
   display:flex;
   flex-direction:column;

@@ -33,6 +33,38 @@ document.querySelectorAll('.mobile-menu-toggle').forEach(btn => {
   });
 });
 
+/* ---------- Desplegable de PRODUCTOS en la nav desktop ----------
+   "PRODUCTOS" ya no navega: al hacer clic (o Enter/Espacio) abre/cierra
+   la lista de productos. Se cierra con otro clic, clic afuera, Esc o
+   al salir del ítem con el teclado. El hover sigue abriéndola igual. */
+document.querySelectorAll('.menu-trigger').forEach(trigger => {
+  const item = trigger.closest('.menu-item');
+  if (!item) return;
+  const setOpen = open => {
+    item.classList.toggle('open', open);
+    trigger.setAttribute('aria-expanded', String(open));
+  };
+  trigger.addEventListener('click', e => {
+    e.preventDefault();
+    setOpen(!item.classList.contains('open'));
+  });
+  trigger.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      setOpen(!item.classList.contains('open'));
+    }
+  });
+  item.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { setOpen(false); trigger.focus(); }
+  });
+  item.addEventListener('focusout', e => {
+    if (!item.contains(e.relatedTarget)) setOpen(false);
+  });
+  document.addEventListener('click', e => {
+    if (!item.contains(e.target)) setOpen(false);
+  });
+});
+
 /* ---------- Hero slideshow (loop infinito + arrastre con el dedo) ----------
    Solo corre si la página actual tiene un hero-slideshow (hoy, solo el Home). */
 const heroEl = document.getElementById('hero');

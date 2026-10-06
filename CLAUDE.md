@@ -78,7 +78,7 @@ Contacto: hello@luzzproject.com · +54 911 3365 1652 · @luzzproject
 ## Versión de los archivos de estilos y scripts (caché)
 
 Todas las páginas cargan `css/styles.css`, `css/producto.css` y `js/main.js` con un
-número de versión al final (`?v=2`). Sirve para que los navegadores (sobre todo Safari
+número de versión al final (`?v=3`). Sirve para que los navegadores (sobre todo Safari
 del iPhone) descarguen el archivo nuevo en vez de usar uno guardado. **Cada vez que se
 cambie un CSS o el JS, subir el número en las 20 páginas** (ES + EN) y recordarle al
 cliente que suba también las páginas por FTP, no solo el archivo modificado.
@@ -143,6 +143,16 @@ de scroll según la posición real del elemento:
   siguiente. Requiere suficiente `padding` en la sección/footer siguiente para que
   el título llegue a despegarse antes de que aparezca contenido nuevo (ver
   problema real ya resuelto: el footer necesitó más padding-top del esperado).
+
+## Nav: detalles de comportamiento ya decididos con el cliente
+
+- **Desktop, "PRODUCTOS":** NO es un link (no lleva al Home). Solo abre/cierra la
+  lista de productos (con clic; el hover también la abre). Se cierra con otro clic,
+  clic afuera o Esc. Clase `.menu-trigger` + JS en `main.js`.
+- **Mobile, "Productos":** la flechita es un chevron fino (SVG, línea de 1.5px):
+  cerrado apunta a la derecha (>), abierto gira 90° y apunta hacia abajo (V).
+- **Pastilla de idioma (todos los formatos):** muestra el idioma ACTUAL — "ES" en
+  las páginas en español, "EN" en las en inglés — y sigue llevando al otro idioma.
 
 ## Breakpoints
 
