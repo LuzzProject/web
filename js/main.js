@@ -11,7 +11,16 @@ const mobileMenu = document.getElementById('mobileMenu');
 if (burger && mobileMenu) {
   burger.addEventListener('click', () => {
     burger.classList.toggle('open');
-    mobileMenu.classList.toggle('open');
+    const isOpen = mobileMenu.classList.toggle('open');
+    // Cada vez que se abre la hamburguesa, "Productos" ya aparece
+    // desplegado (se puede cerrar tocándolo, como siempre).
+    if (isOpen) {
+      mobileMenu.querySelectorAll('.mobile-menu-item').forEach(item => {
+        item.classList.add('open');
+        const toggle = item.querySelector('.mobile-menu-toggle');
+        if (toggle) toggle.setAttribute('aria-expanded', 'true');
+      });
+    }
   });
   mobileMenu.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => {

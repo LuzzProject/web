@@ -290,6 +290,7 @@ nav.menu > a.lang-switch{
   display:flex;
   flex-direction:column;
   gap:16px;
+  padding-left:24px; /* sangría: Trinity/Omni/Infinity/Light Mirage quedan 24px más adentro que los títulos del menú (antes 0, al ras), para que se lea que están dentro de Productos */
   max-height:0;
   overflow:hidden;
   margin-top:0;
