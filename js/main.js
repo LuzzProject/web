@@ -683,20 +683,25 @@ window.addEventListener('load', () => {
   });
 });
 
-/* ---------- Omni: "Referencias" (grilla de 16 fotos con páginas) ----------
+/* ---------- Omni: "Referencias" (grilla de 16 fotos con páginas, en loop) ----------
    Las 16 fotos se agrupan en "páginas":
    - Desktop (>819px): 8 fotos por página (4x2), 2 páginas. Las flechas
      deslizan la grilla de una página a la otra con una transición
-     suave (como al pasar de foto en el lightbox); desde la última,
-     "siguiente" vuelve a la primera.
+     suave, SIEMPRE en el mismo sentido: desde la última, "siguiente"
+     sigue deslizando hacia la primera (y "anterior", desde la primera,
+     hacia la última). Mismo truco que el hero del Home: se clona la
+     primera y la última página a los costados y, al terminar la
+     transición, se salta sin animación a la página real equivalente.
    - Tablet y celular (<=819px): 4 fotos por página (2x2), 4 páginas.
-     Sin flechas: se pasan con swipe manual (scroll horizontal con
-     enganche, ver CSS .ref-track).
-   Los puntitos marcan en qué página estás (no son clickeables).
-   Las fotos siguen siendo las mismas 16 <img>, siempre en orden, así
-   que el lightbox (data-lightbox en .ref-grid) las recorre todas. Al
-   cambiar el ancho de pantalla se rearman las páginas y se mantiene la
-   primera foto que se estaba viendo. */
+     Sin flechas: swipe manual, con el mismo loop infinito que usan el
+     resto de los carruseles del sitio (setupLoopingCarousel).
+   Los puntitos marcan en qué página real estás (los clones no cuentan
+   ni son clickeables). Las fotos siguen siendo las mismas 16 <img>
+   reales, en orden: el lightbox (data-lightbox en .ref-grid) ignora
+   los clones (aria-hidden) y recorre solo esas 16. Tocar una foto de
+   un clon (solo posible un instante, mientras se desliza) abre la
+   foto real equivalente. Al cambiar el ancho de pantalla se rearman
+   las páginas y se mantiene la primera foto que se estaba viendo. */
 document.querySelectorAll('.ref-grid').forEach(grid => {
   const section = grid.parentElement;
   const pager = section.querySelector('.ref-pager');
@@ -706,73 +711,133 @@ document.querySelectorAll('.ref-grid').forEach(grid => {
   const prevBtn = pager.querySelector('.ref-pager__prev');
   const nextBtn = pager.querySelector('.ref-pager__next');
   const compact = window.matchMedia('(max-width: 819px)');
+  const SLIDE_MS = 1000; // tiene que coincidir con la transición de .ref-track en el CSS
   let track = null;
+  let abort = null;
+  let pages = [];       // páginas reales
   let pageCount = 0;
-  let page = 0;
+  let realPage = 0;     // página real que se está viendo (0..pageCount-1)
+  let perPageUsed = 0;
+  let idx = 1;          // desktop: posición en la pista [clon-última, real-0..N-1, clon-primera]
+  let busy = false;     // desktop: hay una transición en curso
+  let settleTimer = null;
+  let loop = null;      // tablet/celular: el loop de setupLoopingCarousel
 
   function paintDots(){
-    [...dotsWrap.children].forEach((d, i) => d.classList.toggle('active', i === page));
+    [...dotsWrap.children].forEach((d, i) => d.classList.toggle('active', i === realPage));
+  }
+  // Un clon es solo un "doble" visual: sin fade propio (si no, quedaría
+  // transparente para siempre) y sus fotos delegan el toque en la real.
+  function prepareClone(clonePage, originalPage){
+    clonePage.querySelectorAll('.thumb').forEach(t => {
+      t.removeAttribute('data-reveal');
+      t.style.opacity = '1';
+      t.style.transform = 'none';
+    });
+    const cloneImgs = [...clonePage.querySelectorAll('img')];
+    const origImgs = [...originalPage.querySelectorAll('img')];
+    cloneImgs.forEach((img, i) => {
+      img.removeAttribute('tabindex');
+      img.removeAttribute('role');
+      if (img.decode) img.decode().catch(() => {}); // decodificada de antemano, para que no "cargue" al dar la vuelta
+      if (origImgs[i]) img.addEventListener('click', () => origImgs[i].click());
+    });
+  }
+  function setX(i, animate){
+    track.style.transition = animate ? '' : 'none';
+    track.style.transform = `translate3d(${-100 * i}%, 0, 0)`;
+    if (!animate) { void track.offsetWidth; track.style.transition = ''; } // aplica el salto ya, y después vuelve a habilitar la animación
+  }
+  function settle(){
+    clearTimeout(settleTimer);
+    if (idx === pageCount + 1) { idx = 1; setX(idx, false); }       // llegó al clon de la primera -> salta a la real
+    else if (idx === 0) { idx = pageCount; setX(idx, false); }       // llegó al clon de la última -> salta a la real
+    busy = false;
+  }
+  function slide(step){
+    if (busy || compact.matches) return; // ignora clics mientras desliza: así nunca se "traba" a mitad de camino
+    busy = true;
+    idx += step;
+    realPage = ((idx - 1) % pageCount + pageCount) % pageCount;
+    setX(idx, true);
+    paintDots();
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(settle, SLIDE_MS + 150); // red de seguridad si el navegador nunca avisa el fin de la transición
+    onScrollOrResize();
+  }
+
+  function teardown(){
+    if (abort) abort.abort();
+    clearTimeout(settleTimer);
+    busy = false;
+    loop = null;
+    if (track) { thumbs.forEach(t => grid.appendChild(t)); track.remove(); track = null; }
   }
   function build(){
     const perPage = compact.matches ? 4 : 8;
-    const firstIndex = page * (grid.__perPage || perPage); // primera foto visible antes de rearmar
-    grid.__perPage = perPage;
-    // desarma lo anterior (las fotos vuelven a colgar directo de la grilla)
-    if (track) { thumbs.forEach(t => grid.appendChild(t)); track.remove(); }
+    const firstIndex = realPage * (perPageUsed || perPage); // primera foto visible antes de rearmar
+    teardown();
+    perPageUsed = perPage;
+    abort = new AbortController();
+
     track = document.createElement('div');
     track.className = 'ref-track';
     pageCount = Math.ceil(thumbs.length / perPage);
+    pages = [];
     for (let p = 0; p < pageCount; p++) {
       const pg = document.createElement('div');
       pg.className = 'ref-page';
       thumbs.slice(p * perPage, (p + 1) * perPage).forEach(t => pg.appendChild(t));
+      pages.push(pg);
       track.appendChild(pg);
     }
     grid.appendChild(track);
     grid.classList.add('ref-ready');
-    page = Math.min(Math.floor(firstIndex / perPage), pageCount - 1);
+    realPage = Math.min(Math.floor(firstIndex / perPage), pageCount - 1);
+
     dotsWrap.innerHTML = '';
     for (let i = 0; i < pageCount; i++) dotsWrap.appendChild(document.createElement('span'));
-    goTo(page, false);
-    onScrollOrResize(); // recalcula el fade de las fotos que cambiaron de lugar
-  }
-  function goTo(p, animate){
-    page = p;
+
     if (compact.matches) {
-      // celular/tablet: el "lugar" lo da el scroll horizontal de la pista
-      track.style.transform = '';
-      track.scrollTo({ left: p * track.clientWidth, behavior: animate ? 'smooth' : 'auto' });
-    } else {
-      track.style.transition = animate ? '' : 'none'; // sin animación al armar/rearmar
-      track.style.transform = `translate3d(${-100 * p}%, 0, 0)`; // translate3d: lo resuelve la placa de video, sin tirones
-      if (!animate) { void track.offsetWidth; track.style.transition = ''; }
+      // tablet/celular: swipe manual con el loop común del sitio
+      loop = setupLoopingCarousel(track, abort.signal, realPage + 1);
+      if (loop) {
+        prepareClone(loop.allItems[0], pages[pageCount - 1]);
+        prepareClone(loop.allItems[pageCount + 1], pages[0]);
+        let dotsTick = false;
+        track.addEventListener('scroll', () => {
+          if (dotsTick) return;
+          dotsTick = true;
+          requestAnimationFrame(() => {
+            dotsTick = false;
+            realPage = ((loop.closestIndex() - 1) % pageCount + pageCount) % pageCount;
+            paintDots();
+          });
+        }, { passive: true, signal: abort.signal });
+      }
+    } else if (pageCount > 1) {
+      // desktop: clones a los costados + transición por transform
+      const lastClone = pages[pageCount - 1].cloneNode(true);
+      const firstClone = pages[0].cloneNode(true);
+      [lastClone, firstClone].forEach(c => c.setAttribute('aria-hidden', 'true'));
+      track.insertBefore(lastClone, pages[0]);
+      track.appendChild(firstClone);
+      prepareClone(lastClone, pages[pageCount - 1]);
+      prepareClone(firstClone, pages[0]);
+      idx = realPage + 1;
+      setX(idx, false);
+      track.addEventListener('transitionend', e => {
+        if (e.target === track && e.propertyName === 'transform') settle();
+      }, { signal: abort.signal });
     }
     paintDots();
-    onScrollOrResize();
+    onScrollOrResize(); // recalcula el fade de las fotos que cambiaron de lugar
   }
-  prevBtn.addEventListener('click', () => goTo((page - 1 + pageCount) % pageCount, true));
-  nextBtn.addEventListener('click', () => goTo((page + 1) % pageCount, true));
 
-  // swipe manual (tablet/celular): los puntitos siguen al scroll
-  let dotsTick = false;
-  grid.addEventListener('scroll', e => {
-    if (!compact.matches || e.target !== track || dotsTick) return;
-    dotsTick = true;
-    requestAnimationFrame(() => {
-      dotsTick = false;
-      const w = track.clientWidth || 1;
-      page = Math.max(0, Math.min(pageCount - 1, Math.round(track.scrollLeft / w)));
-      paintDots();
-    });
-  }, { passive: true, capture: true });
-
+  prevBtn.addEventListener('click', () => slide(-1));
+  nextBtn.addEventListener('click', () => slide(1));
   if (compact.addEventListener) compact.addEventListener('change', build);
   else if (compact.addListener) compact.addListener(build); // Safari viejo
-  window.addEventListener('resize', () => {
-    // al girar el celular / cambiar el ancho, la pista tiene que quedar clavada en la página actual
-    if (!compact.matches) return;
-    track.scrollTo({ left: page * track.clientWidth, behavior: 'auto' });
-  });
   build();
 });
 
@@ -878,7 +943,7 @@ if (lightbox && lightboxTrack && lightboxClose && lightboxDotsEl && lightboxGall
 
   lightboxGalleries.forEach(gallery => {
     const scope = gallery.dataset.lightbox; // "always" | "tablet"
-    const imgs = [...gallery.querySelectorAll('img')];
+    const imgs = [...gallery.querySelectorAll('img')].filter(img => !img.closest('[aria-hidden="true"]')); // sin los clones de un loop (ver Referencias de Omni)
     if (imgs.length < 1) return;
     imgs.forEach((img, i) => {
       img.setAttribute('tabindex', '0');
