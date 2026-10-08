@@ -744,7 +744,7 @@ document.querySelectorAll('.ref-grid').forEach(grid => {
       track.scrollTo({ left: p * track.clientWidth, behavior: animate ? 'smooth' : 'auto' });
     } else {
       track.style.transition = animate ? '' : 'none'; // sin animación al armar/rearmar
-      track.style.transform = `translateX(${-100 * p}%)`;
+      track.style.transform = `translate3d(${-100 * p}%, 0, 0)`; // translate3d: lo resuelve la placa de video, sin tirones
       if (!animate) { void track.offsetWidth; track.style.transition = ''; }
     }
     paintDots();
