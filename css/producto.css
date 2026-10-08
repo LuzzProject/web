@@ -303,8 +303,7 @@
 /* Infinity: línea divisoria entre Opciones y el logo de cierre
    (.product-outro no trae una por defecto). + (no ~) porque en esta
    página son hermanos directos, uno al lado del otro. */
-#opciones + .product-outro,
-#referencias + .product-outro{
+#opciones + .product-outro{
   border-top: 1px solid transparent;
   border-image: linear-gradient(to right, #000000 0%, rgba(255,255,255,0.7) 50%, #000000 100%) 1;
 }
@@ -2144,25 +2143,27 @@ section.grid-section--no-divider{
 }
 
 
-/* ---------- Omni: "Referencias" (16 fotos, de a 8 en desktop) ----------
-   Una sola grilla con las 16 fotos; el JS (main.js, .ref-grid) muestra
-   solo una "página" a la vez y los botones/puntitos de abajo pasan de
-   una a otra:
-   - Desktop (>819px): 4 columnas x 2 filas = 8 fotos por página (2 páginas).
+/* ---------- Omni: "Referencias" (16 fotos en páginas) ----------
+   El JS (main.js, .ref-grid) agrupa las 16 fotos en páginas dentro de
+   .ref-track > .ref-page:
+   - Desktop (>819px): 4 columnas x 2 filas = 8 fotos por página (2
+     páginas). Las flechas deslizan la pista con una transición suave.
    - Tablet y celular (<=819px): 2 columnas x 2 filas = 4 fotos por
-     página (4 páginas), como la grilla 2x2 de "Aplicaciones".
+     página (4 páginas), como la grilla 2x2 de "Aplicaciones". Sin
+     flechas: la pista es un scroll horizontal con enganche (swipe).
    Las 16 fotos abren en grande en el lightbox y se recorren con clic
    (data-lightbox="always", igual que la galería final de Trinity).
-   Entre fotos que se tocan va --photo-gap; contra el borde de pantalla
-   van al ras. */
+   Entre fotos que se tocan va --photo-gap (6px, igual que la galería
+   final de Trinity); contra el borde de pantalla van al ras. */
 #referencias{
-  padding-bottom: 100px; /* espacio estándar hasta la línea divisoria de abajo (padding, no margin: ver regla de oro #3) */
+  padding-bottom: 100px; /* espacio estándar hasta el logo de cierre (padding, no margin: ver regla de oro #3) */
 }
 #referencias .ref-intro{
   max-width: none;
-  margin: 0 0 48px;
+  margin: 0 0 20px; /* mismo espacio texto -> fotos que el resto de los .section-intro del sitio */
   text-align: left; /* alineado a la izquierda, como en el mockup */
 }
+/* Sin JS (por las dudas): grilla común de 4 columnas, se ven las 16 */
 .ref-grid{
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -2172,22 +2173,40 @@ section.grid-section--no-divider{
 @media (max-width: 819px){
   .ref-grid{ grid-template-columns: repeat(2, 1fr); }
 }
+/* Con JS: la grilla pasa a ser una ventana (overflow oculto) que
+   muestra una página de la pista a la vez */
+.ref-grid.ref-ready{
+  display: block;
+  overflow: hidden;
+}
+.ref-track{
+  display: flex;
+  background: #000000;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* desliza suave entre páginas (desktop) */
+  will-change: transform;
+}
+.ref-page{
+  flex: 0 0 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--photo-gap);
+  background: #000000;
+}
 .ref-grid .thumb{
   aspect-ratio: 1 / 1;
   overflow: hidden;
   background: #000000;
 }
-.ref-grid .thumb[hidden]{ display: none; }
 .ref-grid img{
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-/* Flechas + puntitos (siempre visibles, en los 3 formatos). Los
-   puntitos son solo indicadores (no clickeables): marcan en qué
-   página estás. Flechas: chevron fino de 1.5px, mismo estilo que la
-   flechita de "Productos" del menú mobile. */
+/* Flechas + puntitos. Los puntitos son solo indicadores (no
+   clickeables): marcan en qué página estás. Flechas: chevron fino de
+   1.5px, mismo estilo que la flechita de "Productos" del menú mobile. */
 .ref-pager{
   display: flex;
   justify-content: center;
@@ -2224,3 +2243,28 @@ section.grid-section--no-divider{
   transition: background 0.3s ease;
 }
 .ref-pager__dots span.active{ background: rgba(255,255,255,0.95); }
+
+/* Tablet y celular: 2x2 por página, swipe manual (sin flechas) y
+   puntitos del mismo tamaño que los del resto del sitio
+   (.gallery-dots: 6px, separados 8px). */
+@media (max-width: 819px){
+  .ref-page{ grid-template-columns: repeat(2, 1fr); }
+  .ref-track{
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    transform: none !important; /* acá no se mueve con transform: lo mueve el scroll */
+    transition: none;
+    will-change: auto;
+  }
+  .ref-track::-webkit-scrollbar{ display: none; }
+  .ref-page{ scroll-snap-align: center; }
+  .ref-pager__arrow{ display: none; }
+  .ref-pager{ gap: 0; }
+  .ref-pager__dots{ gap: 8px; }
+  .ref-pager__dots span{ width: 6px; height: 6px; }
+}

@@ -684,51 +684,96 @@ window.addEventListener('load', () => {
 });
 
 /* ---------- Omni: "Referencias" (grilla de 16 fotos con páginas) ----------
-   Muestra de a una "página" de fotos: 8 en desktop (4x2) o 4 en
-   tablet/celular (2x2). Las flechas pasan de una página a la otra
-   (con loop: desde la última vuelve a la primera) y los puntitos
-   marcan en cuál estás. Todas las fotos quedan en el HTML (las que no
-   se ven llevan el atributo hidden) para que el lightbox pueda
-   recorrer las 16. Al cambiar el ancho de pantalla se mantiene la
+   Las 16 fotos se agrupan en "páginas":
+   - Desktop (>819px): 8 fotos por página (4x2), 2 páginas. Las flechas
+     deslizan la grilla de una página a la otra con una transición
+     suave (como al pasar de foto en el lightbox); desde la última,
+     "siguiente" vuelve a la primera.
+   - Tablet y celular (<=819px): 4 fotos por página (2x2), 4 páginas.
+     Sin flechas: se pasan con swipe manual (scroll horizontal con
+     enganche, ver CSS .ref-track).
+   Los puntitos marcan en qué página estás (no son clickeables).
+   Las fotos siguen siendo las mismas 16 <img>, siempre en orden, así
+   que el lightbox (data-lightbox en .ref-grid) las recorre todas. Al
+   cambiar el ancho de pantalla se rearman las páginas y se mantiene la
    primera foto que se estaba viendo. */
 document.querySelectorAll('.ref-grid').forEach(grid => {
   const section = grid.parentElement;
   const pager = section.querySelector('.ref-pager');
   if (!pager) return;
-  const thumbs = [...grid.children];
+  const thumbs = [...grid.querySelectorAll('.thumb')];
   const dotsWrap = pager.querySelector('.ref-pager__dots');
   const prevBtn = pager.querySelector('.ref-pager__prev');
   const nextBtn = pager.querySelector('.ref-pager__next');
   const compact = window.matchMedia('(max-width: 819px)');
-  const perPage = () => compact.matches ? 4 : 8;
-  let firstIndex = 0; // primera foto visible
+  let track = null;
+  let pageCount = 0;
+  let page = 0;
 
-  function render(){
-    const pp = perPage();
-    const total = Math.ceil(thumbs.length / pp);
-    const page = Math.min(Math.floor(firstIndex / pp), total - 1);
-    firstIndex = page * pp;
-    thumbs.forEach((t, i) => { t.hidden = Math.floor(i / pp) !== page; });
-    dotsWrap.innerHTML = '';
-    for (let i = 0; i < total; i++) {
-      const d = document.createElement('span');
-      if (i === page) d.classList.add('active');
-      dotsWrap.appendChild(d);
+  function paintDots(){
+    [...dotsWrap.children].forEach((d, i) => d.classList.toggle('active', i === page));
+  }
+  function build(){
+    const perPage = compact.matches ? 4 : 8;
+    const firstIndex = page * (grid.__perPage || perPage); // primera foto visible antes de rearmar
+    grid.__perPage = perPage;
+    // desarma lo anterior (las fotos vuelven a colgar directo de la grilla)
+    if (track) { thumbs.forEach(t => grid.appendChild(t)); track.remove(); }
+    track = document.createElement('div');
+    track.className = 'ref-track';
+    pageCount = Math.ceil(thumbs.length / perPage);
+    for (let p = 0; p < pageCount; p++) {
+      const pg = document.createElement('div');
+      pg.className = 'ref-page';
+      thumbs.slice(p * perPage, (p + 1) * perPage).forEach(t => pg.appendChild(t));
+      track.appendChild(pg);
     }
-    onScrollOrResize(); // recalcula el fade de las fotos que acaban de aparecer
+    grid.appendChild(track);
+    grid.classList.add('ref-ready');
+    page = Math.min(Math.floor(firstIndex / perPage), pageCount - 1);
+    dotsWrap.innerHTML = '';
+    for (let i = 0; i < pageCount; i++) dotsWrap.appendChild(document.createElement('span'));
+    goTo(page, false);
+    onScrollOrResize(); // recalcula el fade de las fotos que cambiaron de lugar
   }
-  function go(step){
-    const pp = perPage();
-    const total = Math.ceil(thumbs.length / pp);
-    const page = (Math.floor(firstIndex / pp) + step + total) % total;
-    firstIndex = page * pp;
-    render();
+  function goTo(p, animate){
+    page = p;
+    if (compact.matches) {
+      // celular/tablet: el "lugar" lo da el scroll horizontal de la pista
+      track.style.transform = '';
+      track.scrollTo({ left: p * track.clientWidth, behavior: animate ? 'smooth' : 'auto' });
+    } else {
+      track.style.transition = animate ? '' : 'none'; // sin animación al armar/rearmar
+      track.style.transform = `translateX(${-100 * p}%)`;
+      if (!animate) { void track.offsetWidth; track.style.transition = ''; }
+    }
+    paintDots();
+    onScrollOrResize();
   }
-  prevBtn.addEventListener('click', () => go(-1));
-  nextBtn.addEventListener('click', () => go(1));
-  if (compact.addEventListener) compact.addEventListener('change', render);
-  else if (compact.addListener) compact.addListener(render); // Safari viejo
-  render();
+  prevBtn.addEventListener('click', () => goTo((page - 1 + pageCount) % pageCount, true));
+  nextBtn.addEventListener('click', () => goTo((page + 1) % pageCount, true));
+
+  // swipe manual (tablet/celular): los puntitos siguen al scroll
+  let dotsTick = false;
+  grid.addEventListener('scroll', e => {
+    if (!compact.matches || e.target !== track || dotsTick) return;
+    dotsTick = true;
+    requestAnimationFrame(() => {
+      dotsTick = false;
+      const w = track.clientWidth || 1;
+      page = Math.max(0, Math.min(pageCount - 1, Math.round(track.scrollLeft / w)));
+      paintDots();
+    });
+  }, { passive: true, capture: true });
+
+  if (compact.addEventListener) compact.addEventListener('change', build);
+  else if (compact.addListener) compact.addListener(build); // Safari viejo
+  window.addEventListener('resize', () => {
+    // al girar el celular / cambiar el ancho, la pista tiene que quedar clavada en la página actual
+    if (!compact.matches) return;
+    track.scrollTo({ left: page * track.clientWidth, behavior: 'auto' });
+  });
+  build();
 });
 
 /* ---------- Lightbox genérico ----------
