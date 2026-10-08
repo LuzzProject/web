@@ -2248,7 +2248,10 @@ section.grid-section--no-divider{
    puntitos del mismo tamaño que los del resto del sitio
    (.gallery-dots: 6px, separados 8px). */
 @media (max-width: 819px){
-  .ref-page{ grid-template-columns: repeat(2, 1fr); }
+  .ref-page{
+    grid-template-columns: repeat(2, 1fr);
+    gap: calc(var(--photo-gap) * 0.6); /* separación entre fotos -40% solo acá (6px -> 3.6px), pedido explícito del cliente */
+  }
   .ref-track{
     overflow-x: auto;
     overflow-y: hidden;
