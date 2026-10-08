@@ -683,6 +683,54 @@ window.addEventListener('load', () => {
   });
 });
 
+/* ---------- Omni: "Referencias" (grilla de 16 fotos con páginas) ----------
+   Muestra de a una "página" de fotos: 8 en desktop (4x2) o 4 en
+   tablet/celular (2x2). Las flechas pasan de una página a la otra
+   (con loop: desde la última vuelve a la primera) y los puntitos
+   marcan en cuál estás. Todas las fotos quedan en el HTML (las que no
+   se ven llevan el atributo hidden) para que el lightbox pueda
+   recorrer las 16. Al cambiar el ancho de pantalla se mantiene la
+   primera foto que se estaba viendo. */
+document.querySelectorAll('.ref-grid').forEach(grid => {
+  const section = grid.parentElement;
+  const pager = section.querySelector('.ref-pager');
+  if (!pager) return;
+  const thumbs = [...grid.children];
+  const dotsWrap = pager.querySelector('.ref-pager__dots');
+  const prevBtn = pager.querySelector('.ref-pager__prev');
+  const nextBtn = pager.querySelector('.ref-pager__next');
+  const compact = window.matchMedia('(max-width: 819px)');
+  const perPage = () => compact.matches ? 4 : 8;
+  let firstIndex = 0; // primera foto visible
+
+  function render(){
+    const pp = perPage();
+    const total = Math.ceil(thumbs.length / pp);
+    const page = Math.min(Math.floor(firstIndex / pp), total - 1);
+    firstIndex = page * pp;
+    thumbs.forEach((t, i) => { t.hidden = Math.floor(i / pp) !== page; });
+    dotsWrap.innerHTML = '';
+    for (let i = 0; i < total; i++) {
+      const d = document.createElement('span');
+      if (i === page) d.classList.add('active');
+      dotsWrap.appendChild(d);
+    }
+    onScrollOrResize(); // recalcula el fade de las fotos que acaban de aparecer
+  }
+  function go(step){
+    const pp = perPage();
+    const total = Math.ceil(thumbs.length / pp);
+    const page = (Math.floor(firstIndex / pp) + step + total) % total;
+    firstIndex = page * pp;
+    render();
+  }
+  prevBtn.addEventListener('click', () => go(-1));
+  nextBtn.addEventListener('click', () => go(1));
+  if (compact.addEventListener) compact.addEventListener('change', render);
+  else if (compact.addListener) compact.addListener(render); // Safari viejo
+  render();
+});
+
 /* ---------- Lightbox genérico ----------
    Un solo lightbox por página (mismo bloque que ya usaba la galería
    final de Trinity), reusado para cualquier galería marcada con
