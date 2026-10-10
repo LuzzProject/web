@@ -680,6 +680,10 @@ document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe
 window.addEventListener('load', () => {
   document.querySelectorAll('.trio-gallery, .duo-gallery, .lightbox__track, .swipe-grid, .natural-gallery').forEach(gallery => {
     if (gallery.__loop) gallery.__loop.jump(1, 'auto');
+    // recalcula el puntito activo con las medidas ya definitivas: el
+    // cálculo inicial corría con las fotos sin cargar (ancho 0) y
+    // podía dejar marcado el segundo puntito en la primera foto
+    gallery.dispatchEvent(new Event('scroll'));
   });
 });
 

@@ -944,6 +944,9 @@
   aspect-ratio: 1 / 1;
   overflow: hidden;
 }
+@media (max-width: 640px){
+  .final-gallery{ gap: calc(var(--photo-gap) * 0.6); } /* celular: misma separación que la grilla de Referencias de Omni (6px -> 3.6px), pedido explícito del cliente */
+}
 .final-gallery img{
   width: 100%;
   height: 100%;
