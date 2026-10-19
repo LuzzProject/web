@@ -829,3 +829,20 @@ footer.contact svg{
   #desarrollos .item .cap h3,
   #trabajos .item .cap h3{ font-size: 16.8px; }
 }
+
+/* ---------- Tablet ancha (820-849px): hero a pantalla completa ----------
+   iPad Air (820), iPad Pro 11" (834), tablets Android ~824. En celular el
+   hero es vertical 9:16 (casi toda la pantalla); acá, en vez de una
+   proporción fija, el hero ocupa exactamente el alto visible de la
+   pantalla debajo de la barra (100% del alto - --nav-h), así se ve
+   completo sin que asome lo de abajo. Aplica a todos los héroes (Home,
+   productos, Desarrollos a Medida). La foto se recorta sola centrada
+   (object-fit: cover), como en celular. 100vh primero por si el navegador
+   no conoce svh (Safari viejo). */
+@media (min-width: 820px) and (max-width: 849px){
+  .hero{
+    aspect-ratio: auto;
+    height: calc(100vh - var(--nav-h));
+    height: calc(100svh - var(--nav-h));
+  }
+}

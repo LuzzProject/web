@@ -870,9 +870,10 @@ document.querySelectorAll('.ref-grid').forEach(grid => {
    vez que se abre.
    El atributo data-lightbox decide en qué formato responde el toque:
    - "always": en los 3 formatos (ej. la galería final de Trinity).
-   - "tablet": solo tablet, 641-819px (pedido explícito para el resto
-     de las galerías: en celular cada una ya es swipe en la propia
-     página, en desktop se ven todas las fotos juntas). */
+   - "tablet": de 641px hasta 1138px (Punto Quiebre Hamburguesa) — tablet
+     y también tablets/ventanas anchas (ej. 824px, que ya usan el layout
+     de desktop). En celular cada una ya es swipe en la propia página; en
+     desktop real (>=1139px) se ven todas las fotos juntas y no abren. */
 const lightbox = document.getElementById('lightbox');
 const lightboxTrack = document.getElementById('lightboxTrack');
 const lightboxClose = document.getElementById('lightboxClose');
@@ -882,7 +883,7 @@ const lightboxGalleries = document.querySelectorAll('[data-lightbox]');
 if (lightbox && lightboxTrack && lightboxClose && lightboxDotsEl && lightboxGalleries.length) {
   const lightboxZoneLeft = document.getElementById('lightboxZoneLeft');
   const lightboxZoneRight = document.getElementById('lightboxZoneRight');
-  const tabletMedia = window.matchMedia('(min-width: 641px) and (max-width: 819px)');
+  const tabletMedia = window.matchMedia('(min-width: 641px) and (max-width: 1138px)');
 
   let activeLoop = null;
   let lightboxAbort = null; // ver comentario en setupLoopingCarousel: corta los listeners de la apertura anterior antes de armar los nuevos

@@ -971,8 +971,8 @@
    ahí (en celular esas galerías ya son swipe en la propia página, en
    desktop se ven todas las fotos juntas). */
 [data-lightbox="always"] img{ cursor: pointer; }
-@media (min-width: 641px) and (max-width: 819px){
-  [data-lightbox="tablet"] img{ cursor: pointer; }
+@media (min-width: 641px) and (max-width: 1138px){
+  [data-lightbox="tablet"] img{ cursor: pointer; } /* hasta 1138px (Punto Quiebre Hamburguesa): las fotos de tablet abren en grande también en ventanas/tablets anchas */
 }
 
 /* ---------- Lightbox: foto en grande, con swipe entre las demás de
@@ -1796,11 +1796,17 @@ section.grid-section--no-divider{
   margin: 0 0 8px;
   font-size: 25px; /* 20px (celular, igual a .section-subtitle--left) + 5px */
 }
+/* Tablet y desktop: el título es el 85% (-15%) del título de la sección
+   ("Prensa", section.grid-section h2), así siempre queda un poco más chico
+   que él, en cualquier ancho. Antes: 35px (tablet) y 41px (desktop, fijo:
+   a 824px quedaba más grande que "Prensa", que mide 36px ahí).
+   Ahora: 30.6px en tablet; en desktop acompaña al h2 (30.7px a 824px,
+   39.8px a 1440px o más). */
 @media (min-width: 641px) and (max-width: 819px){
-  .press-title{ font-size: 35px; } /* 24px + 6px + 5px */
+  .press-title{ font-size: 30.6px; } /* 36px del h2 x 0.85 */
 }
 @media (min-width: 820px){
-  .press-title{ font-size: 41px; } /* 30px + 6px + 5px */
+  .press-title{ font-size: calc(clamp(36px, 1.7391vw + 21.7565px, 46.8px) * 0.85); } /* mismo clamp() que section.grid-section h2, x 0.85 */
 }
 .press-byline{
   font-size: 20px; /* igual a .admin-block .section-subtitle, sin el +6px del título */
@@ -2315,5 +2321,27 @@ section.grid-section--no-divider{
 @media (max-width: 1138px){
   .lightbox__zones{
     pointer-events: none;
+  }
+}
+
+
+/* ---------- Tablet ancha (820-849px: iPad Air 820, iPad Pro 11" 834,
+   tablets Android ~824): Biografía y Statement apilados ----------
+   Misma idea que en tablet angosta (<=819px): en vez de texto en una
+   mitad y foto en la otra (una columna de texto muy larga de un lado y
+   nada del otro), la foto va arriba a todo el ancho y el texto debajo,
+   también a todo el ancho. Prensa no se toca (texto + foto lado a lado,
+   con el link anclado al piso de la foto). */
+@media (min-width: 820px) and (max-width: 849px){
+  #biografia .split-section,
+  #statement .split-section{
+    grid-template-columns: 1fr;
+    grid-template-areas: "photo" "text";
+    gap: 40px;
+  }
+  #biografia .split-section__text,
+  #statement .split-section__text{
+    padding-left: var(--margin-x);
+    padding-right: var(--margin-x);
   }
 }
