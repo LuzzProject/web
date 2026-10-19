@@ -514,7 +514,7 @@ section.grid-section h2{
 
 .item-grid{
   display:grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr)); /* minmax(0,..): ninguna columna se ensancha por una palabra larga del título, todas quedan del mismo ancho */
   /* Solo separación horizontal entre columnas (foto toca foto).
      Sin row-gap: entre filas el texto/título ya hace de separación,
      y los bordes exteriores quedan al ras de la pantalla. */
@@ -782,7 +782,7 @@ footer.contact svg{
    se sostenga un poco más antes de pasar a tablet */
 @media (max-width: 819px){
   :root{ --margin-x: var(--margin-x-tab); }
-  .item-grid{ grid-template-columns: repeat(2, 1fr); }
+  .item-grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero{ aspect-ratio: 1 / 1; } /* tablet: hero cuadrado */
   /* Texto de contacto (footer) un 50% más cerca de lo que haya arriba
      (logo de cierre, texto o foto, según la página) — pedido explícito
@@ -812,4 +812,20 @@ footer.contact svg{
   .item-grid{ grid-template-columns: 1fr; }
   footer.contact{ padding: 170px var(--margin-x-mob) 240px; } /* arriba: -50% (340px -> 170px), pedido explícito del cliente — el título sticky de la sección anterior se despega solo (su propio contenedor), este padding es nada más el respiro visual hasta el texto de contacto */
   .hero{ aspect-ratio: 9 / 16; } /* celular: hero vertical 9:16 */
+}
+
+/* ---------- Tablet (641-1138px): textos de las tarjetas del Home -30% ----------
+   Pedido explícito. Valores anteriores -> nuevos:
+   Productos: título 30px -> 21px, texto 20px -> 14px.
+   Desarrollos a Medida y Trabajos: título 24px -> 16.8px (mismo tamaño
+   que los títulos de Aplicaciones de Omni en tablet).
+   Hasta 1138px (Punto Quiebre Hamburguesa) y no solo hasta 819px porque
+   una tablet de 824px de ancho real (Samsung) ya cae en el layout de
+   desktop: así el cambio se ve también ahí. Desktop real (>=1139px) y
+   celular quedan como estaban. */
+@media (min-width: 641px) and (max-width: 1138px){
+  #productos .item .cap h3{ font-size: 21px; }
+  #productos .item .cap p{ font-size: 14px; }
+  #desarrollos .item .cap h3,
+  #trabajos .item .cap h3{ font-size: 16.8px; }
 }

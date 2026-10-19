@@ -66,9 +66,16 @@
     font-size: 24px; /* 20px + 20% */
   }
 }
-@media (min-width: 641px) and (max-width: 1138px){
+@media (min-width: 641px) and (max-width: 819px){
   .product-hero__caption.product-hero__caption--omni{
-    font-size: 26px; /* 20px + 30% */
+    font-size: 20px; /* era 26px: ahora igual a los demás textos de Omni en tablet (.photo-caption-grid__item p) */
+  }
+}
+@media (min-width: 820px) and (max-width: 1138px){
+  .product-hero__caption.product-hero__caption--omni{
+    /* era 26px: mismo clamp() que .photo-caption-grid__item p, para que
+       siga siendo igual a los demás textos mientras el ancho crece */
+    font-size: clamp(20px, 0.9662vw + 12.087px, 26px);
   }
 }
 @media (min-width: 1139px){
@@ -78,14 +85,14 @@
 }
 
 /* ---------- Omni: bajada del hero, corte de renglón fijo solo en
-   tablet (641-819px, breakpoint general del sitio) — "Transforma el
+   tablet (641-1138px: incluye tablets de ~824px, que ya usan layout de desktop) — "Transforma el
    espacio" / "creando una experiencia cautivante." en 2 renglones
    pedidos a mano, no por wrap natural. En mobile y desktop sigue
    fluyendo como texto corrido normal. */
 .product-hero__caption--omni .omni-hero-break{
   display: none;
 }
-@media (min-width: 641px) and (max-width: 819px){
+@media (min-width: 641px) and (max-width: 1138px){
   .product-hero__caption--omni .omni-hero-break{
     display: inline;
   }
@@ -2273,4 +2280,40 @@ section.grid-section--no-divider{
   .ref-pager{ gap: 0; }
   .ref-pager__dots{ gap: 8px; }
   .ref-pager__dots span{ width: 6px; height: 6px; }
+}
+
+
+/* ---------- Tablet (641-1138px): Aplicaciones de Omni, títulos -30% ----------
+   24px -> 16.8px. Con el tamaño anterior, "Personalizados" era más ancha
+   que su columna y la estiraba (la 2ª foto salía más grande que las
+   otras); además la grilla usa minmax(0,1fr) (ver styles.css), así que
+   las 4 fotos quedan siempre del mismo tamaño. */
+@media (min-width: 641px) and (max-width: 1138px){
+  #aplicaciones .item .cap h3{ font-size: 16.8px; }
+}
+
+/* ---------- Tablet con layout de desktop (820-1138px): Referencias ----------
+   Flechas -50%: el dibujo pasa de 15x19px a 7.5x9.5px (la zona de toque
+   sigue en 44x44px para que sea cómoda de tocar). */
+@media (min-width: 820px) and (max-width: 1138px){
+  .ref-pager__arrow svg{
+    width: 7.5px;
+    height: 9.5px;
+  }
+}
+
+/* ---------- Lightbox: sin rectángulo blanco al tocar + swipe con el dedo ----------
+   El rectángulo blanco era el resaltado que dibuja el navegador táctil
+   sobre el botón-zona (mitad de pantalla) al tocarlo. Se apaga en todo el
+   lightbox. Y hasta 1138px las zonas dejan pasar el toque al track (antes
+   era solo hasta 819px), así el deslizamiento con el dedo funciona
+   también en tablets de ~824px. */
+.lightbox,
+.lightbox *{
+  -webkit-tap-highlight-color: transparent;
+}
+@media (max-width: 1138px){
+  .lightbox__zones{
+    pointer-events: none;
+  }
 }

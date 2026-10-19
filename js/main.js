@@ -840,6 +840,21 @@ document.querySelectorAll('.ref-grid').forEach(grid => {
 
   prevBtn.addEventListener('click', () => slide(-1));
   nextBtn.addEventListener('click', () => slide(1));
+  // Desktop/tablet ancha (flechas): deslizar con el dedo hacia los costados
+  // también cambia de página, igual que las flechas. Solo toque (no mouse).
+  let touchX = null, touchY = null;
+  grid.addEventListener('touchstart', e => {
+    if (compact.matches || e.touches.length !== 1) { touchX = null; return; }
+    touchX = e.touches[0].clientX;
+    touchY = e.touches[0].clientY;
+  }, { passive: true });
+  grid.addEventListener('touchend', e => {
+    if (touchX === null || compact.matches) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchX, dy = t.clientY - touchY;
+    touchX = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) slide(dx < 0 ? 1 : -1);
+  }, { passive: true });
   if (compact.addEventListener) compact.addEventListener('change', build);
   else if (compact.addListener) compact.addListener(build); // Safari viejo
   build();
