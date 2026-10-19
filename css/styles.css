@@ -81,20 +81,23 @@ header.nav{
   display:flex;
   align-items:center;
   gap: clamp(6px, 1vw, 10px);
+  flex: none; /* el logo nunca se comprime: si el menú no entra, se achica el menú (ver fitNav en main.js), no el logo */
 }
+.brand img{ flex: none; }
 .brand img.brand-star{ height:32.4px; width:auto; display:block; } /* 21.6px + 50% */
 .brand img.brand-word{ height:25.2px; width:auto; display:block; } /* 16.8px + 50% */
 
 nav.menu{
   display:flex;
   align-items: center; /* la pastilla del selector de idioma es más alta que los links de texto (tiene padding+borde) — sin esto, los links de texto quedaban "estirados" al alto del ítem más alto y se veían descentrados */
-  gap: clamp(12px, 2.5vw, 34px);
+  gap: calc(clamp(12px, 2.5vw, 34px) * var(--nav-fit, 1)); /* --nav-fit (1 = tamaño normal) lo baja main.js solo si, con la tipografía real del dispositivo, el menú no entra */
+  flex: none;
 }
 /* Solo los links de primer nivel (no los del desplegable de PRODUCTOS,
    que tienen su propio tamaño más chico — ver .dropdown más abajo) */
 nav.menu > a,
 nav.menu > .menu-item > a{
-  font-size: clamp(9px, calc(1.6vw - 3px), 17.25px); /* se achica antes de llegar al modo tablet para no pisar el logo */
+  font-size: calc(clamp(9px, calc(1.6vw - 3px), 17.25px) * var(--nav-fit, 1)); /* se achica antes de llegar al modo tablet para no pisar el logo */
   letter-spacing: 0.12em;
   font-weight:500;
   color: var(--fg); /* blanco */
@@ -132,7 +135,7 @@ nav.menu > .menu-item > a:hover, nav.menu > .menu-item > a:focus-visible{ color:
   border-color: var(--fg);
 }
 nav.menu > a.lang-switch{
-  font-size: clamp(9px, calc(1.6vw - 3px), 17.25px); /* mismo clamp que el resto de la nav desktop */
+  font-size: calc(clamp(9px, calc(1.6vw - 3px), 17.25px) * var(--nav-fit, 1)); /* mismo clamp que el resto de la nav desktop */
   border-width: 1.5px; /* el 1px base (ver .lang-switch) se veía muy fino en desktop; sutil, no tan grueso como para perder la pastilla liviana */
 }
 

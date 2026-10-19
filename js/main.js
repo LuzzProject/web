@@ -74,6 +74,54 @@ document.querySelectorAll('.menu-trigger').forEach(trigger => {
   });
 });
 
+/* ---------- Nav desktop: el menú nunca pisa el logo ----------
+   El logo ("Luzz Project") no se comprime nunca (ver .brand en el CSS).
+   Los tamaños de letra y separaciones del menú vienen de clamp() medidos
+   con una tipografía de referencia, pero cada dispositivo usa la suya
+   (SF Pro en Mac/iPhone, Segoe UI en Windows, Roboto en Android), un poco
+   más ancha o más angosta. Si con la tipografía real el menú no entra
+   entre el logo y el borde derecho (con 28px de aire mínimo contra el
+   logo), se baja --nav-fit (1 = tamaño normal) lo justo para que entre,
+   hasta un mínimo del 60%. Si entra de sobra no cambia nada. Se recalcula
+   al cambiar el ancho y cuando termina de cargar la tipografía. */
+(function fitNav(){
+  const header = document.querySelector('header.nav');
+  const brand = header && header.querySelector('.brand');
+  const menu = header && header.querySelector('nav.menu');
+  if (!brand || !menu) return;
+  const MIN_AIR = 28;
+  const MIN_FIT = 0.6;
+  let busy = false;
+  function measure(){
+    const links = menu.querySelectorAll(':scope > a, :scope > .menu-item > a');
+    if (!links.length) return null;
+    const first = links[0].getBoundingClientRect();
+    const last = links[links.length - 1].getBoundingClientRect();
+    if (!first.width) return null; // menú oculto (modo hamburguesa)
+    const cs = getComputedStyle(header);
+    const room = header.clientWidth - parseFloat(cs.paddingRight) - brand.getBoundingClientRect().right - MIN_AIR;
+    return { need: last.right - first.left, room };
+  }
+  function fit(){
+    if (busy) return;
+    busy = true;
+    header.style.removeProperty('--nav-fit');
+    let fitVal = 1;
+    for (let i = 0; i < 4; i++) {
+      const m = measure();
+      if (!m || m.need <= m.room) break;
+      fitVal = Math.max(MIN_FIT, fitVal * (m.room / m.need) * 0.995);
+      header.style.setProperty('--nav-fit', fitVal.toFixed(4));
+      if (fitVal === MIN_FIT) break;
+    }
+    busy = false;
+  }
+  fit();
+  window.addEventListener('resize', fit);
+  window.addEventListener('load', fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+})();
+
 /* ---------- Hero slideshow (loop infinito + arrastre con el dedo) ----------
    Solo corre si la página actual tiene un hero-slideshow (hoy, solo el Home). */
 const heroEl = document.getElementById('hero');

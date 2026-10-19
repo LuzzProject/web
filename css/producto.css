@@ -41,6 +41,36 @@
   color: var(--fg);
   font-weight: 300;
 }
+/* ---------- Texto del hero (Trinity, Omni, Infinity, Light Mirage): más arriba ----------
+   El texto quedaba pegado al borde inferior del hero (40px de aire hasta
+   el borde): en tablet casi tocaba el borde de la pantalla y en desktop
+   ancho quedaba por debajo del borde visible de la ventana.
+   - Tablet y desktop angosto (641-1138px): aire inferior 40px -> 80px
+     (el texto sube 40px).
+   - Desktop de 1139 a 1399px: queda como estaba (40px). Acá el hero ya es
+     bajo, y subir el texto lo pondría encima del producto.
+   - Desktop ancho (desde 1400px): el texto se ancla al borde inferior de
+     lo que se ve de la ventana (si el hero 16:9 es más alto que la
+     ventana, antes el texto quedaba tapado debajo del borde) y sube de
+     forma gradual: aire de 40px a 1400px de ancho, hasta 80px a 1800px o
+     más (+0,1px por cada px de ancho). Si la ventana es más alta que el
+     hero, el texto queda al pie del hero como siempre. */
+@media (min-width: 641px) and (max-width: 1138px){
+  .product-hero__scrim{ padding-bottom: 80px; }
+}
+@media (min-width: 1400px){
+  .product-hero__scrim{
+    top: 0;
+    bottom: auto;
+    height: min(100%, calc(100vh - var(--nav-h)));
+    height: min(100%, calc(100svh - var(--nav-h)));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: calc(40px + clamp(0px, (100vw - 1400px) * 0.1, 40px));
+  }
+}
+
 /* Desktop: texto +30% y más ancho, para que entre en 2 líneas en vez
    de 3 (solo acá — en tablet/celular queda como está arriba).
    El corte es el mismo Punto Quiebre Hamburguesa (1138px) que usa el
