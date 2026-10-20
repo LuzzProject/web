@@ -1020,7 +1020,12 @@ if (lightbox && lightboxTrack && lightboxClose && lightboxDotsEl && lightboxGall
       const open = (e) => {
         if (scope === 'tablet' && !tabletMedia.matches) return;
         e.preventDefault();
-        openLightbox(imgs, i, scope);
+        // Solo las fotos que se ven en este formato: una foto oculta con
+        // display:none (ej. la foto extra de celular de Escultura y Arte
+        // Digital de Trinity, ver .trio-gallery__mobile-photo) no entra
+        // al lightbox cuando la galería se ve como desktop/tablet.
+        const shown = imgs.filter(im => im.getClientRects().length > 0);
+        openLightbox(shown, Math.max(0, shown.indexOf(img)), scope);
       };
       img.addEventListener('click', open);
       img.addEventListener('keydown', (e) => {
